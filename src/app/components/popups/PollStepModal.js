@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import PollLeftPopup from './PollLeftPopup';
-import PollMiddlePopup from './PollMiddlePopup';
-import PollRightPopup from './PollRightPopup';
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import PollLeftPopup from "./PollLeftPopup";
+import PollMiddlePopup from "./PollMiddlePopup";
+import PollRightPopup from "./PollRightPopup";
 
 export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 }) {
   const [step, setStep] = useState(1); // 1: left, 2: middle, 3: right
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
-    codename: 'SPECTRE_01',
-    faction: 'Evolve',
-    factionIcon: 'microscope',
-    designation: 'SPECTRE_01',
+    codename: "SPECTRE_01",
+    faction: "Evolve",
+    factionIcon: "microscope",
+    designation: "SPECTRE_01",
   });
 
   useEffect(() => {
@@ -38,12 +38,15 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
 
   const handleMiddleNext = (faction) => {
     const factionData = {
-      Evolve: { faction: 'Evolve', factionIcon: 'biotech' },
-      Contain: { faction: 'Contain', factionIcon: 'shield' },
+      Evolve: { faction: "Evolve", factionIcon: "biotech" },
+      Contain: { faction: "Contain", factionIcon: "shield" },
     };
     setFormData((prev) => ({
       ...prev,
-      ...factionData[faction] || { faction: 'Evolve', factionIcon: 'biotech' },
+      ...(factionData[faction] || {
+        faction: "Evolve",
+        factionIcon: "biotech",
+      }),
     }));
     setStep(3);
   };
@@ -70,11 +73,7 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
         {/* Step 1: Left Popup */}
         {step === 1 && (
           <div className="flex items-center justify-center w-full h-full relative z-10">
-            <PollLeftPopup
-              codename={formData.codename}
-              onInitiateLink={handleLeftNext}
-              show={true}
-            />
+            <PollLeftPopup codename={formData.codename} onInitiateLink={handleLeftNext} show={true} />
           </div>
         )}
 
@@ -82,8 +81,8 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
         {step === 2 && (
           <div className="flex items-center justify-center w-full h-full relative z-10">
             <PollMiddlePopup
-              onEvolveClick={() => handleMiddleNext('Evolve')}
-              onContainClick={() => handleMiddleNext('Contain')}
+              onEvolveClick={() => handleMiddleNext("Evolve")}
+              onContainClick={() => handleMiddleNext("Contain")}
               showWaitingMessage={true}
             />
           </div>
@@ -98,7 +97,7 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
               factionIcon={formData.factionIcon}
               onClose={handleClose}
               onEmailSubmit={(email) => {
-                console.log('Email submitted:', email);
+                console.log("Email submitted:", email);
               }}
               onClaimBadge={handleRightComplete}
               show={true}

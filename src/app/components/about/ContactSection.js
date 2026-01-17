@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
   };
 
   const handleChange = (e) => {
@@ -24,19 +24,19 @@ export default function ContactSection() {
 
   const contactCards = [
     {
-      icon: 'mail',
-      label: 'EMAIL',
-      value: 'contact@sporefall.com',
+      icon: "mail",
+      label: "EMAIL",
+      value: "contact@sporefall.com",
     },
     {
-      icon: 'smartphone',
-      label: 'PHONE',
-      value: '+88 0 1234 56 9',
+      icon: "smartphone",
+      label: "PHONE",
+      value: "+88 0 1234 56 9",
     },
     {
-      icon: 'location_on',
-      label: 'LOCATION',
-      value: 'Singapore',
+      icon: "location_on",
+      label: "LOCATION",
+      value: "Singapore",
     },
   ];
 
@@ -68,9 +68,7 @@ export default function ContactSection() {
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="font-mono text-xs text-white/50 tracking-widest uppercase">
-                    Name
-                  </label>
+                  <label className="font-mono text-xs text-white/50 tracking-widest uppercase">Name</label>
                   <input
                     name="name"
                     value={formData.name}
@@ -81,9 +79,7 @@ export default function ContactSection() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="font-mono text-xs text-white/50 tracking-widest uppercase">
-                    Email
-                  </label>
+                  <label className="font-mono text-xs text-white/50 tracking-widest uppercase">Email</label>
                   <input
                     name="email"
                     value={formData.email}
@@ -95,9 +91,7 @@ export default function ContactSection() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="font-mono text-xs text-white/50 tracking-widest uppercase">
-                  Message
-                </label>
+                <label className="font-mono text-xs text-white/50 tracking-widest uppercase">Message</label>
                 <textarea
                   name="message"
                   value={formData.message}
@@ -111,9 +105,7 @@ export default function ContactSection() {
                 type="submit"
                 className="w-full bg-white/5 border border-white/10 hover:border-primary hover:text-primary py-4 px-8 rounded flex items-center justify-center space-x-2 transition-all group"
               >
-                <span className="font-display font-bold text-sm tracking-widest uppercase">
-                  Contact with us
-                </span>
+                <span className="font-display font-bold text-sm tracking-widest uppercase">Contact with us</span>
                 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
                   arrow_right_alt
                 </span>

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 export default function PollMiddlePopup({
-  phase = 'Phase 02: Alignment',
-  title = 'The Choice is the Weapon',
-  subtitle = 'Select your allegiance protocol.',
+  phase = "Phase 02: Alignment",
+  title = "The Choice is the Weapon",
+  subtitle = "Select your allegiance protocol.",
   onEvolveClick,
   onContainClick,
   showWaitingMessage = true,
@@ -28,9 +28,7 @@ export default function PollMiddlePopup({
 
         {/* Title section */}
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-3 uppercase">
-            {title}
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-3 uppercase">{title}</h1>
           <p className="font-mono text-sm text-white/50">{subtitle}</p>
         </div>
 
@@ -44,9 +42,7 @@ export default function PollMiddlePopup({
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
               <span className="material-symbols-outlined text-primary text-3xl">biotech</span>
             </div>
-            <h2 className="text-2xl font-display font-bold text-primary mb-4 tracking-wider uppercase">
-              Evolve
-            </h2>
+            <h2 className="text-2xl font-display font-bold text-primary mb-4 tracking-wider uppercase">Evolve</h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px]">
               Embrace mutation. <br /> Ascend beyond limits.
             </p>
@@ -61,9 +57,7 @@ export default function PollMiddlePopup({
             <div className="w-16 h-16 rounded-full bg-cyan-500/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
               <span className="material-symbols-outlined text-cyan-400 text-3xl">shield</span>
             </div>
-            <h2 className="text-2xl font-display font-bold text-cyan-400 mb-4 tracking-wider uppercase">
-              Contain
-            </h2>
+            <h2 className="text-2xl font-display font-bold text-cyan-400 mb-4 tracking-wider uppercase">Contain</h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px]">
               Preserve order. <br /> Secure the boundary.
             </p>

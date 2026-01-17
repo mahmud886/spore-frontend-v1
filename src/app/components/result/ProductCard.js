@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function ProductCard({ product }) {
   const {
@@ -19,19 +19,17 @@ export default function ProductCard({ product }) {
     <div className="bg-terminal-gray/20 border border-white/5 p-4 hover:border-primary/30 transition-colors group">
       <div
         className={`aspect-square bg-terminal-gray/40 relative mb-4 overflow-hidden ${
-          customContent ? 'flex items-center justify-center' : ''
+          customContent ? "flex items-center justify-center" : ""
         }`}
       >
-        {imageEffect === 'blur' && (
-          <div className="w-24 h-48 bg-cyan-500/20 rounded-full blur-2xl absolute"></div>
-        )}
+        {imageEffect === "blur" && <div className="w-24 h-48 bg-cyan-500/20 rounded-full blur-2xl absolute"></div>}
         {image ? (
           <Image
             alt={imageAlt || name}
             className={`${
               customContent
-                ? 'relative z-10 w-2/3 h-2/3 object-contain'
-                : 'w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500'
+                ? "relative z-10 w-2/3 h-2/3 object-contain"
+                : "w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
             }`}
             src={image}
             width={imageWidth}
@@ -42,9 +40,7 @@ export default function ProductCard({ product }) {
           customContent
         )}
         {badge && (
-          <div className="absolute top-0 left-0 bg-red-600 text-[8px] font-bold px-2 py-0.5 uppercase">
-            {badge}
-          </div>
+          <div className="absolute top-0 left-0 bg-red-600 text-[8px] font-bold px-2 py-0.5 uppercase">{badge}</div>
         )}
       </div>
       <div className="space-y-2">

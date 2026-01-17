@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import SocialShareCard from './SocialShareCard';
+import SocialShareCard from "./SocialShareCard";
 
-const defaultPlatforms = ['X_SHARE', 'THREADS', 'TIKTOK', 'IG_STORY'];
+const defaultPlatforms = ["X_SHARE", "THREADS", "TIKTOK", "IG_STORY"];
 
 export default function MobilizeNetworkCard({
-  title = 'Silence is Complicity',
-  description = 'The infection spreads through silence. Your network is your weapon. Broadcast the signal before the connection is severed.',
+  title = "Silence is Complicity",
+  description = "The infection spreads through silence. Your network is your weapon. Broadcast the signal before the connection is severed.",
   platforms = defaultPlatforms,
   onShare,
 }) {

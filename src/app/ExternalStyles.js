@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function ExternalStyles() {
   useEffect(() => {
     // Add Material Symbols Outlined
-    const materialSymbols = document.createElement('link');
+    const materialSymbols = document.createElement("link");
     materialSymbols.href =
-      'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
-    materialSymbols.rel = 'stylesheet';
+      "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
+    materialSymbols.rel = "stylesheet";
     document.head.appendChild(materialSymbols);
 
     // Add Font Awesome
-    const fontAwesome = document.createElement('link');
-    fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-    fontAwesome.rel = 'stylesheet';
+    const fontAwesome = document.createElement("link");
+    fontAwesome.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
+    fontAwesome.rel = "stylesheet";
     document.head.appendChild(fontAwesome);
 
     return () => {

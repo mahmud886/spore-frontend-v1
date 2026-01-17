@@ -1,24 +1,24 @@
-import { JetBrains_Mono, Orbitron } from 'next/font/google';
-import ExternalStyles from './ExternalStyles';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
-import './globals.css';
+import { JetBrains_Mono, Orbitron } from "next/font/google";
+import ExternalStyles from "./ExternalStyles";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
+import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: '--font-mono',
-  subsets: ['latin'],
-  weight: ['300', '400', '500'],
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
 });
 
 const orbitron = Orbitron({
-  variable: '--font-display',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata = {
-  title: 'SPORE FALL | Sci-Fi Narrative Series',
-  description: 'The city of Lionara is quarantined. A spore is rewriting human fate.',
+  title: "SPORE FALL | Sci-Fi Narrative Series",
+  description: "The city of Lionara is quarantined. A spore is rewriting human fate.",
 };
 
 export default function RootLayout({ children }) {
@@ -29,7 +29,6 @@ export default function RootLayout({ children }) {
       >
         <ExternalStyles />
         <div className="bg-background-dark text-white selection:bg-primary selection:text-black">
-
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Navbar />
             {children}

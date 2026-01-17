@@ -1,10 +1,10 @@
 export default function HeroHeader({
-  status = '● STATUS: ACTIVE CONFLICT // SECTOR 7',
-  heading = 'THE CITY IS\nDIVIDED',
+  status = "● STATUS: ACTIVE CONFLICT // SECTOR 7",
+  heading = "THE CITY IS\nDIVIDED",
   showStatus = true,
 }) {
   // Split heading by newline or use <br />
-  const headingLines = heading.split('\n');
+  const headingLines = heading.split("\n");
 
   return (
     <>

@@ -21,7 +21,8 @@ body {
 }
 
 .grid-overlay {
-  background-image: linear-gradient(rgba(212, 255, 0, 0.05) 1px, transparent 1px),
+  background-image:
+    linear-gradient(rgba(212, 255, 0, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(212, 255, 0, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
 }
@@ -50,10 +51,13 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
     linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
   z-index: 2;
-  background-size: 100% 2px, 3px 100%;
+  background-size:
+    100% 2px,
+    3px 100%;
   pointer-events: none;
 }
 
@@ -96,12 +100,14 @@ body {
 
 .grid-pattern {
   background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
 .light .grid-pattern {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
 }
 
@@ -122,7 +128,8 @@ body {
 }
 
 .grid-bg {
-  background-image: linear-gradient(rgba(204, 255, 0, 0.05) 1px, transparent 1px),
+  background-image:
+    linear-gradient(rgba(204, 255, 0, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(204, 255, 0, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
 }
@@ -148,23 +155,11 @@ body {
 }
 
 .striped-lime {
-  background: repeating-linear-gradient(
-    45deg,
-    #ccff00,
-    #ccff00 10px,
-    #b8e600 10px,
-    #b8e600 20px
-  );
+  background: repeating-linear-gradient(45deg, #ccff00, #ccff00 10px, #b8e600 10px, #b8e600 20px);
 }
 
 .striped-blue {
-  background: repeating-linear-gradient(
-    45deg,
-    #2563eb,
-    #2563eb 10px,
-    #1d4ed8 10px,
-    #1d4ed8 20px
-  );
+  background: repeating-linear-gradient(45deg, #2563eb, #2563eb 10px, #1d4ed8 10px, #1d4ed8 20px);
 }
 
 .glow-border {
@@ -177,7 +172,7 @@ body {
 }
 
 .video-card-border::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -10px;
   left: -10px;
@@ -188,7 +183,7 @@ body {
 }
 
 .video-card-border::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -10px;
   right: -10px;

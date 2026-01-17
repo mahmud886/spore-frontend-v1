@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function PollRightPopup({
-  phase = 'PHASE 03: PROCESSING',
-  designation = 'SPECTRE_01',
-  faction = 'Evolve',
-  factionIcon = 'microscope',
+  phase = "PHASE 03: PROCESSING",
+  designation = "SPECTRE_01",
+  faction = "Evolve",
+  factionIcon = "microscope",
   onClose,
   onEmailSubmit,
   onClaimBadge,
   show = true,
 }) {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   if (!show) return null;
 

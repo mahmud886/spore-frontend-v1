@@ -1,9 +1,9 @@
 export default function IdentityArtifactCard({
-  idRef = '884-XJ',
-  codename = 'CYHER_01',
-  clearance = 'L4',
-  faction = 'Undecided',
-  accessMessage = 'ACCESS GRANTED. THIS IS YOUR BADGE.',
+  idRef = "884-XJ",
+  codename = "CYHER_01",
+  clearance = "L4",
+  faction = "Undecided",
+  accessMessage = "ACCESS GRANTED. THIS IS YOUR BADGE.",
 }) {
   return (
     <div className="bg-terminal-gray/30 border border-primary/20 p-6 dot-grid relative">

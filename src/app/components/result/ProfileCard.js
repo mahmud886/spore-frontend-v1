@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function ProfileCard({
-  image = 'https://lh3.googleusercontent.com/aida-public/AB6AXuB0qDeLy5D9bP6hKf2MgmfOoz_9i-IRvsXv9lcRcARRm6MPkBQAYM-0Fo5jj6HenXgeoql-UmS0j1YnJ4y1AhPKQ8d0MEVWdAKkNfNl4KEJuvY0Kzsat93csYj1laH0GomuyfjUjMpaOtJ7rk3-k4eCAZs_KMGtKkVFlIxl7Ii5wGeBlkOAS7Ai2wLx6El6JlYhwK3rtrIVw-GALu0BBHwATkkK_EeuIIT4cv4be0V90Ho1A_yJyRH40RCZEh8xtywgcL2IV8xjblc',
-  imageAlt = 'Character Portrait',
-  id = '992-ALPHA',
-  factionId = 'Evolutionist',
-  broadcastCode = 'LIO-7F3A',
-  syncStatus = '100% Complete',
-  position = 'Spore Harbinger',
-  clearance = 'Level 4 OMNI',
+  image = "https://lh3.googleusercontent.com/aida-public/AB6AXuB0qDeLy5D9bP6hKf2MgmfOoz_9i-IRvsXv9lcRcARRm6MPkBQAYM-0Fo5jj6HenXgeoql-UmS0j1YnJ4y1AhPKQ8d0MEVWdAKkNfNl4KEJuvY0Kzsat93csYj1laH0GomuyfjUjMpaOtJ7rk3-k4eCAZs_KMGtKkVFlIxl7Ii5wGeBlkOAS7Ai2wLx6El6JlYhwK3rtrIVw-GALu0BBHwATkkK_EeuIIT4cv4be0V90Ho1A_yJyRH40RCZEh8xtywgcL2IV8xjblc",
+  imageAlt = "Character Portrait",
+  id = "992-ALPHA",
+  factionId = "Evolutionist",
+  broadcastCode = "LIO-7F3A",
+  syncStatus = "100% Complete",
+  position = "Spore Harbinger",
+  clearance = "Level 4 OMNI",
   onTellWorld,
   onDownloadId,
 }) {
@@ -37,9 +37,7 @@ export default function ProfileCard({
       <div className="absolute bottom-0 left-0 right-0 p-8">
         <div className="flex justify-between items-end mb-6">
           <div>
-            <h3 className="text-2xl font-display font-bold text-white uppercase mb-1">
-              Faction ID: {factionId}
-            </h3>
+            <h3 className="text-2xl font-display font-bold text-white uppercase mb-1">Faction ID: {factionId}</h3>
             <p className="text-[10px] text-primary font-mono">BROADCAST CODE: {broadcastCode}</p>
           </div>
           <div className="text-right">

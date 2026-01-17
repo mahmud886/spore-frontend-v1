@@ -1,4 +1,4 @@
-import CountdownCard from './CountdownCard';
+import CountdownCard from "./CountdownCard";
 
 export default function CountdownSection({
   days = 2,
@@ -8,7 +8,7 @@ export default function CountdownSection({
   highlightMinutes = true,
 }) {
   const formatValue = (value) => {
-    return String(value).padStart(2, '0');
+    return String(value).padStart(2, "0");
   };
 
   return (

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function BlogCard({ post }) {
   const { image, imageAlt, id, timestamp, title, excerpt, description, link } = post;
@@ -21,10 +21,7 @@ export default function BlogCard({ post }) {
         </div>
         <h3 className="text-lg font-bold uppercase mb-3">{title}</h3>
         <p className="text-xs text-white/50 leading-relaxed mb-6">{content}</p>
-        <a
-          className="text-[10px] text-primary font-bold uppercase hover:underline"
-          href={link || '#'}
-        >
+        <a className="text-[10px] text-primary font-bold uppercase hover:underline" href={link || "#"}>
           Read Log
         </a>
       </div>

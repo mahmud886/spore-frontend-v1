@@ -1,18 +1,15 @@
-'use client';
+"use client";
 
-import IdentityArtifactCard from './IdentityArtifactCard';
-import MobilizeNetworkCard from './MobilizeNetworkCard';
+import IdentityArtifactCard from "./IdentityArtifactCard";
+import MobilizeNetworkCard from "./MobilizeNetworkCard";
 
-export default function IdentityArtifactSection({
-  identityData,
-  mobilizeNetworkProps,
-}) {
+export default function IdentityArtifactSection({ identityData, mobilizeNetworkProps }) {
   const defaultIdentityData = {
-    idRef: '884-XJ',
-    codename: 'CYHER_01',
-    clearance: 'L4',
-    faction: 'Undecided',
-    accessMessage: 'ACCESS GRANTED. THIS IS YOUR BADGE.',
+    idRef: "884-XJ",
+    codename: "CYHER_01",
+    clearance: "L4",
+    faction: "Undecided",
+    accessMessage: "ACCESS GRANTED. THIS IS YOUR BADGE.",
   };
 
   const finalIdentityData = identityData || defaultIdentityData;

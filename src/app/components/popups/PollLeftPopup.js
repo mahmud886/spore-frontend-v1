@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function PollLeftPopup({
-  phase = 'PHASE 01: IDENTIFICATION',
-  title = 'Classification Required',
-  subtitle = 'Identity Verification. Assign a designation.',
-  codename = 'SPECTRE_01',
+  phase = "PHASE 01: IDENTIFICATION",
+  title = "Classification Required",
+  subtitle = "Identity Verification. Assign a designation.",
+  codename = "SPECTRE_01",
   maxLength = 12,
   onInitiateLink,
   show = true,
@@ -46,11 +46,7 @@ export default function PollLeftPopup({
               strokeLinecap="round"
               strokeLinejoin="round"
             ></path>
-            <path
-              d="M11 11h2v2h-2zM11 17h2v2h-2zM17 11h2v2h-2z"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
+            <path d="M11 11h2v2h-2zM11 17h2v2h-2zM17 11h2v2h-2z" strokeLinecap="round" strokeLinejoin="round"></path>
           </svg>
         </div>
 
@@ -74,15 +70,16 @@ export default function PollLeftPopup({
           <h1 className="text-2xl md:text-3xl font-display font-black text-white uppercase tracking-tight mb-3">
             {title}
           </h1>
-          <p className="font-mono text-sm text-white/50 leading-relaxed">
-            {subtitle}
-          </p>
+          <p className="font-mono text-sm text-white/50 leading-relaxed">{subtitle}</p>
         </div>
 
         {/* Form section */}
         <div className="space-y-8">
           <div className="space-y-2">
-            <label className="block font-mono text-[10px] uppercase tracking-widest text-primary font-bold" htmlFor="codename">
+            <label
+              className="block font-mono text-[10px] uppercase tracking-widest text-primary font-bold"
+              htmlFor="codename"
+            >
               Codename
             </label>
             <div className="relative flex items-center">
@@ -108,7 +105,9 @@ export default function PollLeftPopup({
             className="w-full bg-primary hover:bg-[#b8e600] text-black font-mono font-bold py-5 rounded-xl flex items-center justify-center gap-2 group transition-all duration-300 active:scale-[0.98]"
           >
             INITIATE LINK
-            <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+              arrow_forward
+            </span>
           </button>
         </div>
 

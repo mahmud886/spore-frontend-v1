@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function HeroSection() {
   return (
@@ -9,14 +9,13 @@ export default function HeroSection() {
       </div>
       <div className="flex-1 space-y-8 relative z-10">
         <div className="space-y-2">
-          <p className="text-[10px] text-primary/60 tracking-widest font-mono uppercase">
-            /// Incoming Transmission
-          </p>
+          <p className="text-[10px] text-primary/60 tracking-widest font-mono uppercase">/// Incoming Transmission</p>
           <p className="text-[10px] text-primary/60 tracking-widest font-mono uppercase">Loc: Lionara Sector 4</p>
         </div>
         <div className="relative inline-block">
           <h1 className="text-7xl md:text-9xl font-display font-black leading-none text-primary uppercase text-glow">
-            SPORE<br />
+            SPORE
+            <br />
             FALL
           </h1>
           <div className="absolute -right-4 top-0 border border-primary px-2 py-0.5 text-[8px] text-primary tracking-widest uppercase">

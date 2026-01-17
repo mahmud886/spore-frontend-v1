@@ -1,10 +1,10 @@
-import SporeBlogSection from '../shared/SporeBlogSection';
-import CountdownSection from './CountdownSection';
-import HeroHeader from './HeroHeader';
-import IdentityArtifactSection from './IdentityArtifactSection';
-import PollResultSection from './PollResultSection';
-import ProductsSection from './ProductsSection';
-import UserProfileSection from './UserProfileSection';
+import SporeBlogSection from "../shared/SporeBlogSection";
+import CountdownSection from "./CountdownSection";
+import HeroHeader from "./HeroHeader";
+import IdentityArtifactSection from "./IdentityArtifactSection";
+import PollResultSection from "./PollResultSection";
+import ProductsSection from "./ProductsSection";
+import UserProfileSection from "./UserProfileSection";
 
 export default function ResultPage({
   heroHeaderProps,

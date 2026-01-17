@@ -48,8 +48,8 @@ export default function Footer() {
             <span className="text-[10px] font-bold">EDEN</span>
           </div>
           <p className="text-[9px] text-white/20 max-w-md mx-auto leading-relaxed uppercase tracking-wider">
-            © 2024. All Rights Reserved. EdenStone is an AI-powered narrative studio crafting immersive,
-            and tech-powered IPs for the global entertainment marketplace.
+            © 2024. All Rights Reserved. EdenStone is an AI-powered narrative studio crafting immersive, and
+            tech-powered IPs for the global entertainment marketplace.
           </p>
         </div>
       </div>
