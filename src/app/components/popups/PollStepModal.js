@@ -73,7 +73,7 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
         {/* Step 1: Left Popup */}
         {step === 1 && (
           <div className="flex items-center justify-center w-full h-full relative z-10">
-            <PollLeftPopup codename={formData.codename} onInitiateLink={handleLeftNext} show={true} />
+            <PollLeftPopup codename={formData.codename} onInitiateLink={handleLeftNext} onClose={handleClose} show={true} />
           </div>
         )}
 
@@ -83,6 +83,7 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
             <PollMiddlePopup
               onEvolveClick={() => handleMiddleNext("Evolve")}
               onContainClick={() => handleMiddleNext("Contain")}
+              onClose={handleClose}
               showWaitingMessage={true}
             />
           </div>
@@ -103,17 +104,6 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
               show={true}
             />
           </div>
-        )}
-
-        {/* Close button overlay - only show on step 3 */}
-        {step === 3 && (
-          <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 text-white/40 hover:text-primary transition-colors z-[110]"
-            aria-label="Close modal"
-          >
-            <span className="material-symbols-outlined text-3xl">close</span>
-          </button>
         )}
       </div>
     </div>

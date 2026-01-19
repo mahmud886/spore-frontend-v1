@@ -9,6 +9,7 @@ export default function PollLeftPopup({
   codename = "SPECTRE_01",
   maxLength = 12,
   onInitiateLink,
+  onClose,
   show = true,
 }) {
   const [inputValue, setInputValue] = useState(codename);
@@ -25,13 +26,23 @@ export default function PollLeftPopup({
   return (
     <>
       {/* Main popup card */}
-      <div className="w-full max-w-md bg-black rounded-[32px] border border-white/10 p-8 shadow-2xl relative overflow-hidden">
+      <div className="w-full max-w-md bg-black rounded-[32px] border border-white/10 p-8 shadow-2xl relative">
+        {/* Close button */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/20 bg-white/10 flex items-center justify-center text-white/60 hover:bg-primary hover:border-primary hover:text-black transition-all duration-200 z-20"
+            aria-label="Close"
+          >
+            <span className="material-symbols-outlined text-lg">close</span>
+          </button>
+        )}
         {/* Phase label - inside popup */}
         <div className="flex flex-col items-center mb-8">
           <span className="font-display text-[10px] tracking-[0.2em] text-white/50 mb-4">{phase}</span>
         </div>
         {/* Decorative SVG pattern */}
-        <div className="absolute top-8 right-8 opacity-20 select-none">
+        <div className="absolute top-16 right-8 opacity-20 select-none">
           <svg
             className="text-white/40"
             fill="none"
@@ -92,6 +103,7 @@ export default function PollLeftPopup({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value.toUpperCase())}
                 maxLength={maxLength}
+                autoFocus
                 className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-4 pl-12 pr-16 font-mono text-white focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 outline-none uppercase tracking-wider"
               />
               <div className="absolute right-4 font-mono text-[10px] text-white/40">

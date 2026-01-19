@@ -6,11 +6,22 @@ export default function PollMiddlePopup({
   subtitle = "Select your allegiance protocol.",
   onEvolveClick,
   onContainClick,
+  onClose,
   showWaitingMessage = true,
 }) {
   return (
     <div className="relative w-full max-w-lg">
       <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        {/* Close button */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/20 bg-white/10 flex items-center justify-center text-white/60 hover:bg-primary hover:border-primary hover:text-black transition-all duration-200 z-20"
+            aria-label="Close"
+          >
+            <span className="material-symbols-outlined text-lg">close</span>
+          </button>
+        )}
         {/* Phase label - inside popup */}
         <div className="flex flex-col items-center mb-8">
           <span className="font-display text-[10px] tracking-[0.2em] text-white/50 mb-4 uppercase">{phase}</span>

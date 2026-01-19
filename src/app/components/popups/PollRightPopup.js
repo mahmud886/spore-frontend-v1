@@ -35,13 +35,14 @@ export default function PollRightPopup({
       <div className="fixed inset-0 grid-bg pointer-events-none opacity-50"></div>
 
       {/* Main popup */}
-      <div className="relative w-full max-w-lg bg-black border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-10 p-6 md:p-8">
+      <div className="relative w-full max-w-lg bg-black border border-white/10 rounded-2xl shadow-2xl z-10 p-6 md:p-8">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/40 hover:text-primary transition-colors duration-200"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/20 bg-white/10 flex items-center justify-center text-white/60 hover:bg-primary hover:border-primary hover:text-black transition-all duration-200 z-20"
+          aria-label="Close"
         >
-          <span className="material-symbols-outlined text-3xl">cancel</span>
+          <span className="material-symbols-outlined text-lg">close</span>
         </button>
 
         {/* Header */}
@@ -91,6 +92,7 @@ export default function PollRightPopup({
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoFocus
               className="flex-grow bg-black border border-white/10 rounded-lg px-4 py-3 font-display text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none text-white placeholder-white/20 transition-all"
               placeholder="OPERATIVE@EMAIL.COM"
             />
