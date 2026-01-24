@@ -71,15 +71,14 @@ export default function EpisodesSection() {
               }}
             >
               {/* Image Section */}
-              <div className="relative overflow-hidden w-[326px] h-[222px]">
+              <div className="relative overflow-hidden w-full aspect-[326/222]">
                 <Image
                   alt={episode.title}
-                  className={`object-contain w-[326px] h-[222px] group-hover:scale-110 transition-transform duration-500 ${
+                  className={`object-cover w-full h-full group-hover:scale-110 transition-transform duration-500 ${
                     episode.status === "locked" ? "grayscale" : episode.status === "upcoming" ? "grayscale" : ""
                   }`}
                   src={episode.thumbnail}
-                  width={400}
-                  height={250}
+                  fill
                   unoptimized
                 />
                 {episode.status === "available" && (

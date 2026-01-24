@@ -4,8 +4,7 @@ import { SectionTitle } from "./SectionTitle";
 
 const defaultBlogPosts = [
   {
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuC45c8Mo8wNG4I85SKtg9kS82tantC4iRBJq3kkiuxQn3XpeUQc4S6yfA3Jplg_rab4pynZzMHM9mf47ctn7Lt9U9gFTVKMRHkQf2Gz_0x9JkXx_MHPEeI7W6nJz-hpoZVK71pidQcfBcSAIwh6AvbORRRScKk8Xk6KOAav1vtCdaz9sbV_qmSg9sTQJIaR2kHAjahVZZcSPkzgITf7os4wlWRxiw2wJeqy2T97seIhMP3ctRJmATzSCpVUT7kPfDqHr5JQlaaERG4",
+    image: "/assets/images/blogs/blog-1.jpg",
     imageAlt: "Mountain path",
     id: "XYZ_#3255AD",
     timestamp: "2 hour ago",
@@ -15,8 +14,7 @@ const defaultBlogPosts = [
     link: "#",
   },
   {
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuApC85PY8s0mFa8ZAaWhqsqK8eXckVYC4qbsj3xXAWbXKnlRNMfYld1MajM_yB3j3wCzO2lBOWj7GjVBZRtj7JX1gJFkp5Z7e_YRqMs6TH7uU8NnpkGRifK-MDjFTrEjh3OA179438rOqdNDTzR5-AeVESA4SRgRuDexKnhnszamAGFpLKjO55QIALgQJi3z4cgfJ0163AqJNeosW02PthJZZl-i9HnKfeg4l1klad6xatWKbtqEWMJwAqSAFebgfetOo_sJJhOyGI",
+    image: "/assets/images/blogs/blog-2.jpg",
     imageAlt: "Abstract wood rings",
     id: "XYZ_#3255AD",
     timestamp: "2 hour ago",
@@ -26,8 +24,7 @@ const defaultBlogPosts = [
     link: "#",
   },
   {
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCD1Kkv8urDU7Ls2Ky2VlEO77_mquFjTwaF8cdYUOAKUe52n2JsfoEEzhQTWoA7RlBLPRSKgZ5vEPhQCb-gF9jmoD8c-ZN09agmn5NslerTku8l7CPoLUcjw4tfAyHLTB7-1U0O39jLX77TSLoMJslNAYcd0FATHiPLCjqSMYE1BvsyDz05HiAeCq9ygiP0OWlQrFjNaAlBMi2yUfC0a1c4unE4RdFVCu9cq3RFpoKRPfjI7612a3Vh-Ja32H3-S3rkMhQu0DTUx2I",
+    image: "/assets/images/blogs/blog-3.jpg",
     imageAlt: "Field landscape",
     id: "CONTAINMENT",
     timestamp: "2 hour ago",
@@ -37,8 +34,7 @@ const defaultBlogPosts = [
     link: "#",
   },
   {
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAFa4jS2TmEI_MEE1oADVuf3cfgtR-YhJUy0GrRztu7j18HUMIIgjNinAyueqsFnZ53PslSzmL-Xe8LxprN-Ve5ASAon9UX7AyqS8LTQHa6WjV_nlx614Bu0h9rSOnEarBqC4GyG6LCYWuRThsZGwaNzDU1npR4CM0hRmRaEQp6XOLeYEjqPR7i8nSCgE2i7VDgFLnYyZ3Ezskd1tLe8tSpPm1-NHV4srrEJdqRT8gikpUuyACko4WLih0I745fcT8C15ZcO9pvBx8",
+    image: "/assets/images/blogs/blog-1.jpg",
     imageAlt: "Mutation analysis",
     id: "MUTATION_001",
     timestamp: "4 min ago",
