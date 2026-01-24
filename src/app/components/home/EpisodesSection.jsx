@@ -177,7 +177,7 @@ export default function EpisodesSection() {
         if (stored) {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            return parsed.map(id => String(id));
+            return parsed.map((id) => String(id));
           }
         }
       } catch (err) {
@@ -232,7 +232,7 @@ export default function EpisodesSection() {
           if (stored) {
             const parsed = JSON.parse(stored);
             if (Array.isArray(parsed) && parsed.length > 0) {
-              return parsed.map(id => String(id));
+              return parsed.map((id) => String(id));
             }
           }
         } catch (err) {
@@ -286,19 +286,19 @@ export default function EpisodesSection() {
             // Final localStorage check before opening modal
             // Check one more time to prevent race conditions
             const episodeIdStrFinal = String(episodeIdToUse);
-            
+
             // Final check: if user has voted (any episode), don't open modal
             if (checkIfUserVoted()) {
               setHasCheckedFirstVisit(true);
               return; // User has voted, don't open modal
             }
-            
+
             // Double-check this specific episode hasn't been voted on
             const finalVotedCheck = getVotedEpisodes();
             if (finalVotedCheck.includes(episodeIdStrFinal)) {
               continue; // User has voted on this specific episode, try next
             }
-            
+
             // All localStorage checks passed - user hasn't voted, safe to open modal
             setPollData(mappedPollData);
             setSelectedEpisodeId(episodeIdToUse);
@@ -350,8 +350,8 @@ export default function EpisodesSection() {
 
       // Check if user has already voted on this episode
       const selectedEpisodeIdStr = String(selectedEpisodeId);
-      const votedEpisodesStr = votedEpisodes.map(id => String(id));
-      
+      const votedEpisodesStr = votedEpisodes.map((id) => String(id));
+
       if (votedEpisodesStr.includes(selectedEpisodeIdStr)) {
         // User already voted, don't open modal
         setSelectedEpisodeId(null);
@@ -550,26 +550,26 @@ export default function EpisodesSection() {
                   // Convert to string for consistent comparison
                   const episodeIdStr = episodeIdToUse ? String(episodeIdToUse) : null;
                   // Use state for voted episodes (more reactive) - convert all to strings for comparison
-                  const votedEpisodesStr = votedEpisodes.map(id => String(id));
+                  const votedEpisodesStr = votedEpisodes.map((id) => String(id));
                   const hasVoted = episodeIdStr && votedEpisodesStr.includes(episodeIdStr);
-                  
+
                   return (
                     <button
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        
+
                         if (!episodeIdToUse) {
                           alert("Episode ID is missing. Cannot open poll.");
                           return;
                         }
-                        
+
                         // If user already voted, show message instead of opening modal
                         if (hasVoted) {
                           alert("You have already voted on this episode.");
                           return;
                         }
-                        
+
                         // Open poll modal only if not voted
                         handleWatchNow(episodeIdToUse);
                       }}
@@ -709,8 +709,8 @@ export default function EpisodesSection() {
           // Update voted episodes state when vote is successful
           if (episodeId) {
             const episodeIdStr = String(episodeId);
-            const votedEpisodesStr = votedEpisodes.map(id => String(id));
-            
+            const votedEpisodesStr = votedEpisodes.map((id) => String(id));
+
             if (!votedEpisodesStr.includes(episodeIdStr)) {
               const updated = [...votedEpisodes, episodeId];
               setVotedEpisodes(updated);
