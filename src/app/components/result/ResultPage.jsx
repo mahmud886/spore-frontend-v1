@@ -9,7 +9,19 @@ import ProductsSection from "./ProductsSection";
 export default function ResultPage({
   heroHeaderProps,
   countdownProps,
-  pollResultProps,
+  pollResultProps = {
+    faction1: {
+      name: "EVOLVE",
+      subLabel: "BASTION PARTY",
+      percentage: 50,
+    },
+    faction2: {
+      name: "RESIST",
+      subLabel: "THE NEW ALLIANCE",
+      percentage: 50,
+    },
+    centerLabel: "THE CITY STANDS DIVIDED",
+  },
   identityArtifactProps,
   userProfileProps,
   productsProps,

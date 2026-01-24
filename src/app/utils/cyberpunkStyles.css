@@ -752,6 +752,21 @@
   z-index: 1;
 }
 
+/* Shimmer Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   .cyber-glow-pulse,
@@ -778,7 +793,8 @@
   .cyber-neon-trail,
   .cyber-advanced-glitch:hover,
   .cyber-hex-grid::after,
-  .cyber-power-surge::before {
+  .cyber-power-surge::before,
+  .animate-shimmer {
     animation: none !important;
   }
 }

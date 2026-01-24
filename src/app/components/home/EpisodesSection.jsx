@@ -2,52 +2,452 @@
 
 import { ArrowRight, Clock, Lock } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import PollStepModal from "../popups/PollStepModal";
 import { AnimatedCard } from "../shared/AnimatedWrapper";
 import Carousel from "../shared/Carousel";
 import { SectionTitle } from "../shared/SectionTitle";
-
-const episodes = [
-  {
-    id: 1,
-    title: "Episode 01 : Genesis",
-    description:
-      "The first contact with the Sporefall phenomena sends the factions into a frenzy. Commander Valeria makes a discovery that changes everything.",
-    thumbnail: "/assets/images/episodes/episode-1.png",
-    status: "available",
-    runtime: "40:15 m",
-  },
-  {
-    id: 2,
-    title: "Episode 02 : The Fall",
-    description:
-      "The first contact with the Sporefall phenomena sends the factions into a frenzy. Commander Valeria makes a discovery that changes everything.",
-    thumbnail: "/assets/images/episodes/episode-2.png",
-    status: "available",
-    runtime: "40:15 m",
-  },
-  {
-    id: 3,
-    title: "Episode 03 : The Herd",
-    description:
-      "The first contact with the Sporefall phenomena sends the factions into a frenzy. Commander Valeria makes a discovery that changes everything.",
-    thumbnail: "/assets/images/episodes/episode-3.png",
-    status: "upcoming",
-    runtime: "40:15 m",
-  },
-  {
-    id: 4,
-    title: "Episode 04: The Blind",
-    description:
-      "The first contact with the Sporefall phenomena sends the factions into a frenzy. Commander Valeria makes a discovery that changes everything.",
-    thumbnail: "/assets/images/episodes/episode-4.png",
-    status: "locked",
-    runtime: "40:15 m",
-  },
-];
+import ShimmerCard from "../shared/ShimmerCard";
 
 export default function EpisodesSection() {
+  const [episodes, setEpisodes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isPollModalOpen, setIsPollModalOpen] = useState(false);
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState(null);
+  const [pollData, setPollData] = useState(null);
+  const [pollLoading, setPollLoading] = useState(false);
+  const [hasCheckedFirstVisit, setHasCheckedFirstVisit] = useState(false);
+  const [episodesLoaded, setEpisodesLoaded] = useState(false);
+  const [votedEpisodes, setVotedEpisodes] = useState([]);
+
+  useEffect(() => {
+    const loadEpisodes = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch episodes from API route
+        const response = await fetch("/api/episodes", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to fetch episodes: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Check if we have episodes
+        if (!data.episodes || data.episodes.length === 0) {
+          // No episodes found
+        }
+
+        // Map API response to match component's expected format
+        const mappedEpisodes = (data.episodes || []).map((episode) => {
+          // Map visibility to status
+          let status = "locked"; // default
+          if (episode.visibility === "AVAILABLE") {
+            status = "available";
+          } else if (episode.visibility === "UPCOMING" || episode.visibility === "COMING_SOON") {
+            status = "upcoming";
+          } else if (episode.visibility === "LOCKED" || episode.visibility === "PRIVATE") {
+            status = "locked";
+          }
+
+          return {
+            id: episode.id || episode._id,
+            title:
+              episode.title ||
+              `Episode ${episode.episode_number || episode.episodeNumber || ""} : ${episode.name || ""}`,
+            description: episode.description || episode.summary || "",
+            thumbnail:
+              episode.thumb_image_url ||
+              episode.thumbnail ||
+              episode.image ||
+              episode.coverImage ||
+              episode.banner_image_url ||
+              "/assets/images/episodes/default.png",
+            status: status,
+            runtime: episode.runtime || episode.duration || "40:15 m",
+            // Additional fields that might be useful
+            episodeNumber: episode.episode_number || episode.episodeNumber,
+            seasonNumber: episode.season_number || episode.seasonNumber,
+            uniqueEpisodeId: episode.unique_episode_id || episode.uniqueEpisodeId,
+            videoUrl: episode.video_url || episode.videoUrl,
+            releaseDate: episode.release_datetime || episode.releaseDate,
+          };
+        });
+
+        setEpisodes(mappedEpisodes);
+        setEpisodesLoaded(true);
+      } catch (err) {
+        const errorMessage = err.message || "Failed to load episodes";
+        setError(errorMessage);
+        // Fallback to empty array on error
+        setEpisodes([]);
+        setEpisodesLoaded(true); // Mark as loaded even on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEpisodes();
+  }, []);
+
+  // Load voted episodes from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("sporefall_voted_episodes");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          setVotedEpisodes(Array.isArray(parsed) ? parsed : []);
+        } catch (err) {
+          setVotedEpisodes([]);
+        }
+      } else {
+        setVotedEpisodes([]);
+      }
+    }
+  }, []);
+
+  // Also reload voted episodes when modal closes (in case it was updated elsewhere)
+  useEffect(() => {
+    if (!isPollModalOpen && typeof window !== "undefined") {
+      const stored = localStorage.getItem("sporefall_voted_episodes");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          setVotedEpisodes(Array.isArray(parsed) ? parsed : []);
+        } catch (err) {
+          // Ignore errors
+        }
+      }
+    }
+  }, [isPollModalOpen]);
+
+  // Auto-open poll modal for latest episode on page load
+  // Opens when episodes are successfully loaded OR after 5 seconds timeout
+  // Skips if modal was closed or user already voted
+  useEffect(() => {
+    if (hasCheckedFirstVisit) {
+      return;
+    }
+
+    // STEP 1: Check localStorage FIRST - if user has voted, STOP immediately (no modal)
+    const checkIfUserVoted = () => {
+      try {
+        const storedVoted = localStorage.getItem("sporefall_voted_episodes");
+        if (storedVoted) {
+          const parsedVoted = JSON.parse(storedVoted);
+          if (Array.isArray(parsedVoted) && parsedVoted.length > 0) {
+            return true; // User has voted
+          }
+        }
+      } catch (err) {
+        // If parse fails, assume user hasn't voted (first visit)
+      }
+      return false; // User hasn't voted
+    };
+
+    // If user has voted, don't proceed with ANY modal opening logic
+    if (checkIfUserVoted()) {
+      setHasCheckedFirstVisit(true);
+      return; // Exit immediately - no modal will open
+    }
+
+    // STEP 2: Check if modal was closed
+    const modalClosed = localStorage.getItem("sporefall_modal_closed");
+    if (modalClosed === "true") {
+      setHasCheckedFirstVisit(true);
+      return;
+    }
+
+    // STEP 3: Only if checks pass, proceed with modal opening logic
+
+    // Get current voted episodes from localStorage (most reliable source)
+    const getVotedEpisodes = () => {
+      try {
+        const stored = localStorage.getItem("sporefall_voted_episodes");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed.map(id => String(id));
+          }
+        }
+      } catch (err) {
+        // Ignore parse errors
+      }
+      return [];
+    };
+
+    let timeoutId;
+    let hasOpened = false;
+
+    const openLatestEpisodePoll = async () => {
+      // Check again before opening (double safety check)
+      if (hasOpened || hasCheckedFirstVisit) {
+        return;
+      }
+
+      // Check localStorage one more time before proceeding
+      if (checkIfUserVoted()) {
+        setHasCheckedFirstVisit(true);
+        return; // User has voted, don't open modal
+      }
+
+      // Only proceed if episodes are loaded (or timeout passed)
+      if (!episodesLoaded && loading) {
+        return;
+      }
+
+      // Find the latest available episode (sorted by episode number or release date)
+      const availableEpisodes = episodes
+        .filter((ep) => ep.status === "available")
+        .sort((a, b) => {
+          // Sort by episode number if available, otherwise by release date
+          if (a.episodeNumber && b.episodeNumber) {
+            return b.episodeNumber - a.episodeNumber;
+          }
+          if (a.releaseDate && b.releaseDate) {
+            return new Date(b.releaseDate) - new Date(a.releaseDate);
+          }
+          return 0;
+        });
+
+      if (availableEpisodes.length === 0) {
+        setHasCheckedFirstVisit(true);
+        return;
+      }
+
+      // Get voted episodes list for episode-specific checks
+      const getVotedEpisodes = () => {
+        try {
+          const stored = localStorage.getItem("sporefall_voted_episodes");
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              return parsed.map(id => String(id));
+            }
+          }
+        } catch (err) {
+          // Ignore parse errors
+        }
+        return [];
+      };
+
+      const currentVotedEpisodes = getVotedEpisodes();
+
+      // Try to find a poll for the latest episode that user hasn't voted on
+      for (const episode of availableEpisodes) {
+        const episodeIdToUse = episode.id || episode.uniqueEpisodeId;
+        if (!episodeIdToUse) continue;
+
+        // Check localStorage again for this specific episode
+        const episodeIdStr = String(episodeIdToUse);
+        if (currentVotedEpisodes.includes(episodeIdStr)) {
+          continue; // User has voted on this episode, try next
+        }
+
+        try {
+          const response = await fetch(`/api/polls/episode/${encodeURIComponent(episodeIdToUse)}`);
+
+          if (!response.ok) {
+            continue;
+          }
+
+          const data = await response.json();
+
+          if (data.polls && data.polls.length > 0) {
+            // Find LIVE poll or use first poll
+            const activePoll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
+
+            // Map poll data
+            const mappedPollData = {
+              id: activePoll.id,
+              episode_id: activePoll.episodeId,
+              title: activePoll.question || "Poll",
+              description: activePoll.question || "Make your choice",
+              status: "LIVE",
+              poll_options: (activePoll.options || []).map((opt) => ({
+                id: opt.id,
+                option_text: opt.text,
+                title: opt.text,
+                description: opt.description,
+                vote_count: opt.votes || 0,
+              })),
+            };
+
+            // Final localStorage check before opening modal
+            // Check one more time to prevent race conditions
+            const episodeIdStrFinal = String(episodeIdToUse);
+            
+            // Final check: if user has voted (any episode), don't open modal
+            if (checkIfUserVoted()) {
+              setHasCheckedFirstVisit(true);
+              return; // User has voted, don't open modal
+            }
+            
+            // Double-check this specific episode hasn't been voted on
+            const finalVotedCheck = getVotedEpisodes();
+            if (finalVotedCheck.includes(episodeIdStrFinal)) {
+              continue; // User has voted on this specific episode, try next
+            }
+            
+            // All localStorage checks passed - user hasn't voted, safe to open modal
+            setPollData(mappedPollData);
+            setSelectedEpisodeId(episodeIdToUse);
+            setIsPollModalOpen(true);
+            setHasCheckedFirstVisit(true);
+            hasOpened = true;
+            return; // Exit after finding first poll
+          }
+        } catch (err) {
+          continue; // Try next episode
+        }
+      }
+
+      // If we get here, user has voted on all available episodes or no polls found
+      setHasCheckedFirstVisit(true);
+    };
+
+    // If episodes are already loaded, open immediately
+    if (episodesLoaded && episodes.length > 0 && !loading) {
+      openLatestEpisodePoll();
+    }
+
+    // Set 5-second timeout as fallback
+    timeoutId = setTimeout(() => {
+      if (!hasCheckedFirstVisit && !hasOpened) {
+        setEpisodesLoaded(true); // Force episodes as loaded after timeout
+        if (episodes.length > 0) {
+          openLatestEpisodePoll();
+        } else {
+          setHasCheckedFirstVisit(true);
+        }
+      }
+    }, 5000);
+
+    // Cleanup
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [episodes, loading, hasCheckedFirstVisit, episodesLoaded, votedEpisodes]);
+
+  // Fetch poll data when episode is selected
+  useEffect(() => {
+    const fetchPoll = async () => {
+      if (!selectedEpisodeId) {
+        return;
+      }
+
+      // Check if user has already voted on this episode
+      const selectedEpisodeIdStr = String(selectedEpisodeId);
+      const votedEpisodesStr = votedEpisodes.map(id => String(id));
+      
+      if (votedEpisodesStr.includes(selectedEpisodeIdStr)) {
+        // User already voted, don't open modal
+        setSelectedEpisodeId(null);
+        setPollLoading(false);
+        alert("You have already voted on this episode.");
+        return;
+      }
+
+      try {
+        setPollLoading(true);
+        // Use the new episode-specific API route
+        const url = `/api/polls/episode/${encodeURIComponent(selectedEpisodeId)}`;
+
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || "Failed to fetch poll");
+        }
+
+        const data = await response.json();
+
+        // Get the first poll for this episode (or filter by status if needed)
+        if (data.polls && data.polls.length > 0) {
+          // Filter for LIVE polls first, or take the first one
+          const activePoll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
+
+          // Map to the format expected by PollStepModal
+          const mappedPollData = {
+            id: activePoll.id,
+            episode_id: activePoll.episodeId,
+            title: activePoll.question || "Poll",
+            description: activePoll.question || "Make your choice",
+            status: "LIVE",
+            poll_options: (activePoll.options || []).map((opt) => ({
+              id: opt.id,
+              option_text: opt.text,
+              title: opt.text,
+              description: opt.description,
+              vote_count: opt.votes || 0,
+            })),
+          };
+
+          // Open the modal only if user hasn't voted
+          setPollData(mappedPollData);
+          setIsPollModalOpen(true);
+        } else {
+          // Reset selection if no poll found
+          setSelectedEpisodeId(null);
+          alert("No poll available for this episode.");
+        }
+      } catch (err) {
+        setSelectedEpisodeId(null);
+        alert(`Error loading poll: ${err.message}`);
+      } finally {
+        setPollLoading(false);
+      }
+    };
+
+    fetchPoll();
+  }, [selectedEpisodeId, votedEpisodes]);
+
+  const handleWatchNow = (episodeId) => {
+    // Validate episode ID
+    if (!episodeId || episodeId === null || episodeId === undefined) {
+      alert("Episode ID is missing. Cannot open poll.");
+      return;
+    }
+
+    // Convert to string if it's an object (might be an object with toString)
+    let episodeIdToSet = episodeId;
+    if (typeof episodeId === "object" && episodeId !== null) {
+      episodeIdToSet = episodeId.toString();
+    }
+
+    // Set the episode ID to trigger poll fetch
+    setSelectedEpisodeId(episodeIdToSet);
+  };
+
+  const handleCloseModal = () => {
+    setIsPollModalOpen(false);
+    setSelectedEpisodeId(null);
+    setPollData(null);
+    // Mark modal as closed in localStorage so it doesn't auto-open again
+    localStorage.setItem("sporefall_modal_closed", "true");
+    // Reset hasCheckedFirstVisit so modal can auto-open again on next page load
+    setHasCheckedFirstVisit(false);
+  };
   const renderEpisodeCard = (episode) => (
-    <AnimatedCard key={episode.id} hoverGlow={true} hoverFloat={true}>
+    <AnimatedCard key={episode.id || `episode-${episode.episodeNumber}`} hoverGlow={true} hoverFloat={true}>
       <div
         className={`group overflow-hidden transition-all duration-300 h-full flex flex-col box-shadow-xl border border-transparent ${
           episode.status === "available"
@@ -143,15 +543,85 @@ export default function EpisodesSection() {
               Runtime: {episode.runtime}
             </span>
             {episode.status === "available" && (
-              <button
-                className="border border-primary text-white text-[9px] font-bold px-3 py-1.5 uppercase flex items-center gap-1 transition-all duration-300 group-hover:bg-white group-hover:border-white group-hover:text-black"
-                style={{
-                  borderTopRightRadius: "4px",
-                  borderBottomLeftRadius: "4px",
-                }}
-              >
-                Watch Now <ArrowRight className="w-3 h-3 group-hover:text-black" />
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Vote Button */}
+                {(() => {
+                  const episodeIdToUse = episode.id || episode.uniqueEpisodeId;
+                  // Convert to string for consistent comparison
+                  const episodeIdStr = episodeIdToUse ? String(episodeIdToUse) : null;
+                  // Use state for voted episodes (more reactive) - convert all to strings for comparison
+                  const votedEpisodesStr = votedEpisodes.map(id => String(id));
+                  const hasVoted = episodeIdStr && votedEpisodesStr.includes(episodeIdStr);
+                  
+                  return (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (!episodeIdToUse) {
+                          alert("Episode ID is missing. Cannot open poll.");
+                          return;
+                        }
+                        
+                        // If user already voted, show message instead of opening modal
+                        if (hasVoted) {
+                          alert("You have already voted on this episode.");
+                          return;
+                        }
+                        
+                        // Open poll modal only if not voted
+                        handleWatchNow(episodeIdToUse);
+                      }}
+                      disabled={pollLoading}
+                      className={`border text-[9px] font-bold px-3 py-1.5 uppercase flex items-center gap-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                        hasVoted
+                          ? "border-gray-500 text-gray-400 cursor-pointer"
+                          : "border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:border-cyan-500 hover:text-black"
+                      }`}
+                      style={{
+                        borderTopRightRadius: "4px",
+                        borderBottomLeftRadius: "4px",
+                      }}
+                    >
+                      {pollLoading && selectedEpisodeId === episodeIdToUse ? (
+                        <>Loading...</>
+                      ) : hasVoted ? (
+                        <>Voted</>
+                      ) : (
+                        <>Vote</>
+                      )}
+                    </button>
+                  );
+                })()}
+                {/* Watch Now Button */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Navigate to watch page or handle watch action
+                    // For now, we'll keep the vote functionality here too
+                    const episodeIdToUse = episode.id || episode.uniqueEpisodeId;
+                    if (episodeIdToUse) {
+                      handleWatchNow(episodeIdToUse);
+                    }
+                  }}
+                  disabled={pollLoading}
+                  className="border border-primary text-white text-[9px] font-bold px-3 py-1.5 uppercase flex items-center gap-1 transition-all duration-300 group-hover:bg-white group-hover:border-white group-hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    borderTopRightRadius: "4px",
+                    borderBottomLeftRadius: "4px",
+                  }}
+                >
+                  {pollLoading && selectedEpisodeId === (episode.id || episode.uniqueEpisodeId) ? (
+                    <>Loading...</>
+                  ) : (
+                    <>
+                      Watch Now <ArrowRight className="w-3 h-3 group-hover:text-black" />
+                    </>
+                  )}
+                </button>
+              </div>
             )}
             {episode.status === "upcoming" && (
               <button
@@ -181,15 +651,75 @@ export default function EpisodesSection() {
     </AnimatedCard>
   );
 
+  if (loading) {
+    return (
+      <section className="py-24 px-8 cyber-hex-grid">
+        <div className="mb-8">
+          <SectionTitle>Episodes</SectionTitle>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {[...Array(4)].map((_, index) => (
+            <ShimmerCard key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-24 px-8 cyber-hex-grid">
+        <div className="text-center py-20">
+          <p className="text-red-500 mb-2">Error loading episodes</p>
+          <p className="text-white/60 text-sm">{error}</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (episodes.length === 0) {
+    return (
+      <section className="py-24 px-8 cyber-hex-grid">
+        <div className="text-center py-20">
+          <p className="text-white/60 text-sm">No episodes available at the moment.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="py-24 px-8 cyber-hex-grid">
-      <Carousel
-        items={episodes}
-        renderItem={renderEpisodeCard}
-        itemsPerView={{ mobile: 1, tablet: 2, desktop: 4 }}
-        gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
-        titleComponent={<SectionTitle>Episodes</SectionTitle>}
+    <>
+      <section className="py-24 px-8 cyber-hex-grid">
+        <Carousel
+          items={episodes}
+          renderItem={renderEpisodeCard}
+          itemsPerView={{ mobile: 1, tablet: 2, desktop: 4 }}
+          gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
+          titleComponent={<SectionTitle>Episodes</SectionTitle>}
+        />
+      </section>
+      {/* Poll Modal - Opens when available episode is clicked */}
+      <PollStepModal
+        isOpen={isPollModalOpen && !!pollData}
+        onClose={handleCloseModal}
+        autoOpenDelay={0}
+        episodeId={selectedEpisodeId}
+        pollData={pollData}
+        onVoteSuccess={(episodeId) => {
+          // Update voted episodes state when vote is successful
+          if (episodeId) {
+            const episodeIdStr = String(episodeId);
+            const votedEpisodesStr = votedEpisodes.map(id => String(id));
+            
+            if (!votedEpisodesStr.includes(episodeIdStr)) {
+              const updated = [...votedEpisodes, episodeId];
+              setVotedEpisodes(updated);
+              // Also update localStorage
+              localStorage.setItem("sporefall_voted_episodes", JSON.stringify(updated));
+            }
+          }
+        }}
       />
-    </section>
+    </>
   );
 }

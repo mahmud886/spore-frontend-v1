@@ -58,10 +58,39 @@ export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasModalBeenShown, setHasModalBeenShown] = useState(false);
 
+  // Check if user has voted - used to prevent modal from opening
+  const checkIfUserVoted = () => {
+    try {
+      const storedVoted = localStorage.getItem("sporefall_voted_episodes");
+      if (storedVoted) {
+        const parsedVoted = JSON.parse(storedVoted);
+        if (Array.isArray(parsedVoted) && parsedVoted.length > 0) {
+          return true; // User has voted
+        }
+      }
+    } catch (err) {
+      // If parse fails, assume user hasn't voted (first visit)
+    }
+    return false; // User hasn't voted
+  };
+
   // Handle scroll detection for EpisodesSection
   useEffect(() => {
     // Only set up observer if modal hasn't been shown yet
     if (hasModalBeenShown) return;
+
+    // Check localStorage FIRST - if user has voted, don't open modal
+    if (checkIfUserVoted()) {
+      setHasModalBeenShown(true); // Mark as shown to prevent further checks
+      return; // Don't set up observer if user has voted
+    }
+
+    // Check if modal was closed
+    const modalClosed = localStorage.getItem("sporefall_modal_closed");
+    if (modalClosed === "true") {
+      setHasModalBeenShown(true);
+      return; // Don't set up observer if modal was closed
+    }
 
     const episodesSection = document.getElementById("shop");
     if (!episodesSection) return;
@@ -71,6 +100,22 @@ export default function HomePage() {
         entries.forEach((entry) => {
           // When the section is visible in the viewport
           if (entry.isIntersecting && !hasModalBeenShown) {
+            // Check localStorage again before opening (double safety check)
+            if (checkIfUserVoted()) {
+              setHasModalBeenShown(true);
+              observer.disconnect();
+              return; // User has voted, don't open modal
+            }
+
+            // Check if modal was closed
+            const modalClosedCheck = localStorage.getItem("sporefall_modal_closed");
+            if (modalClosedCheck === "true") {
+              setHasModalBeenShown(true);
+              observer.disconnect();
+              return; // Modal was closed, don't open
+            }
+
+            // All checks passed - safe to open modal
             setIsModalOpen(true);
             setHasModalBeenShown(true);
             // Disconnect observer after showing modal once
