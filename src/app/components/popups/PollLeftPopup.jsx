@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { ArrowRight, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function PollLeftPopup({ onInitiateLink, onClose, show = true }) {
   const [displayedText, setDisplayedText] = useState("");
@@ -8,10 +9,10 @@ export default function PollLeftPopup({ onInitiateLink, onClose, show = true }) 
   const [isTyping, setIsTyping] = useState(true);
 
   const messages = [
-    "Welcome User",
-    "> initiating contact to the Lionara mainframe",
-    "> initializing....",
-    "> CONNECTED",
+    { text: "Welcome User", color: "text-primary" },
+    { text: "> initiating contact to the Lionara mainframe", color: "text-blue-400" },
+    { text: "> initializing....", color: "text-yellow-400" },
+    { text: "> CONNECTED", color: "text-green-400" },
   ];
 
   useEffect(() => {
@@ -22,8 +23,8 @@ export default function PollLeftPopup({ onInitiateLink, onClose, show = true }) 
     setIsTyping(true);
 
     const typingInterval = setInterval(() => {
-      if (charIndex < currentMessage.length) {
-        setDisplayedText(currentMessage.substring(0, charIndex + 1));
+      if (charIndex < currentMessage.text.length) {
+        setDisplayedText(currentMessage.text.substring(0, charIndex + 1));
         charIndex++;
       } else {
         setIsTyping(false);
@@ -61,37 +62,38 @@ export default function PollLeftPopup({ onInitiateLink, onClose, show = true }) 
             className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/20 bg-white/10 flex items-center justify-center text-white/60 hover:bg-primary hover:border-primary hover:text-black transition-all duration-200 z-20"
             aria-label="Close"
           >
-            <span className="material-symbols-outlined text-lg">close</span>
+            <X className="w-4 h-4" />
           </button>
         )}
 
         {/* Terminal-style display */}
         <div className="min-h-[300px] flex flex-col justify-center">
-          <div className="font-mono text-white space-y-4">
-            {messages.slice(0, currentStep + 1).map((msg, index) => (
-              <div key={index} className={index === currentStep ? "" : "opacity-70"}>
-                {index === currentStep ? (
-                  <>
-                    {displayedText}
-                    {isTyping && <span className="animate-pulse">|</span>}
-                  </>
-                ) : (
-                  msg
-                )}
-              </div>
-            ))}
+          <div className="font-subheading space-y-4">
+            {messages.slice(0, currentStep + 1).map((msgObj, index) => {
+              const isCurrent = index === currentStep;
+              return (
+                <div key={index} className={isCurrent ? "" : "opacity-70"}>
+                  {isCurrent ? (
+                    <span className={msgObj.color}>
+                      {displayedText}
+                      {isTyping && <span className="animate-pulse text-white">|</span>}
+                    </span>
+                  ) : (
+                    <span className={msgObj.color}>{msgObj.text}</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* Continue button - only show after CONNECTED */}
           {currentStep === messages.length - 1 && !isTyping && (
             <button
               onClick={handleInitiateLink}
-              className="mt-8 w-full bg-primary hover:bg-[#b8e600] text-black font-mono font-bold py-4 rounded-xl flex items-center justify-center gap-2 group transition-all duration-300 active:scale-[0.98]"
+              className="mt-8 w-full bg-primary hover:bg-[#b8e600] text-black font-jetbrains-mono font-bold py-4 rounded-xl flex items-center justify-center gap-2 group transition-all duration-300 active:scale-[0.98]"
             >
               CONTINUE
-              <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
-                arrow_forward
-              </span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           )}
         </div>

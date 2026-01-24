@@ -118,6 +118,10 @@
   font-family: var(--font-subheading);
 }
 
+.font-jetbrains-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
 body {
   background-color: #050505;
   color: #ffffff;
