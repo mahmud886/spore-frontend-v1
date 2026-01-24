@@ -20,17 +20,20 @@ A Next.js-based frontend application for SPORE FALL, a sci-fi narrative series. 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd spore-frontend-v1
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -89,6 +92,7 @@ The project uses Tailwind CSS with a custom dark sci-fi theme. Custom colors, fo
 ### Custom CSS Classes
 
 The project includes various custom utility classes for the sci-fi aesthetic:
+
 - `grid-overlay` - Grid pattern overlay
 - `text-glow` - Text glow effect
 - `border-glow` - Border glow effect

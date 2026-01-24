@@ -1,0 +1,51 @@
+import Image from "next/image";
+import { SectionTitle } from "../shared/SectionTitle";
+import { Wrapper } from "../shared/Wrapper";
+
+export function PrologueSection() {
+  // YouTube video ID - replace with actual video ID
+  const youtubeVideoId = "ozEdYAQHsas"; // Placeholder - replace with actual video ID
+
+  return (
+    <section className="pt-24">
+      <Wrapper>
+        <div className="flex items-center justify-between mb-12">
+          <SectionTitle>Prologue</SectionTitle>
+        </div>
+      </Wrapper>
+
+      {/* Video Section with Background */}
+      <div className="relative rounded-lg overflow-hidden h-[800px]">
+        {/* Background Image */}
+        <div className="absolute inset-0 h-[800px]">
+          <Image
+            src="/assets/images/synopsis.png"
+            alt="Prologue Background"
+            className="w-full h-full object-cover"
+            fill
+            unoptimized
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-white/10" />
+          {/* Fallback background if image fails to load */}
+          {/* <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" /> */}
+        </div>
+
+        {/* Video Container */}
+        <div className="absolute inset-0 z-10 flex justify-center items-center px-4 sm:px-8">
+          <div className="w-full max-w-4xl">
+            <div className="relative aspect-video rounded-lg overflow-hidden shadow-2xl border border-white/20">
+              <iframe
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0&modestbranding=1`}
+                title="Prologue Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

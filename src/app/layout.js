@@ -1,20 +1,9 @@
-import { JetBrains_Mono, Orbitron } from "next/font/google";
 import ExternalStyles from "./ExternalStyles";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import BackgroundSetter from "./components/shared/BackgroundSetter";
+import { Wrapper } from "./components/shared/Wrapper";
 import "./globals.css";
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-});
-
-const orbitron = Orbitron({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata = {
   title: "SPORE FALL | Sci-Fi Narrative Series",
@@ -24,16 +13,19 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <body
-        className={`${jetbrainsMono.variable} ${orbitron.variable} antialiased bg-background-dark text-white font-mono selection:bg-primary selection:text-black overflow-x-hidden`}
-      >
+      <body className="antialiased  text-white selection:bg-primary selection:text-black overflow-x-hidden">
         <ExternalStyles />
-        <div className="bg-background-dark text-white selection:bg-primary selection:text-black">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BackgroundSetter />
+        <div className=" text-white selection:bg-primary selection:text-black">
+          <div className="">
+            {/* max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 */}
             <Navbar />
             {children}
+            <Wrapper>
+              {" "}
+              <Footer />{" "}
+            </Wrapper>
           </div>
-          <Footer />
         </div>
       </body>
     </html>
