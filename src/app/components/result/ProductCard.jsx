@@ -27,6 +27,10 @@ export default function ProductCard({ product }) {
         className={`aspect-square bg-black/40 relative mb-4 overflow-hidden ${
           customContent ? "flex items-center justify-center" : ""
         }`}
+        style={{
+          borderTopRightRadius: "20px",
+          borderBottomLeftRadius: "20px",
+        }}
       >
         {imageEffect === "blur" && <div className="w-24 h-48 bg-cyan-500/20 rounded-full blur-2xl absolute"></div>}
         {image ? (

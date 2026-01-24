@@ -7,7 +7,7 @@ export function PrologueSection() {
   const youtubeVideoId = "ozEdYAQHsas"; // Placeholder - replace with actual video ID
 
   return (
-    <section className="">
+    <section id="prologue" className="">
       {/* Video Section with Background */}
       <div className="relative rounded-lg overflow-hidden h-[800px]">
         {/* Background Image */}

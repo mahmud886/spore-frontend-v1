@@ -2,8 +2,8 @@
 
 export default function PollMiddlePopup({
   phase = "Phase 02: Alignment",
-  title = "The Choice is the Weapon",
-  subtitle = "Select your allegiance protocol.",
+  title = "Shape The Next Chapter of the Story",
+  subtitle = "RESIST vs EVOLVE",
   onEvolveClick,
   onContainClick,
   onClose,
@@ -55,7 +55,7 @@ export default function PollMiddlePopup({
             </div>
             <h2 className="text-2xl font-display font-bold text-primary mb-4 tracking-wider uppercase">Evolve</h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px]">
-              Embrace mutation. <br /> Ascend beyond limits.
+              Transcend humanity. <br /> Unlock your latent code. <br /> Be something more.
             </p>
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-primary transition-all duration-500 group-hover:w-1/2"></div>
           </button>
@@ -68,17 +68,24 @@ export default function PollMiddlePopup({
             <div className="w-16 h-16 rounded-full bg-cyan-500/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
               <span className="material-symbols-outlined text-cyan-400 text-3xl">shield</span>
             </div>
-            <h2 className="text-2xl font-display font-bold text-cyan-400 mb-4 tracking-wider uppercase">Contain</h2>
+            <h2 className="text-2xl font-display font-bold text-cyan-400 mb-4 tracking-wider uppercase">Resist</h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px]">
-              Preserve order. <br /> Secure the boundary.
+              Preserve Order. <br /> Burn the old world. <br /> Rebuild from ashes.
             </p>
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-cyan-500 transition-all duration-500 group-hover:w-1/2"></div>
           </button>
         </div>
 
+        {/* Footer message */}
+        <div className="text-center mt-8">
+          <p className="font-mono text-sm uppercase tracking-widest text-white/60">
+            The Fate of the City Hangs on Your Decision.
+          </p>
+        </div>
+
         {/* Waiting message */}
         {showWaitingMessage && (
-          <div className="text-center">
+          <div className="text-center mt-4">
             <p className="font-mono text-[10px] uppercase tracking-widest text-white/40 animate-pulse">
               &gt; Waiting for input...
             </p>

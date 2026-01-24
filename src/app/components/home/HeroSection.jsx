@@ -1,4 +1,20 @@
+"use client";
+
 export default function HeroSection() {
+  const handleSeasonClick = () => {
+    const element = document.getElementById("shop");
+    if (element) {
+      const offset = 80; // Account for sticky navbar height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     // <section className="min-h-screen flex flex-col md:flex-row items-center px-8  py-20 relative overflow-hidden">
     //   <div className="fixed inset-0 grid-overlay pointer-events-none opacity-40"></div>
@@ -99,7 +115,10 @@ export default function HeroSection() {
 
           {/* CTA Button */}
           <div className="pt-4">
-            <button className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] font-semibold px-8 md:px-16 lg:px-[80px] py-2 md:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-w-xs md:max-w-md lg:max-w-none mx-auto">
+            <button
+              onClick={handleSeasonClick}
+              className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] font-semibold px-8 md:px-16 lg:px-[80px] py-2 md:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-w-xs md:max-w-md lg:max-w-none mx-auto"
+            >
               Season 1
             </button>
           </div>

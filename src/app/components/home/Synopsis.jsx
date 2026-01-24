@@ -1,4 +1,20 @@
+"use client";
+
 export function Synopsis() {
+  const handleWatchNow = () => {
+    const element = document.getElementById("prologue");
+    if (element) {
+      const offset = 80; // Account for sticky navbar height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <section className="relative pt-[450px] pb-20 overflow-hidden">
       {/* Background Video */}
@@ -25,7 +41,10 @@ export function Synopsis() {
         </div>
         {/* CTA Button */}
         <div className="pt-10 text-center">
-          <button className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] font-semibold px-8 md:px-16 lg:px-[80px] py-2 md:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-w-xs md:max-w-md lg:max-w-none mx-auto">
+          <button
+            onClick={handleWatchNow}
+            className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] font-semibold px-8 md:px-16 lg:px-[80px] py-2 md:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-w-xs md:max-w-md lg:max-w-none mx-auto"
+          >
             Watch Now
           </button>
         </div>

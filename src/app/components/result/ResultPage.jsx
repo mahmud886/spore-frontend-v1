@@ -18,7 +18,9 @@ export default function ResultPage({
   return (
     <>
       <Wrapper>
-        <HeroHeader {...heroHeaderProps} />
+        <div id="home">
+          <HeroHeader {...heroHeaderProps} />
+        </div>
 
         <PollResultSection {...pollResultProps} />
         <CountdownSection {...countdownProps} />
@@ -40,8 +42,12 @@ export default function ResultPage({
         />
         {/* <IdentityArtifactSection {...identityArtifactProps} /> */}
         {/* <UserProfileSection {...userProfileProps} /> */}
-        <ProductsSection {...productsProps} />
-        <SporeBlogSection {...blogProps} />
+        <div id="shop">
+          <ProductsSection {...productsProps} />
+        </div>
+        <div id="spore-log">
+          <SporeBlogSection {...blogProps} />
+        </div>
       </Wrapper>
     </>
   );

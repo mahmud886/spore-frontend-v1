@@ -56,33 +56,90 @@ const homePageLogs = [
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasModalBeenShown, setHasModalBeenShown] = useState(false);
 
+  // Handle scroll detection for EpisodesSection
   useEffect(() => {
-    // Auto-open modal after 3 seconds
-    const timer = setTimeout(() => {
-      setIsModalOpen(true);
-    }, 3000);
+    // Only set up observer if modal hasn't been shown yet
+    if (hasModalBeenShown) return;
 
-    return () => clearTimeout(timer);
+    const episodesSection = document.getElementById("shop");
+    if (!episodesSection) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // When the section is visible in the viewport
+          if (entry.isIntersecting && !hasModalBeenShown) {
+            setIsModalOpen(true);
+            setHasModalBeenShown(true);
+            // Disconnect observer after showing modal once
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        // Trigger when at least 30% of the section is visible
+        threshold: 0.3,
+        // Add some margin from the top
+        rootMargin: "-80px 0px 0px 0px", // Account for navbar height
+      },
+    );
+
+    observer.observe(episodesSection);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasModalBeenShown]);
+
+  // Handle hash navigation on page load
+  useEffect(() => {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          const offset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 100);
+    }
   }, []);
 
   return (
     <>
-      <HeroSection />
+      <div id="home">
+        <HeroSection />
+      </div>
       <Synopsis />
       <PrologueSection />
       <Wrapper>
         <div className="relative z-10 -mx-4 sm:-mx-6 lg:-mx-8">
           {/* <AboutSection /> */}
 
-          <EpisodesSection />
+          <div id="shop">
+            <EpisodesSection />
+          </div>
           <NewsletterSection />
           <CharacterLogsSection />
-          <div className="pb-4 px-8 ">
+          <div id="spore-log" className="pb-4 px-8 ">
             <SporeBlogSection posts={homePageLogs} title="Spore Logs" className="" sectionClassName="" />
           </div>
         </div>
-        <PollStepModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} autoOpenDelay={0} />
+        <PollStepModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setHasModalBeenShown(true); // Mark as shown even if closed manually
+          }}
+          autoOpenDelay={0}
+        />
       </Wrapper>
     </>
   );

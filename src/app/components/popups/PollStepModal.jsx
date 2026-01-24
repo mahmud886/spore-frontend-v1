@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import PollLeftPopup from "./PollLeftPopup";
 import PollMiddlePopup from "./PollMiddlePopup";
 import PollRightPopup from "./PollRightPopup";
 
 export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 }) {
+  const router = useRouter();
   const [step, setStep] = useState(1); // 1: left, 2: middle, 3: right
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
@@ -48,7 +50,12 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
         factionIcon: "biotech",
       }),
     }));
-    setStep(3);
+    // Close modal and redirect to result page
+    if (onClose) {
+      onClose();
+    }
+    // Redirect to result page using Next.js router
+    router.push("/result");
   };
 
   const handleRightComplete = () => {
@@ -94,8 +101,8 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
           </div>
         )}
 
-        {/* Step 3: Right Popup */}
-        {step === 3 && (
+        {/* Step 3: Right Popup - Commented out, redirects to result page instead */}
+        {/* {step === 3 && (
           <div className="flex items-center justify-center w-full h-full relative z-10">
             <PollRightPopup
               designation={formData.designation}
@@ -109,7 +116,7 @@ export default function PollStepModal({ isOpen, onClose, autoOpenDelay = 3000 })
               show={true}
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
