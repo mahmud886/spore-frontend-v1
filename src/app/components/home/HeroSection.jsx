@@ -1,5 +1,8 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { fadeUp, scaleIn } from "../../utils/animations";
+
 export default function HeroSection() {
   const handleSeasonClick = () => {
     const element = document.getElementById("shop");

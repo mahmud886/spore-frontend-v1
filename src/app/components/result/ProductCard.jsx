@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { AnimatedCard } from "../shared/AnimatedWrapper";
 
 export default function ProductCard({ product }) {
   const {
@@ -16,61 +19,63 @@ export default function ProductCard({ product }) {
   } = product;
 
   return (
-    <div
-      className="bg-black/50 border border-white/5 p-4 hover:border-primary/30 transition-colors group"
-      style={{
-        borderTopRightRadius: "20px",
-        borderBottomLeftRadius: "20px",
-      }}
-    >
+    <AnimatedCard hoverGlow={true} hoverFloat={true}>
       <div
-        className={`aspect-square bg-black/40 relative mb-4 overflow-hidden ${
-          customContent ? "flex items-center justify-center" : ""
-        }`}
+        className="bg-black/50 border border-white/5 p-4 hover:border-primary/30 transition-colors group h-full"
         style={{
           borderTopRightRadius: "20px",
           borderBottomLeftRadius: "20px",
         }}
       >
-        {imageEffect === "blur" && <div className="w-24 h-48 bg-cyan-500/20 rounded-full blur-2xl absolute"></div>}
-        {image ? (
-          <Image
-            alt={imageAlt || name}
-            className={`${
-              customContent
-                ? "relative z-10 w-2/3 h-2/3 object-contain"
-                : "w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
-            }`}
-            src={image}
-            width={imageWidth}
-            height={imageHeight}
-            unoptimized
-          />
-        ) : (
-          customContent
-        )}
-        {badge && (
-          <div className="absolute top-0 left-0 bg-red-600 text-[8px] font-bold px-2 py-0.5 uppercase">{badge}</div>
-        )}
-      </div>
-      <div className="space-y-2">
-        <div className="flex justify-between items-start">
-          <h3 className="text-sm font-bold uppercase">{name}</h3>
+        <div
+          className={`aspect-square bg-black/40 relative mb-4 overflow-hidden ${
+            customContent ? "flex items-center justify-center" : ""
+          }`}
+          style={{
+            borderTopRightRadius: "20px",
+            borderBottomLeftRadius: "20px",
+          }}
+        >
+          {imageEffect === "blur" && <div className="w-24 h-48 bg-cyan-500/20 rounded-full blur-2xl absolute"></div>}
+          {image ? (
+            <Image
+              alt={imageAlt || name}
+              className={`${
+                customContent
+                  ? "relative z-10 w-2/3 h-2/3 object-contain"
+                  : "w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
+              }`}
+              src={image}
+              width={imageWidth}
+              height={imageHeight}
+              unoptimized
+            />
+          ) : (
+            customContent
+          )}
+          {badge && (
+            <div className="absolute top-0 left-0 bg-red-600 text-[8px] font-bold px-2 py-0.5 uppercase">{badge}</div>
+          )}
         </div>
-        <div className="flex justify-between items-end">
-          <div>
-            {warning ? (
-              <p className="text-[9px] text-red-500 uppercase">{warning}</p>
-            ) : (
-              <p className="text-[9px] text-white/40 uppercase">{description}</p>
-            )}
-            <p className="text-[11px] font-mono text-primary mt-1">{price}</p>
+        <div className="space-y-2">
+          <div className="flex justify-between items-start">
+            <h3 className="text-sm font-bold uppercase">{name}</h3>
           </div>
-          <button className="bg-white/5 p-2 hover:bg-primary hover:text-black transition-colors">
-            <span className="material-symbols-outlined text-sm">add_shopping_cart</span>
-          </button>
+          <div className="flex justify-between items-end">
+            <div>
+              {warning ? (
+                <p className="text-[9px] text-red-500 uppercase">{warning}</p>
+              ) : (
+                <p className="text-[9px] text-white/40 uppercase">{description}</p>
+              )}
+              <p className="text-[11px] font-mono text-primary mt-1">{price}</p>
+            </div>
+            <button className="bg-white/5 p-2 hover:bg-primary hover:text-black transition-colors">
+              <span className="material-symbols-outlined text-sm">add_shopping_cart</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </AnimatedCard>
   );
 }

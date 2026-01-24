@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, useMotionValueEvent, useSpring } from "framer-motion";
+import { fadeUp, slideInLeft, slideInRight } from "../../utils/animations";
 
 function AnimatedPercentage({ value, delay = 0 }) {
   const [displayValue, setDisplayValue] = useState(0);
@@ -77,9 +78,9 @@ export default function PollResultSection({
       </div>
 
       {/* Progress Bar */}
-      <div className="h-16 w-full flex overflow-hidden rounded-full relative">
+      <div className="h-16 w-full flex overflow-hidden rounded-full relative cyber-border-sweep">
         <motion.div
-          className="flex items-center justify-center"
+          className="flex items-center justify-center cyber-energy-fill"
           style={{
             background: "repeating-linear-gradient(45deg, #C2FF02, #C2FF02 10px, #a8db02 10px, #a8db02 20px)",
             borderTopLeftRadius: "9999px",
@@ -92,7 +93,7 @@ export default function PollResultSection({
           <AnimatedPercentage value={faction1.percentage} delay={1.5} />
         </motion.div>
         <motion.div
-          className="flex items-center justify-center"
+          className="flex items-center justify-center cyber-energy-fill"
           style={{
             background: "repeating-linear-gradient(45deg, #9ca3af, #9ca3af 10px, #ffffff 10px, #ffffff 20px)",
             borderTopRightRadius: "9999px",

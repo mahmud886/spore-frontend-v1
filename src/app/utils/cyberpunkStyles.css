@@ -1,0 +1,236 @@
+/* Cyberpunk Animation Styles */
+/* GPU-friendly transforms only */
+
+/* Neon Glow Pulse */
+@keyframes neonGlowPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 5px rgba(212, 255, 0, 0.2),
+      0 0 10px rgba(212, 255, 0, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(212, 255, 0, 0.4),
+      0 0 30px rgba(212, 255, 0, 0.2);
+  }
+}
+
+.cyber-glow-pulse {
+  animation: neonGlowPulse 2s ease-in-out infinite;
+}
+
+/* Soft Glitch Distortion */
+@keyframes softGlitch {
+  0%,
+  100% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    transform: translate(-1px, 1px);
+    filter: hue-rotate(2deg);
+  }
+  40% {
+    transform: translate(-1px, -1px);
+    filter: hue-rotate(-2deg);
+  }
+  60% {
+    transform: translate(1px, 1px);
+    filter: hue-rotate(1deg);
+  }
+  80% {
+    transform: translate(1px, -1px);
+    filter: hue-rotate(-1deg);
+  }
+}
+
+.cyber-glitch-hover:hover {
+  animation: softGlitch 0.3s ease-in-out;
+}
+
+/* Scanline Animation */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.cyber-scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-scanline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(212, 255, 0, 0.1), transparent);
+  animation: scanline 3s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Grid Background Animation */
+@keyframes gridMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 20px;
+  }
+}
+
+.cyber-grid-bg {
+  background-image:
+    linear-gradient(rgba(212, 255, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 255, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: gridMove 20s linear infinite;
+}
+
+/* Neon Border Sweep */
+@keyframes borderSweep {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.cyber-border-sweep {
+  position: relative;
+  background: linear-gradient(90deg, transparent, rgba(212, 255, 0, 0.3), transparent);
+  background-size: 200% 100%;
+  animation: borderSweep 3s ease-in-out infinite;
+}
+
+/* Hologram Flicker */
+@keyframes hologramFlicker {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.2);
+  }
+}
+
+.cyber-hologram {
+  animation: hologramFlicker 3s ease-in-out infinite;
+}
+
+/* Energy Fill Animation */
+@keyframes energyFill {
+  0% {
+    width: 0%;
+    box-shadow: 0 0 0px rgba(212, 255, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
+  }
+  100% {
+    width: 100%;
+    box-shadow: 0 0 20px rgba(212, 255, 0, 0.3);
+  }
+}
+
+.cyber-energy-fill {
+  animation: energyFill 1.5s ease-out forwards;
+}
+
+/* Text Glitch */
+@keyframes textGlitch {
+  0%,
+  100% {
+    transform: translate(0);
+    text-shadow: 0 0 5px rgba(212, 255, 0, 0.5);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    text-shadow:
+      -2px 2px 5px rgba(212, 255, 0, 0.5),
+      2px -2px 5px rgba(0, 255, 255, 0.5);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+    text-shadow:
+      -2px -2px 5px rgba(212, 255, 0, 0.5),
+      2px 2px 5px rgba(0, 255, 255, 0.5);
+  }
+  60% {
+    transform: translate(2px, 2px);
+    text-shadow:
+      2px 2px 5px rgba(212, 255, 0, 0.5),
+      -2px -2px 5px rgba(0, 255, 255, 0.5);
+  }
+  80% {
+    transform: translate(2px, -2px);
+    text-shadow:
+      2px -2px 5px rgba(212, 255, 0, 0.5),
+      -2px 2px 5px rgba(0, 255, 255, 0.5);
+  }
+}
+
+.cyber-text-glitch:hover {
+  animation: textGlitch 0.3s ease-in-out;
+}
+
+/* Floating Animation */
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.cyber-float {
+  animation: floating 3s ease-in-out infinite;
+}
+
+/* Glow Blink Animation */
+@keyframes glowBlink {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px rgba(194, 255, 2, 0.7)) drop-shadow(0 0 20px rgba(194, 255, 2, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(194, 255, 2, 1)) drop-shadow(0 0 40px rgba(194, 255, 2, 0.8))
+      drop-shadow(0 0 60px rgba(194, 255, 2, 0.5));
+  }
+}
+
+.cyber-glow-blink {
+  animation: glowBlink 2s ease-in-out infinite;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .cyber-glow-pulse,
+  .cyber-glitch-hover:hover,
+  .cyber-scanline::before,
+  .cyber-grid-bg,
+  .cyber-border-sweep,
+  .cyber-hologram,
+  .cyber-energy-fill,
+  .cyber-text-glitch:hover,
+  .cyber-float,
+  .cyber-glow-blink {
+    animation: none !important;
+  }
+}

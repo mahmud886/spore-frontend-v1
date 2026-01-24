@@ -1,8 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Carousel from "../shared/Carousel";
 import { SectionTitle } from "../shared/SectionTitle";
+import { AnimatedCard } from "../shared/AnimatedWrapper";
 
 const characters = [
   {
@@ -29,8 +31,10 @@ const characters = [
 
 export default function CharacterLogsSection() {
   const renderCharacterCard = (character, index) => (
-    <div
+    <AnimatedCard
       key={index}
+      hoverGlow={true}
+      hoverFloat={true}
       className="group relative bg-black/50"
       style={{
         borderTopRightRadius: "20px",
@@ -64,7 +68,7 @@ export default function CharacterLogsSection() {
           <h3 className="text-4xl font-display font-black text-white uppercase tracking-tighter">{character.name}</h3>
         </div>
       </div>
-    </div>
+    </AnimatedCard>
   );
 
   return (

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { fadeUp, staggerContainer } from "../../utils/animations";
 import CountdownCard from "./CountdownCard";
 
 export default function CountdownSection({ targetDate, highlightMinutes = true }) {
@@ -60,10 +61,22 @@ export default function CountdownSection({ targetDate, highlightMinutes = true }
       transition={{ duration: 0.6 }}
       className="mb-12"
     >
-      <h1 className="text-2xl font-bold text-primary pb-4 text-center mb-6 font-subheading">
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-2xl font-bold text-primary pb-4 text-center mb-6 font-subheading cyber-text-glitch"
+      >
         Add Copy above the clock
-      </h1>
-      <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-3xl mx-auto pb-12">
+      </motion.h1>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="grid grid-cols-4 gap-2 sm:gap-4 max-w-3xl mx-auto pb-12"
+      >
         <motion.div
           key={`days-${timeLeft.days}`}
           initial={{ scale: 1.2, opacity: 0 }}
@@ -96,7 +109,7 @@ export default function CountdownSection({ targetDate, highlightMinutes = true }
         >
           <CountdownCard value={formatValue(timeLeft.seconds)} label="Seconds" isRed={true} />
         </motion.div>
-      </div>
+      </motion.div>
     </motion.section>
   );
 }

@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
+import { fadeUp } from "../../utils/animations";
 import { SectionTitle } from "../shared/SectionTitle";
 import { Wrapper } from "../shared/Wrapper";
 
@@ -7,7 +11,14 @@ export function PrologueSection() {
   const youtubeVideoId = "ozEdYAQHsas"; // Placeholder - replace with actual video ID
 
   return (
-    <section id="prologue" className="">
+    <motion.section
+      id="prologue"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={fadeUp}
+      className="cyber-scanline"
+    >
       {/* Video Section with Background */}
       <div className="relative rounded-lg overflow-hidden h-[800px]">
         {/* Background Image */}
@@ -47,6 +58,6 @@ export function PrologueSection() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

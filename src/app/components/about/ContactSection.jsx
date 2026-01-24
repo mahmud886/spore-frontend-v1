@@ -1,6 +1,9 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useState } from "react";
+import { fadeUp, staggerContainer } from "../../utils/animations";
+import { AnimatedCard, AnimatedWrapper } from "../shared/AnimatedWrapper";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -43,10 +46,18 @@ export default function ContactSection() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-24">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-4 space-y-6">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="lg:col-span-4 space-y-6"
+        >
           {contactCards.map((card, index) => (
-            <div
+            <AnimatedCard
               key={index}
+              hoverGlow={true}
+              hoverFloat={true}
               className="bg-terminal-gray border border-white/10 p-6 rounded-lg group hover:border-primary/50 transition-colors relative overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-12 h-1 bg-primary/40"></div>
@@ -60,11 +71,11 @@ export default function ContactSection() {
                 </div>
               </div>
               <p className="font-mono text-lg text-white/80">{card.value}</p>
-            </div>
+            </AnimatedCard>
           ))}
-        </div>
-        <div className="lg:col-span-8">
-          <div className="bg-terminal-gray border border-white/10 p-10 rounded-lg">
+        </motion.div>
+        <AnimatedWrapper variant={fadeUp} delay={0.3} className="lg:col-span-8">
+          <div className="bg-terminal-gray border border-white/10 p-10 rounded-lg cyber-scanline">
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
@@ -112,7 +123,7 @@ export default function ContactSection() {
               </button>
             </form>
           </div>
-        </div>
+        </AnimatedWrapper>
       </div>
     </section>
   );
