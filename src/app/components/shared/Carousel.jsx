@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Carousel({
   items = [],
@@ -150,27 +150,27 @@ export default function Carousel({
 
           {/* Navigation Controls */}
           {showNavigation && (
-            <div className="flex gap-2 sm:gap-4 items-center">
+            <div className="flex gap-1.5 sm:gap-2 md:gap-4 items-center">
               <button
                 onClick={goToPrev}
                 disabled={items.length <= 1}
-                className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 rounded-full flex items-center justify-center text-white/40 hover:text-primary hover:border-primary transition-colors bg-black/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 border border-white/20 rounded-full flex items-center justify-center text-white/40 hover:text-primary hover:border-primary transition-colors bg-black/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Previous"
               >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               </button>
               {showPagination && (
-                <div className="px-2 sm:px-4 py-1 sm:py-1.5 border-2 border-primary bg-primary text-black font-mono text-xs sm:text-sm tracking-widest rounded">
-                  {currentPage} OF {totalSlides}
+                <div className="px-1 sm:px-1 md:px-4 py-0.5 sm:py-1 md:py-1.5 border-2 border-primary bg-primary text-black font-mono text-[10px] sm:text-xs md:text-sm tracking-normal md:tracking-widest rounded">
+                  {currentPage}/{totalSlides}
                 </div>
               )}
               <button
                 onClick={goToNext}
                 disabled={items.length <= 1}
-                className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 rounded-full flex items-center justify-center text-white/40 hover:text-primary hover:border-primary transition-colors bg-black/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 border border-white/20 rounded-full flex items-center justify-center text-white/40 hover:text-primary hover:border-primary transition-colors bg-black/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Next"
               >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               </button>
             </div>
           )}

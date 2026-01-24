@@ -6,7 +6,7 @@ export default function CountdownCard({ value, label, highlight = false, isRed =
   return (
     <div className={`bg-terminal-gray/50 border ${borderColor} p-4 font-bold`}>
       <div className={`text-4xl md:text-5xl font-mono ${textColor}`}>{value}</div>
-      <div className={`text-[10px] ${labelColor} tracking-widest mt-2 uppercase`}>{label}</div>
+      <div className={`text-[8px] text-center ${labelColor} tracking-widest mt-2 uppercase`}>{label}</div>
     </div>
   );
 }

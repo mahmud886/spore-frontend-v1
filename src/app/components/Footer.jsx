@@ -42,10 +42,10 @@ export default function Footer() {
     // </footer>
     <footer className="mt-12">
       <div className=" py-8 px-4 md:px-0">
-        <div className="bg-black/50 rounded-lg border border-primary/50 px-6 py-10  flex flex-col md:flex-row items-center justify-center gap-10">
+        <div className="bg-black/50 rounded-lg border border-primary/50 px-6 py-10  flex flex-col md:flex-row items-center justify-center md:gap-10 gap-6">
           <div className="text-white font-subheading font-bold uppercase tracking-wider text-lg">FIND US ON</div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center md:gap-6 gap-4">
             <a href="#" className="text-primary hover:text-primary/80 transition-colors" aria-label="YouTube">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />

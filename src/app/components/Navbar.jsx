@@ -1,14 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { X, Menu } from "lucide-react";
 import { Wrapper } from "./shared/Wrapper";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleScrollToSection = (e, sectionId) => {
     e.preventDefault();
+    // Close mobile menu when clicking a link
+    setIsMobileMenuOpen(false);
 
     // Special handling for "shop" - always go to result page
     if (sectionId === "shop") {
@@ -103,9 +108,55 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="md:hidden">
-            <span className="material-symbols-outlined text-primary">menu</span>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="w-10 h-10 flex items-center justify-center text-primary hover:bg-white/10 rounded-lg transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
+            <div className="flex flex-col space-y-4">
+              <a
+                href="/#home"
+                onClick={(e) => handleScrollToSection(e, "home")}
+                className="text-primary hover:opacity-80 transition-opacity text-sm font-bold font-subheading tracking-widest uppercase py-2"
+              >
+                HOME
+              </a>
+              <a
+                href="/#spore-log"
+                onClick={(e) => handleScrollToSection(e, "spore-log")}
+                className="hover:text-primary transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2"
+              >
+                SPORE LOG
+              </a>
+              <a
+                href="/result#shop"
+                onClick={(e) => handleScrollToSection(e, "shop")}
+                className="hover:text-primary transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2"
+              >
+                SHOP
+              </a>
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-primary transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2"
+              >
+                ABOUT
+              </Link>
+            </div>
+          </div>
+        )}
       </Wrapper>
     </nav>
   );
