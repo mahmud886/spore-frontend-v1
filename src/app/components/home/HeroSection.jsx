@@ -134,7 +134,7 @@ export default function HeroSection() {
                 },
               },
             }}
-            className="mb-12 md:mb-[160px] text-[42px] md:text-[80px] lg:text-[80px] font-heading font-bold tracking-wider text-white uppercase cyber-text-glitch cyber-glow-blink"
+            className="mb-12 md:mb-[160px] text-[42px] md:text-[80px] lg:text-[80px] font-heading font-bold tracking-wider text-white uppercase cyber-glow-blink"
           >
             Spore Fall
           </motion.h1>

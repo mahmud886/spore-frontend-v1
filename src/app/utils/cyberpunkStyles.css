@@ -203,20 +203,65 @@
   animation: floating 3s ease-in-out infinite;
 }
 
-/* Glow Blink Animation */
+/* Glow Blink Animation - Ultra Smooth with Slight Spread */
 @keyframes glowBlink {
   0%,
   100% {
-    filter: drop-shadow(0 0 10px rgba(194, 255, 2, 0.7)) drop-shadow(0 0 20px rgba(194, 255, 2, 0.4));
+    text-shadow:
+      0 0 2px rgba(194, 255, 2, 0.7),
+      0 0 4px rgba(194, 255, 2, 0.6),
+      0 0 6px rgba(194, 255, 2, 0.5),
+      0 0 8px rgba(194, 255, 2, 0.4),
+      0 0 10px rgba(194, 255, 2, 0.35),
+      0 0 12px rgba(194, 255, 2, 0.25);
+    filter: drop-shadow(0 0 2px rgba(194, 255, 2, 0.5)) drop-shadow(0 0 4px rgba(194, 255, 2, 0.4))
+      drop-shadow(0 0 6px rgba(194, 255, 2, 0.3)) drop-shadow(0 0 8px rgba(194, 255, 2, 0.2));
+  }
+  25% {
+    text-shadow:
+      0 0 3px rgba(194, 255, 2, 0.8),
+      0 0 5px rgba(194, 255, 2, 0.7),
+      0 0 7px rgba(194, 255, 2, 0.6),
+      0 0 9px rgba(194, 255, 2, 0.5),
+      0 0 11px rgba(194, 255, 2, 0.4),
+      0 0 13px rgba(194, 255, 2, 0.3);
+    filter: drop-shadow(0 0 3px rgba(194, 255, 2, 0.6)) drop-shadow(0 0 5px rgba(194, 255, 2, 0.5))
+      drop-shadow(0 0 7px rgba(194, 255, 2, 0.4)) drop-shadow(0 0 9px rgba(194, 255, 2, 0.3));
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(194, 255, 2, 1)) drop-shadow(0 0 40px rgba(194, 255, 2, 0.8))
-      drop-shadow(0 0 60px rgba(194, 255, 2, 0.5));
+    text-shadow:
+      0 0 4px rgba(194, 255, 2, 0.9),
+      0 0 6px rgba(194, 255, 2, 0.8),
+      0 0 8px rgba(194, 255, 2, 0.7),
+      0 0 10px rgba(194, 255, 2, 0.6),
+      0 0 12px rgba(194, 255, 2, 0.5),
+      0 0 14px rgba(194, 255, 2, 0.4);
+    filter: drop-shadow(0 0 4px rgba(194, 255, 2, 0.7)) drop-shadow(0 0 6px rgba(194, 255, 2, 0.6))
+      drop-shadow(0 0 8px rgba(194, 255, 2, 0.5)) drop-shadow(0 0 10px rgba(194, 255, 2, 0.4));
+  }
+  75% {
+    text-shadow:
+      0 0 3px rgba(194, 255, 2, 0.8),
+      0 0 5px rgba(194, 255, 2, 0.7),
+      0 0 7px rgba(194, 255, 2, 0.6),
+      0 0 9px rgba(194, 255, 2, 0.5),
+      0 0 11px rgba(194, 255, 2, 0.4),
+      0 0 13px rgba(194, 255, 2, 0.3);
+    filter: drop-shadow(0 0 3px rgba(194, 255, 2, 0.6)) drop-shadow(0 0 5px rgba(194, 255, 2, 0.5))
+      drop-shadow(0 0 7px rgba(194, 255, 2, 0.4)) drop-shadow(0 0 9px rgba(194, 255, 2, 0.3));
   }
 }
 
 .cyber-glow-blink {
-  animation: glowBlink 2s ease-in-out infinite;
+  animation: glowBlink 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  will-change: text-shadow, filter;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 /* Horizontal Primary Line Sweep - Top to Bottom */
@@ -292,7 +337,9 @@
   width: 2px;
   height: 60px;
   background: linear-gradient(to bottom, transparent, rgba(194, 255, 2, 0.9), transparent);
-  box-shadow: 0 0 15px rgba(194, 255, 2, 0.8), 0 0 30px rgba(194, 255, 2, 0.4);
+  box-shadow:
+    0 0 15px rgba(194, 255, 2, 0.8),
+    0 0 30px rgba(194, 255, 2, 0.4);
   animation: verticalLineSweep 6s linear infinite;
 }
 
@@ -325,7 +372,9 @@
   width: 2px;
   height: 60px;
   background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.9), transparent);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4);
+  box-shadow:
+    0 0 15px rgba(0, 255, 255, 0.8),
+    0 0 30px rgba(0, 255, 255, 0.4);
   animation: verticalLineSweep 6s linear infinite;
 }
 
