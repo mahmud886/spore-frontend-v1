@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { fadeUp, staggerContainer } from "../../utils/animations";
+import { staggerContainer } from "../../utils/animations";
 import CountdownCard from "./CountdownCard";
 
 export default function CountdownSection({ targetDate, highlightMinutes = true }) {
@@ -59,7 +59,7 @@ export default function CountdownSection({ targetDate, highlightMinutes = true }
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="mb-12 cyber-power-surge"
+      className="mb-12"
     >
       <motion.h1
         initial={{ opacity: 0, y: 20 }}

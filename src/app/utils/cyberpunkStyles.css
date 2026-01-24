@@ -440,7 +440,7 @@
   position: relative;
 }
 
-.cyber-particle-glow::after {
+/* .cyber-particle-glow::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -452,7 +452,7 @@
   animation: particleGlow 3s ease-in-out infinite;
   pointer-events: none;
   z-index: -1;
-}
+} */
 
 /* Holographic Shimmer */
 @keyframes holographicShimmer {
@@ -574,7 +574,7 @@
 }
 
 /* Screen Flicker */
-@keyframes screenFlicker {
+/* @keyframes screenFlicker {
   0%,
   100% {
     opacity: 1;
@@ -601,7 +601,7 @@
 
 .cyber-screen-flicker {
   animation: screenFlicker 8s infinite;
-}
+} */
 
 /* Neon Trail Effect */
 @keyframes neonTrail {
@@ -623,17 +623,17 @@
   }
 }
 
-.cyber-neon-trail {
+/* .cyber-neon-trail {
   animation: neonTrail 2s ease-in-out infinite;
   transition: all 0.3s ease;
-}
+} */
 
-.cyber-neon-trail:hover {
+/* .cyber-neon-trail:hover {
   box-shadow:
     0 0 30px rgba(194, 255, 2, 1),
     0 0 60px rgba(194, 255, 2, 0.8),
     0 0 90px rgba(194, 255, 2, 0.6);
-}
+} */
 
 /* Glitch Distortion Advanced */
 @keyframes advancedGlitch {
@@ -732,7 +732,7 @@
   overflow: hidden;
 }
 
-.cyber-power-surge::before {
+/* .cyber-power-surge::before {
   content: "";
   position: absolute;
   top: 0;
@@ -750,7 +750,7 @@
   animation: powerSurge 3s ease-in-out infinite;
   pointer-events: none;
   z-index: 1;
-}
+} */
 
 /* Shimmer Loading Animation */
 @keyframes shimmer {
