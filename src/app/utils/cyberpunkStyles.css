@@ -219,6 +219,42 @@
   animation: glowBlink 2s ease-in-out infinite;
 }
 
+/* Horizontal Primary Line Sweep - Top to Bottom */
+@keyframes horizontalLineSweep {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.cyber-horizontal-sweep {
+  position: relative;
+}
+
+.cyber-horizontal-sweep::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(194, 255, 2, 0.8), transparent);
+  box-shadow: 0 0 10px rgba(194, 255, 2, 0.6);
+  animation: horizontalLineSweep 8s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   .cyber-glow-pulse,
@@ -230,7 +266,8 @@
   .cyber-energy-fill,
   .cyber-text-glitch:hover,
   .cyber-float,
-  .cyber-glow-blink {
+  .cyber-glow-blink,
+  .cyber-horizontal-sweep::before {
     animation: none !important;
   }
 }

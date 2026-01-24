@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <body className="antialiased  text-white selection:bg-primary selection:text-black overflow-x-hidden">
+      <body className="antialiased text-white selection:bg-primary selection:text-black overflow-x-hidden cyber-horizontal-sweep">
         <ExternalStyles />
         <BackgroundSetter />
         <div className=" text-white selection:bg-primary selection:text-black">
