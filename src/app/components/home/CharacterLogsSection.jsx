@@ -35,7 +35,7 @@ export default function CharacterLogsSection() {
       key={index}
       hoverGlow={true}
       hoverFloat={true}
-      className="group relative bg-black/50"
+      className="group relative bg-black/50 cyber-holographic cyber-energy-wave"
       style={{
         borderTopRightRadius: "20px",
         borderBottomLeftRadius: "20px",

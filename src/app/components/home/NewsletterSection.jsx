@@ -9,7 +9,7 @@ export default function NewsletterSection() {
     <AnimatedWrapper variant={fadeUp} className="">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="mx-auto">
-          <div className="relative bg-black/50 rounded-2xl border border-[#C2FF02]/20 px-6 py-6 sm:px-8 md:px-12 md:pt-24 md:pb-30 overflow-hidden cyber-glow-pulse">
+          <div className="relative bg-black/50 rounded-2xl border border-[#C2FF02]/20 px-6 py-6 sm:px-8 md:px-12 md:pt-24 md:pb-30 overflow-hidden cyber-glow-pulse cyber-holographic cyber-data-stream">
             {/* Glow Effect */}
             <div className="absolute inset-0 blur-3xl" />
 

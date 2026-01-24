@@ -36,7 +36,7 @@ export default function SocialShareCard({ platform, onClick }) {
         boxShadow: "0 0 20px rgba(194, 255, 2, 0.5)",
       }}
       whileTap={{ scale: 0.95 }}
-      className="border border-primary py-2 px-4 text-[10px] text-primary font-bold bg-transparent hover:bg-primary/10 transition-all uppercase flex items-center justify-center gap-2 rounded-sm cyber-glitch-hover w-full"
+      className="border border-primary py-2 px-4 text-[10px] text-primary font-bold bg-transparent hover:bg-primary/10 transition-all uppercase flex items-center justify-center gap-2 rounded-sm cyber-glitch-hover cyber-neon-trail w-full"
       onClick={onClick}
     >
       <Icon className="w-4 h-4" />

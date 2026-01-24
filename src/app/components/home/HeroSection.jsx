@@ -104,12 +104,40 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 py-20 text-center">
-        <div className="mx-auto space-y-4 md:space-y-8">
+      <div className="relative z-10 container mx-auto px-6 py-20 text-center cyber-holographic cyber-data-stream">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.2,
+                delayChildren: 0.3,
+              },
+            },
+          }}
+          className="mx-auto space-y-4 md:space-y-8"
+        >
           {/* Title */}
-          <h1 className="mb-12 md:mb-[160px] text-[42px] md:text-[80px] lg:text-[80px] font-heading font-bold tracking-wider text-white uppercase">
+          <motion.h1
+            variants={{
+              hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+              visible: {
+                opacity: 1,
+                y: 0,
+                filter: "blur(0px)",
+                transition: {
+                  duration: 0.8,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                },
+              },
+            }}
+            className="mb-12 md:mb-[160px] text-[42px] md:text-[80px] lg:text-[80px] font-heading font-bold tracking-wider text-white uppercase cyber-text-glitch cyber-glow-blink"
+          >
             Spore Fall
-          </h1>
+          </motion.h1>
 
           {/* Subtitle */}
           <p className="text-[18px] md:text-[42px] lg:text-[42px] font-subheading text-gray-300 max-w-3xl mx-auto leading-tight">
@@ -117,15 +145,20 @@ export default function HeroSection() {
           </p>
 
           {/* CTA Button */}
-          <div className="pt-4">
-            <button
+          <motion.div variants={scaleIn} className="pt-4">
+            <motion.button
               onClick={handleSeasonClick}
-              className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] font-semibold px-8 md:px-16 lg:px-[80px] py-2 md:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-w-xs md:max-w-md lg:max-w-none mx-auto"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 0 30px rgba(194, 255, 2, 0.5)",
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] font-semibold px-8 md:px-16 lg:px-[80px] py-2 md:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-w-xs md:max-w-md lg:max-w-none mx-auto cyber-glow-pulse cyber-neon-trail"
             >
               Season 1
-            </button>
-          </div>
-        </div>
+            </motion.button>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Scroll Indicator */}

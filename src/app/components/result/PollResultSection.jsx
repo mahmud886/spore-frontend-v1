@@ -48,7 +48,12 @@ export default function PollResultSection({
   centerLabel = "THE CITY STANDS DIVIDED",
 }) {
   return (
-    <motion.section className="mb-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+    <motion.section
+      className="mb-12 cyber-holographic cyber-power-surge"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Top Labels */}
       <div className="flex justify-between items-center mb-4">
         <motion.h3

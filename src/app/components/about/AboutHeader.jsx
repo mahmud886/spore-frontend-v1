@@ -7,7 +7,7 @@ import { AnimatedWrapper } from "../shared/AnimatedWrapper";
 
 export default function AboutHeader() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center cyber-grid-bg">
+    <section className="max-w-7xl mx-auto px-6 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center cyber-grid-bg cyber-hex-grid">
       <AnimatedWrapper variant={slideInLeft} className="space-y-8">
         <div>
           <motion.span

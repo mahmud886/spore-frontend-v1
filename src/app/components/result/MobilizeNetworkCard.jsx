@@ -29,7 +29,7 @@ export default function MobilizeNetworkCard({ title, description, platforms = de
   return (
     <AnimatedWrapper variant={fadeUp} className="space-y-4 mb-24">
       <SectionTitle className="">Mobilize Your Network</SectionTitle>
-      <div className="bg-black/50 border font-body border-white/10 p-6 text-center mt-10 py-12 cyber-scanline">
+      <div className="bg-black/50 border font-body border-white/10 p-6 text-center mt-10 py-12 cyber-scanline cyber-data-stream cyber-power-surge">
         <motion.h3
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -2,6 +2,7 @@ import ExternalStyles from "./ExternalStyles";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import BackgroundSetter from "./components/shared/BackgroundSetter";
+import VerticalLines from "./components/shared/VerticalLines";
 import { Wrapper } from "./components/shared/Wrapper";
 import "./globals.css";
 
@@ -13,17 +14,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <body className="antialiased text-white selection:bg-primary selection:text-black overflow-x-hidden cyber-horizontal-sweep">
+      <body className="antialiased text-white selection:bg-primary selection:text-black overflow-x-hidden ">
         <ExternalStyles />
         <BackgroundSetter />
-        <div className=" text-white selection:bg-primary selection:text-black">
-          <div className="">
+        <VerticalLines />
+        <div className="text-white selection:bg-primary selection:text-black cyber-hex-grid">
+          <div className="cyber-screen-flicker">
             {/* max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 */}
             <Navbar />
             {children}
             <Wrapper>
-              {" "}
-              <Footer />{" "}
+              <Footer />
             </Wrapper>
           </div>
         </div>

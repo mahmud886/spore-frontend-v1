@@ -11,7 +11,7 @@ export default function BlogCard({ post }) {
   return (
     <AnimatedCard hoverGlow={true} hoverFloat={true} className="h-full">
       <article
-        className="bg-black/50 border border-primary/10 hover:border-primary/50 transition-all overflow-hidden h-full"
+        className="bg-black/50 border border-primary/10 hover:border-primary/50 transition-all overflow-hidden h-full cyber-energy-wave"
         style={{
           borderTopRightRadius: "20px",
           borderBottomLeftRadius: "20px",

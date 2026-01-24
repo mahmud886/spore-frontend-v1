@@ -182,7 +182,7 @@ export default function EpisodesSection() {
   );
 
   return (
-    <section className="py-24 px-8">
+    <section className="py-24 px-8 cyber-hex-grid">
       <Carousel
         items={episodes}
         renderItem={renderEpisodeCard}

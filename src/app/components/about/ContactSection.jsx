@@ -75,7 +75,7 @@ export default function ContactSection() {
           ))}
         </motion.div>
         <AnimatedWrapper variant={fadeUp} delay={0.3} className="lg:col-span-8">
-          <div className="bg-terminal-gray border border-white/10 p-10 rounded-lg cyber-scanline">
+          <div className="bg-terminal-gray border border-white/10 p-10 rounded-lg cyber-scanline cyber-holographic cyber-power-surge">
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">

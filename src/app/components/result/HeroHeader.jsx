@@ -13,7 +13,7 @@ export default function HeroHeader({
 
   return (
     <>
-      <div className="text-center pt-16 cyber-scanline">
+      <div className="text-center pt-16 cyber-scanline cyber-screen-flicker">
         {showStatus && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}

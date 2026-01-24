@@ -21,7 +21,7 @@ export default function ProductCard({ product }) {
   return (
     <AnimatedCard hoverGlow={true} hoverFloat={true}>
       <div
-        className="bg-black/50 border border-white/5 p-4 hover:border-primary/30 transition-colors group h-full"
+        className="bg-black/50 border border-white/5 p-4 hover:border-primary/30 transition-colors group h-full cyber-holographic cyber-neon-trail"
         style={{
           borderTopRightRadius: "20px",
           borderBottomLeftRadius: "20px",
