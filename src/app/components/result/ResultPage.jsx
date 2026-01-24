@@ -2,10 +2,9 @@ import SporeBlogSection from "../shared/SporeBlogSection";
 import { Wrapper } from "../shared/Wrapper";
 import CountdownSection from "./CountdownSection";
 import HeroHeader from "./HeroHeader";
-import IdentityArtifactSection from "./IdentityArtifactSection";
+import MobilizeNetworkCard from "./MobilizeNetworkCard";
 import PollResultSection from "./PollResultSection";
 import ProductsSection from "./ProductsSection";
-import UserProfileSection from "./UserProfileSection";
 
 export default function ResultPage({
   heroHeaderProps,
@@ -23,8 +22,24 @@ export default function ResultPage({
 
         <PollResultSection {...pollResultProps} />
         <CountdownSection {...countdownProps} />
-        <IdentityArtifactSection {...identityArtifactProps} />
-        <UserProfileSection {...userProfileProps} />
+        <MobilizeNetworkCard
+          title="Share to unlock the next drop"
+          description="Broadcast this signal. A hidden reward unlocks at the end."
+          platforms={[
+            "FACEBOOK",
+            "WHATSAPP",
+            "DISCORD",
+            "TELEGRAM",
+            "LINKEDIN",
+            "X_SHARE",
+            "THREADS",
+            "TIKTOK",
+            "IG_STORY",
+            "REDDIT",
+          ]}
+        />
+        {/* <IdentityArtifactSection {...identityArtifactProps} /> */}
+        {/* <UserProfileSection {...userProfileProps} /> */}
         <ProductsSection {...productsProps} />
         <SporeBlogSection {...blogProps} />
       </Wrapper>

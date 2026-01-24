@@ -16,9 +16,15 @@ export default function ProductCard({ product }) {
   } = product;
 
   return (
-    <div className="bg-terminal-gray/20 border border-white/5 p-4 hover:border-primary/30 transition-colors group">
+    <div
+      className="bg-black/50 border border-white/5 p-4 hover:border-primary/30 transition-colors group"
+      style={{
+        borderTopRightRadius: "20px",
+        borderBottomLeftRadius: "20px",
+      }}
+    >
       <div
-        className={`aspect-square bg-terminal-gray/40 relative mb-4 overflow-hidden ${
+        className={`aspect-square bg-black/40 relative mb-4 overflow-hidden ${
           customContent ? "flex items-center justify-center" : ""
         }`}
       >

@@ -1,3 +1,5 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SectionTitle } from "../shared/SectionTitle";
 import ProductCard from "./ProductCard";
 
 const products = [
@@ -51,15 +53,20 @@ export default function ProductsSection() {
     <section className="mb-24">
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center space-x-3">
-          <span className="material-symbols-outlined text-red-500 text-sm">shopping_bag</span>
-          <h2 className="text-xl font-display font-bold uppercase tracking-tight">Field Equipment Requisitions</h2>
+          {/* <ShoppingBag className="text-red-500 text-sm w-5 h-5" /> */}
+          <SectionTitle>Field Equipment</SectionTitle>
         </div>
-        <a
-          className="text-[10px] text-white/40 hover:text-primary uppercase tracking-widest flex items-center"
-          href="#"
-        >
-          View All Requisitions <span className="material-symbols-outlined text-xs ml-1">east</span>
-        </a>
+        <div className="flex gap-2 sm:gap-4 items-center">
+          <button className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 rounded-full flex items-center justify-center text-white/40 hover:text-primary hover:border-primary transition-colors bg-black/30">
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+          <div className="px-2 sm:px-4 py-1 sm:py-1.5 border-2 border-primary bg-primary text-black font-mono text-xs sm:text-sm tracking-widest rounded">
+            1 OF 35
+          </div>
+          <button className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 rounded-full flex items-center justify-center text-white/40 hover:text-primary hover:border-primary transition-colors bg-black/30">
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {products.map((product, index) => (
