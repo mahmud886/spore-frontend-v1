@@ -7,13 +7,7 @@ export function PrologueSection() {
   const youtubeVideoId = "ozEdYAQHsas"; // Placeholder - replace with actual video ID
 
   return (
-    <section className="pt-24">
-      <Wrapper>
-        <div className="flex items-center justify-between mb-12">
-          <SectionTitle>Prologue</SectionTitle>
-        </div>
-      </Wrapper>
-
+    <section className="">
       {/* Video Section with Background */}
       <div className="relative rounded-lg overflow-hidden h-[800px]">
         {/* Background Image */}
@@ -27,8 +21,15 @@ export function PrologueSection() {
           />
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-white/10" />
-          {/* Fallback background if image fails to load */}
-          {/* <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" /> */}
+        </div>
+
+        {/* Section Title Overlay */}
+        <div className="absolute top-0 left-0 right-0 z-20 pt-14">
+          <Wrapper>
+            <div className="flex items-center justify-between">
+              <SectionTitle>Prologue</SectionTitle>
+            </div>
+          </Wrapper>
         </div>
 
         {/* Video Container */}

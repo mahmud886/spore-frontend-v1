@@ -4,7 +4,7 @@ import { SectionTitle } from "./SectionTitle";
 
 const defaultBlogPosts = [
   {
-    image: "/assets/images/blogs/blog-1.jpg",
+    image: "/assets/images/blogs/blog-1.png",
     imageAlt: "Mountain path",
     id: "XYZ_#3255AD",
     timestamp: "2 hour ago",
@@ -14,7 +14,7 @@ const defaultBlogPosts = [
     link: "#",
   },
   {
-    image: "/assets/images/blogs/blog-2.jpg",
+    image: "/assets/images/blogs/blog-2.png",
     imageAlt: "Abstract wood rings",
     id: "XYZ_#3255AD",
     timestamp: "2 hour ago",
@@ -24,7 +24,7 @@ const defaultBlogPosts = [
     link: "#",
   },
   {
-    image: "/assets/images/blogs/blog-3.jpg",
+    image: "/assets/images/blogs/blog-3.png",
     imageAlt: "Field landscape",
     id: "CONTAINMENT",
     timestamp: "2 hour ago",
@@ -34,7 +34,7 @@ const defaultBlogPosts = [
     link: "#",
   },
   {
-    image: "/assets/images/blogs/blog-1.jpg",
+    image: "/assets/images/blogs/blog-1.png",
     imageAlt: "Mutation analysis",
     id: "MUTATION_001",
     timestamp: "4 min ago",
