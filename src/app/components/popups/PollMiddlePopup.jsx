@@ -1,5 +1,7 @@
 "use client";
 
+import { Dna, Shield, X } from "lucide-react";
+
 export default function PollMiddlePopup({
   phase = "Phase 02: Alignment",
   title = "Shape The Next Chapter of the Story",
@@ -19,7 +21,7 @@ export default function PollMiddlePopup({
             className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/20 bg-white/10 flex items-center justify-center text-white/60 hover:bg-primary hover:border-primary hover:text-black transition-all duration-200 z-20"
             aria-label="Close"
           >
-            <span className="material-symbols-outlined text-lg">close</span>
+            <X className="w-4 h-4" />
           </button>
         )}
         {/* Phase label - inside popup */}
@@ -51,7 +53,7 @@ export default function PollMiddlePopup({
             className="faction-card group relative flex flex-col items-center text-center p-8 rounded-xl border border-white/5 bg-gradient-to-b from-zinc-900/20 to-primary/20 hover:from-zinc-900/30 hover:to-primary/40 hover:border-primary/30 transition-all duration-500 outline-none focus:ring-2 focus:ring-primary/50"
           >
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
-              <span className="material-symbols-outlined text-primary text-3xl">biotech</span>
+              <Dna className="w-8 h-8 text-primary" />
             </div>
             <h2 className="text-2xl font-display font-bold text-primary mb-4 tracking-wider uppercase">Evolve</h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px]">
@@ -66,7 +68,7 @@ export default function PollMiddlePopup({
             className="faction-card group relative flex flex-col items-center text-center p-8 rounded-xl border border-white/5 bg-gradient-to-b from-zinc-900/20 to-cyan-950/20 hover:from-zinc-900/30 hover:to-cyan-900/40 hover:border-cyan-500/30 transition-all duration-500 outline-none focus:ring-2 focus:ring-cyan-500/50"
           >
             <div className="w-16 h-16 rounded-full bg-cyan-500/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
-              <span className="material-symbols-outlined text-cyan-400 text-3xl">shield</span>
+              <Shield className="w-8 h-8 text-cyan-400" />
             </div>
             <h2 className="text-2xl font-display font-bold text-cyan-400 mb-4 tracking-wider uppercase">Resist</h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px]">

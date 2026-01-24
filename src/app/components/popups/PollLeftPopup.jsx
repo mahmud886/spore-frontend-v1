@@ -35,10 +35,10 @@ export default function PollLeftPopup({ onInitiateLink, onClose, show = true }) 
           setTimeout(() => {
             setCurrentStep(currentStep + 1);
             setDisplayedText("");
-          }, 1500);
+          }, 600);
         }
       }
-    }, 50); // Typing speed
+    }, 25); // Typing speed
 
     return () => clearInterval(typingInterval);
   }, [currentStep, show]);
