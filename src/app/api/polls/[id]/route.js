@@ -33,7 +33,13 @@ export async function GET(request, { params }) {
       return createErrorResponse("Failed to fetch poll", 500, error.message);
     }
 
-    return createResponse({ poll: data });
+    // Map poll_options to options for consistency
+    const poll = {
+      ...data,
+      options: data.poll_options || [],
+    };
+
+    return createResponse({ poll });
   } catch (error) {
     return createErrorResponse("Internal server error", 500, error.message);
   }

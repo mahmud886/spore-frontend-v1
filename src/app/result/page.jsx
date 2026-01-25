@@ -8,19 +8,76 @@ import { trackEvent } from "../components/shared/Analytics";
 function ResultContent() {
   const searchParams = useSearchParams();
   const episodeId = searchParams.get("episode");
+  const pollIdParam = searchParams.get("poll") || searchParams.get("pollId");
+
+  // Extract poll ID from utm_content if present (format: poll_<poll_id>)
+  const utmContent = searchParams.get("utm_content");
+  const pollIdFromUtm = utmContent && utmContent.startsWith("poll_") ? utmContent.replace("poll_", "") : null;
+
+  // Use pollId from param, utm_content, or null
+  const pollId = pollIdParam || pollIdFromUtm;
+
   const [pollData, setPollData] = useState(null);
-  const [loading, setLoading] = useState(!!episodeId);
+  const [loading, setLoading] = useState(!!episodeId || !!pollId);
   const [copied, setCopied] = useState(false);
 
-  // Fetch poll data by episode ID
+  console.log("ResultContent - URL params:", {
+    episodeId,
+    pollIdParam,
+    utmContent,
+    pollIdFromUtm,
+    pollId,
+  });
+
+  // Fetch poll data by poll ID (direct) or episode ID
   useEffect(() => {
+    // If we have a poll ID, fetch directly
+    if (pollId) {
+      console.log("Fetching poll by ID:", pollId);
+      const fetchPollById = async () => {
+        try {
+          setLoading(true);
+          const response = await fetch(`/api/polls/${encodeURIComponent(pollId)}`);
+
+          if (!response.ok) {
+            setLoading(false);
+            return;
+          }
+
+          const data = await response.json();
+
+          if (data.poll) {
+            // Map poll_options to options for consistency
+            const poll = {
+              ...data.poll,
+              options: data.poll.options || data.poll.poll_options || [],
+            };
+            console.log("Fetched poll by ID:", poll);
+            console.log("Poll options:", poll.options);
+            setPollData(poll);
+          }
+        } catch (error) {
+          console.error("Error fetching poll by ID:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchPollById();
+      return;
+    }
+
+    // Otherwise, fetch by episode ID (existing logic)
     if (!episodeId) {
       setLoading(false);
       return;
     }
 
+    console.log("Fetching poll by episode ID:", episodeId);
+
     const fetchPollData = async () => {
       try {
+        setLoading(true);
         const response = await fetch(`/api/polls/episode/${encodeURIComponent(episodeId)}`);
 
         if (!response.ok) {
@@ -34,22 +91,18 @@ function ResultContent() {
           // Get the first LIVE poll or the first poll
           const poll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
           if (poll && poll.id) {
-            console.log("Setting pollData:", poll);
-            console.log("Poll ends_at:", poll.ends_at);
-            console.log("Poll starts_at:", poll.starts_at);
-            console.log("Poll duration_days:", poll.duration_days);
             setPollData(poll);
           }
         }
       } catch (error) {
-        // Error fetching poll data
+        console.error("Error fetching poll data:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPollData();
-  }, [episodeId]);
+  }, [episodeId, pollId]);
 
   // Update meta tags dynamically for social sharing
   useEffect(() => {
