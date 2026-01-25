@@ -293,7 +293,7 @@ function ResultContent() {
   };
 
   console.log("ResultContent - pollData before passing:", pollData);
-  
+
   return (
     <ResultPage
       pollResultProps={getPollResultProps()}

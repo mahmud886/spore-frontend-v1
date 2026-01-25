@@ -267,20 +267,18 @@ export default function EpisodesSection() {
             // Find LIVE poll or use first poll
             const activePoll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
 
-            // Map poll data
+            // Map poll data - use same structure as API response
             const mappedPollData = {
+              ...activePoll, // Spread all fields from API response
               id: activePoll.id,
               episode_id: activePoll.episodeId,
-              title: activePoll.question || "Poll",
-              description: activePoll.question || "Make your choice",
-              status: "LIVE",
-              poll_options: (activePoll.options || []).map((opt) => ({
-                id: opt.id,
-                option_text: opt.text,
-                title: opt.text,
-                description: opt.description,
-                vote_count: opt.votes || 0,
-              })),
+              episodeId: activePoll.episodeId,
+              title: activePoll.title || activePoll.question || "Poll",
+              question: activePoll.question || activePoll.title || "Make your choice",
+              description: activePoll.description || activePoll.question || "Make your choice",
+              status: activePoll.status || "LIVE",
+              // Keep options as-is from API (already in correct format)
+              options: activePoll.options || [],
             };
 
             // Final localStorage check before opening modal
@@ -385,20 +383,18 @@ export default function EpisodesSection() {
           // Filter for LIVE polls first, or take the first one
           const activePoll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
 
-          // Map to the format expected by PollStepModal
+          // Map to the format expected by PollStepModal - use same structure as API response
           const mappedPollData = {
+            ...activePoll, // Spread all fields from API response
             id: activePoll.id,
             episode_id: activePoll.episodeId,
-            title: activePoll.question || "Poll",
-            description: activePoll.question || "Make your choice",
-            status: "LIVE",
-            poll_options: (activePoll.options || []).map((opt) => ({
-              id: opt.id,
-              option_text: opt.text,
-              title: opt.text,
-              description: opt.description,
-              vote_count: opt.votes || 0,
-            })),
+            episodeId: activePoll.episodeId,
+            title: activePoll.title || activePoll.question || "Poll",
+            question: activePoll.question || activePoll.title || "Make your choice",
+            description: activePoll.description || activePoll.question || "Make your choice",
+            status: activePoll.status || "LIVE",
+            // Keep options as-is from API (already in correct format)
+            options: activePoll.options || [],
           };
 
           // Open the modal only if user hasn't voted
