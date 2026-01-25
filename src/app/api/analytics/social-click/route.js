@@ -15,7 +15,7 @@ export async function POST(request) {
 
     // Insert click tracking data
     const { error } = await supabase.from("social_media_clicks").insert({
-      poll_id: parseInt(poll_id),
+      poll_id: poll_id, // UUID, no need to parse
       platform,
       user_agent: user_agent || null,
       referrer: referrer || null,
@@ -52,7 +52,7 @@ export async function GET(request) {
     const { data: clicks, error } = await supabase
       .from("social_media_clicks")
       .select("platform, clicked_at")
-      .eq("poll_id", parseInt(pollId));
+      .eq("poll_id", pollId); // UUID, no need to parse
 
     if (error) {
       console.error("Error fetching clicks:", error);

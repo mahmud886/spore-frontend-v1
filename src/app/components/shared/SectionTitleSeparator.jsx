@@ -1,6 +1,10 @@
+"use client";
+
 import { useId } from "react";
 
 export default function SectionTitleSeparator({ className = "" }) {
+  // useId() generates stable IDs that match between server and client
+  // when the component is marked as "use client"
   const uniqueId = useId();
   const gradientId0 = `paint0_linear_${uniqueId.replace(/:/g, "_")}`;
   const gradientId1 = `paint1_linear_${uniqueId.replace(/:/g, "_")}`;

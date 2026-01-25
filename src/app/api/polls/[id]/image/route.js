@@ -76,22 +76,48 @@ export async function GET(request, { params }) {
     try {
       // Read image files
       const [bgBuffer, facesBuffer, logoBuffer, fontBuffer] = await Promise.all([
-        readFile(join(publicPath, "assets/images/social-share/social-image.webp")),
+        readFile(join(publicPath, "assets/images/social-share/social-bg.webp")),
         readFile(join(publicPath, "assets/images/social-share/social-image.webp")),
         readFile(join(publicPath, "assets/images/social-share/social-logo.png")),
         readFile(join(publicPath, "assets/fonts/mokoto/mokoto.ttf")).catch(() => null),
       ]);
 
-      // Convert WebP images to PNG using sharp
-      const [bgPng, facesPng] = await Promise.all([
-        sharp(bgBuffer).png().toBuffer(),
-        sharp(facesBuffer).png().toBuffer(),
+      // Convert and optimize images to PNG using sharp
+      // Aggressively compress to reduce file size (target: <300kb)
+      const [bgPng, facesPng, logoPng] = await Promise.all([
+        sharp(bgBuffer)
+          .resize(1200, 830, { fit: "cover", withoutEnlargement: true })
+          .png({
+            quality: 70,
+            compressionLevel: 9,
+            palette: true,
+            effort: 7, // Higher effort for better compression
+          })
+          .toBuffer(),
+        sharp(facesBuffer)
+          .resize(600, null, { fit: "contain", withoutEnlargement: true })
+          .png({
+            quality: 70,
+            compressionLevel: 9,
+            palette: true,
+            effort: 7,
+          })
+          .toBuffer(),
+        sharp(logoBuffer)
+          .resize(200, null, { fit: "contain", withoutEnlargement: true })
+          .png({
+            quality: 70,
+            compressionLevel: 9,
+            palette: true,
+            effort: 7,
+          })
+          .toBuffer(),
       ]);
 
       // Convert buffers to ArrayBuffer for @vercel/og
       bgImage = bgPng.buffer.slice(bgPng.byteOffset, bgPng.byteOffset + bgPng.byteLength);
       facesImage = facesPng.buffer.slice(facesPng.byteOffset, facesPng.byteOffset + facesPng.byteLength);
-      logoImage = logoBuffer.buffer.slice(logoBuffer.byteOffset, logoBuffer.byteOffset + logoBuffer.byteLength);
+      logoImage = logoPng.buffer.slice(logoPng.byteOffset, logoPng.byteOffset + logoPng.byteLength);
 
       if (fontBuffer) {
         fontData = fontBuffer.buffer.slice(fontBuffer.byteOffset, fontBuffer.byteOffset + fontBuffer.byteLength);
@@ -150,7 +176,7 @@ export async function GET(request, { params }) {
               alignItems: "center",
               textAlign: "center",
               marginTop: "20px",
-              zIndex: 10,
+              position: "relative",
             }}
           >
             <div
@@ -182,7 +208,6 @@ export async function GET(request, { params }) {
               height: "300px",
               marginTop: "20px",
               marginBottom: "20px",
-              zIndex: 5,
             }}
           >
             {/* Faces Image */}
@@ -231,7 +256,7 @@ export async function GET(request, { params }) {
               maxWidth: "900px",
               marginBottom: "100px",
               gap: "10px",
-              zIndex: 10,
+              position: "relative",
             }}
           >
             {/* Option 1 (Left - RESIST) */}
@@ -394,7 +419,7 @@ export async function GET(request, { params }) {
               alignItems: "center",
               marginTop: "auto",
               marginBottom: bottomSpacing,
-              zIndex: 10,
+              position: "relative",
             }}
           >
             <div
@@ -438,6 +463,8 @@ export async function GET(request, { params }) {
               },
             ]
           : [],
+        // Optimize image output to reduce file size
+        quality: 75, // Reduced quality to keep file size under 300kb
       },
     );
   } catch (error) {

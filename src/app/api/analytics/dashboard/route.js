@@ -21,24 +21,39 @@ export async function GET(request) {
     if (pollsError) throw pollsError;
 
     // Get total votes count from poll_options
-    const { data: allOptions, error: optionsError } = await supabase.from("poll_options").select("votes");
+    const { data: allOptions, error: optionsError } = await supabase.from("poll_options").select("vote_count");
 
     if (optionsError) throw optionsError;
 
-    const totalVotes = (allOptions || []).reduce((sum, option) => sum + (option.votes || 0), 0) || 0;
+    const totalVotes = (allOptions || []).reduce((sum, option) => sum + (option.vote_count || 0), 0) || 0;
 
-    // Get total social shares (clicks)
-    const { data: allShares, error: sharesError } = await supabase.from("social_media_clicks").select("*");
+    // Get total social shares (clicks) - handle case where table doesn't exist yet
+    let allShares = [];
+    let recentShares = [];
+    try {
+      const { data: sharesData, error: sharesError } = await supabase.from("social_media_clicks").select("*");
+      if (sharesError && sharesError.code !== "42P01") {
+        // 42P01 is "relation does not exist" - ignore if table doesn't exist yet
+        throw sharesError;
+      }
+      allShares = sharesData || [];
 
-    if (sharesError) throw sharesError;
+      // Get recent social shares
+      const { data: recentSharesData, error: recentSharesError } = await supabase
+        .from("social_media_clicks")
+        .select("*")
+        .gte("clicked_at", daysAgo.toISOString());
 
-    // Get recent social shares
-    const { data: recentShares, error: recentSharesError } = await supabase
-      .from("social_media_clicks")
-      .select("*")
-      .gte("clicked_at", daysAgo.toISOString());
-
-    if (recentSharesError) throw recentSharesError;
+      if (recentSharesError && recentSharesError.code !== "42P01") {
+        throw recentSharesError;
+      }
+      recentShares = recentSharesData || [];
+    } catch (tableError) {
+      // Table doesn't exist yet - use empty arrays
+      if (tableError.code !== "42P01") {
+        console.warn("Social media clicks table not found, using empty data:", tableError.message);
+      }
+    }
 
     // Get top polls by votes
     const { data: topPollsByVotes, error: topPollsError } = await supabase
@@ -46,10 +61,10 @@ export async function GET(request) {
       .select(
         `
         id,
-        question,
+        title,
         created_at,
         poll_options (
-          votes
+          vote_count
         )
       `,
       )
@@ -60,10 +75,10 @@ export async function GET(request) {
 
     // Calculate votes per poll
     const pollsWithVotes = (topPollsByVotes || []).map((poll) => {
-      const totalVotes = poll.poll_options?.reduce((sum, option) => sum + (option.votes || 0), 0) || 0;
+      const totalVotes = poll.poll_options?.reduce((sum, option) => sum + (option.vote_count || 0), 0) || 0;
       return {
         id: poll.id,
-        question: poll.question,
+        question: poll.title || "Untitled Poll",
         created_at: poll.created_at,
         total_votes: totalVotes,
       };
@@ -106,7 +121,14 @@ export async function GET(request) {
     // Get referrer statistics
     const referrerStats = (recentShares || []).reduce((acc, share) => {
       const referrer = share.referrer || "direct";
-      const domain = referrer === "direct" ? "direct" : new URL(referrer).hostname.replace("www.", "");
+      let domain = "direct";
+      try {
+        if (referrer !== "direct" && referrer) {
+          domain = new URL(referrer).hostname.replace("www.", "");
+        }
+      } catch (e) {
+        domain = "direct";
+      }
       if (!acc[domain]) {
         acc[domain] = { referrer: domain, count: 0 };
       }
@@ -153,6 +175,13 @@ export async function GET(request) {
     });
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        message: error.message,
+        details: process.env.NODE_ENV === "development" ? error.stack : undefined,
+      },
+      { status: 500 },
+    );
   }
 }
