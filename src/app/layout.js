@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import BackgroundSetter from "./components/shared/BackgroundSetter";
 import VerticalLines from "./components/shared/VerticalLines";
 import { Wrapper } from "./components/shared/Wrapper";
+import { Analytics } from "./components/shared/Analytics";
 import "./globals.css";
 
 export const metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
       <body className="antialiased text-white selection:bg-primary selection:text-black overflow-x-hidden ">
+        <Analytics />
         <ExternalStyles />
         <BackgroundSetter />
         <VerticalLines />

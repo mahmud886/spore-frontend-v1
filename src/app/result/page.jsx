@@ -3,12 +3,14 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ResultPage from "../components/result/ResultPage";
+import { trackEvent } from "../components/shared/Analytics";
 
 function ResultContent() {
   const searchParams = useSearchParams();
   const episodeId = searchParams.get("episode");
   const [pollData, setPollData] = useState(null);
   const [loading, setLoading] = useState(!!episodeId);
+  const [copied, setCopied] = useState(false);
 
   // Fetch poll data by episode ID
   useEffect(() => {
@@ -19,25 +21,24 @@ function ResultContent() {
 
     const fetchPollData = async () => {
       try {
-        console.log("Fetching poll data for episode:", episodeId);
         const response = await fetch(`/api/polls/episode/${encodeURIComponent(episodeId)}`);
 
         if (!response.ok) {
-          console.error("Failed to fetch poll data");
           setLoading(false);
           return;
         }
 
         const data = await response.json();
-        console.log("Poll data received:", data);
 
         if (data.polls && data.polls.length > 0) {
           // Get the first LIVE poll or the first poll
           const poll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
-          setPollData(poll);
+          if (poll && poll.id) {
+            setPollData(poll);
+          }
         }
       } catch (error) {
-        console.error("Error fetching poll data:", error);
+        // Error fetching poll data
       } finally {
         setLoading(false);
       }
@@ -45,6 +46,67 @@ function ResultContent() {
 
     fetchPollData();
   }, [episodeId]);
+
+  // Update meta tags dynamically for social sharing
+  useEffect(() => {
+    if (typeof window === "undefined" || !pollData || !pollData.id) {
+      return;
+    }
+
+    const totalVotes = (pollData.options || []).reduce((sum, opt) => sum + (opt.votes || opt.vote_count || 0), 0);
+    const imageUrl = `${window.location.origin}/api/polls/${pollData.id}/image`;
+    const shareUrl = window.location.href.split("?")[0];
+
+    // Verify image URL is accessible (for debugging)
+    if (process.env.NODE_ENV === "development") {
+      fetch(imageUrl)
+        .then((res) => {
+          if (!res.ok) {
+            console.warn("OG image route returned error:", res.status, res.statusText);
+          }
+        })
+        .catch((err) => {
+          console.warn("OG image route error:", err);
+        });
+    }
+
+    const updateMetaTag = (property, content) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    const updateNameTag = (name, content) => {
+      let tag = document.querySelector(`meta[name="${name}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("name", name);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", content);
+    };
+
+    // Open Graph tags for Facebook, LinkedIn, WhatsApp
+    const pollTitle = pollData.question || pollData.title || "Poll Results";
+    updateMetaTag("og:title", pollTitle);
+    updateMetaTag("og:description", `Poll Results - ${totalVotes} total votes`);
+    updateMetaTag("og:image", imageUrl);
+    updateMetaTag("og:image:width", "1200");
+    updateMetaTag("og:image:height", "630");
+    updateMetaTag("og:url", shareUrl);
+    updateMetaTag("og:type", "website");
+    updateMetaTag("og:image:type", "image/svg+xml");
+
+    // Twitter Card tags
+    updateNameTag("twitter:card", "summary_large_image");
+    updateNameTag("twitter:title", pollTitle);
+    updateNameTag("twitter:description", `Poll Results - ${totalVotes} total votes`);
+    updateNameTag("twitter:image", imageUrl);
+  }, [pollData]);
 
   // Handle hash navigation on page load
   useEffect(() => {
@@ -64,6 +126,116 @@ function ResultContent() {
       }, 100);
     }
   }, []);
+
+  // Track social media clicks
+  const trackSocialClick = async (platform) => {
+    if (!pollData) return;
+
+    try {
+      const utmParams = {
+        utm_source: platform.toLowerCase(),
+        utm_medium: "social",
+        utm_campaign: "poll_share",
+        utm_content: `poll_${pollData.id}`,
+      };
+
+      await fetch("/api/analytics/social-click", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          poll_id: pollData.id,
+          platform: platform.toLowerCase(),
+          user_agent: navigator.userAgent,
+          referrer: document.referrer,
+          ...utmParams,
+        }),
+      });
+
+      trackEvent("social_share_click", {
+        platform: platform.toLowerCase(),
+        poll_id: pollData.id,
+        poll_question: pollData.question,
+        ...utmParams,
+      });
+    } catch (error) {
+      // Error tracking social click
+    }
+  };
+
+  // Generate URL with UTM parameters
+  const getUTMUrl = (platform) => {
+    if (typeof window === "undefined" || !pollData) return "";
+    const baseUrl = window.location.href.split("?")[0];
+    const utmParams = new URLSearchParams({
+      utm_source: platform.toLowerCase(),
+      utm_medium: "social",
+      utm_campaign: "poll_share",
+      utm_content: `poll_${pollData.id}`,
+    });
+    return `${baseUrl}?${utmParams.toString()}`;
+  };
+
+  // Handle social sharing
+  const handleShare = async (platform) => {
+    if (!pollData) return;
+
+    await trackSocialClick(platform);
+
+    const shareText = `${pollData.question || "Check out this poll"} - Vote now on SPOREFALL.COM`;
+    const utmUrl = getUTMUrl(platform);
+    const encodedText = encodeURIComponent(shareText);
+    const encodedUrl = encodeURIComponent(utmUrl);
+    const imageUrl = `${window.location.origin}/api/polls/${pollData.id}/image`;
+    const encodedImage = encodeURIComponent(imageUrl);
+
+    let shareLink = "";
+
+    const platformMap = {
+      FACEBOOK: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      TWITTER: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+      X_SHARE: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+      LINKEDIN: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      WHATSAPP: `https://wa.me/?text=${encodedText}%0A${encodedUrl}`,
+      PINTEREST: `https://pinterest.com/pin/create/button/?url=${encodedUrl}&media=${encodedImage}&description=${encodedText}`,
+      TELEGRAM: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
+      REDDIT: `https://reddit.com/submit?url=${encodedUrl}&title=${encodeURIComponent(pollData.question || "Poll Results")}`,
+      DISCORD: "", // Discord doesn't have a direct share URL
+      THREADS: "", // Threads doesn't have a direct share URL
+      TIKTOK: "", // TikTok requires app
+      IG_STORY: "", // Instagram Stories requires app
+    };
+
+    shareLink = platformMap[platform.toUpperCase()] || "";
+
+    if (shareLink) {
+      window.open(shareLink, "_blank", "width=600,height=400");
+    } else if (platform.toUpperCase() === "TIKTOK" || platform.toUpperCase() === "IG_STORY") {
+      // Copy to clipboard for apps that don't support web sharing
+      try {
+        await navigator.clipboard.writeText(`${shareText}\n\n${utmUrl}`);
+        alert(`Link copied! Open ${platform} app to share.`);
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    } else {
+      // Fallback: copy to clipboard
+      copyToClipboard();
+    }
+  };
+
+  // Copy to clipboard
+  const copyToClipboard = async () => {
+    if (!pollData) return;
+    try {
+      const shareText = `${pollData.question || "Check out this poll"} - Vote now on SPOREFALL.COM`;
+      const shareUrl = window.location.href;
+      await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      // Failed to copy
+    }
+  };
 
   // Calculate poll result props from pollData
   const getPollResultProps = () => {
@@ -109,7 +281,9 @@ function ResultContent() {
     };
   };
 
-  return <ResultPage pollResultProps={getPollResultProps()} />;
+  return (
+    <ResultPage pollResultProps={getPollResultProps()} pollData={pollData} onShare={handleShare} copied={copied} />
+  );
 }
 
 export default function Result() {

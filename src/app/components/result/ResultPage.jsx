@@ -26,6 +26,9 @@ export default function ResultPage({
   userProfileProps,
   productsProps,
   blogProps,
+  pollData,
+  onShare,
+  copied,
 }) {
   return (
     <>
@@ -51,6 +54,8 @@ export default function ResultPage({
             "IG_STORY",
             "REDDIT",
           ]}
+          onShare={onShare}
+          copied={copied}
         />
         {/* <IdentityArtifactSection {...identityArtifactProps} /> */}
         {/* <UserProfileSection {...userProfileProps} /> */}

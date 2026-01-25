@@ -19,7 +19,7 @@ const defaultPlatforms = [
   "REDDIT",
 ];
 
-export default function MobilizeNetworkCard({ title, description, platforms = defaultPlatforms, onShare }) {
+export default function MobilizeNetworkCard({ title, description, platforms = defaultPlatforms, onShare, copied }) {
   const handleShare = (platform) => {
     if (onShare) {
       onShare(platform);
