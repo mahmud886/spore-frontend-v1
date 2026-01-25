@@ -53,7 +53,7 @@ export default function PollStepModal({
   useEffect(() => {
     console.log("PollStepModal - pollData prop:", pollData);
     console.log("PollStepModal - episodeId prop:", episodeId);
-    
+
     if (episodeId) {
       setCurrentEpisodeId(episodeId);
     }
@@ -204,65 +204,77 @@ export default function PollStepModal({
         )}
 
         {/* Step 2: Middle Popup */}
-        {step === 2 && (currentPollData || pollData) && (() => {
-          const pollDataToUse = currentPollData || pollData;
-          const options = pollDataToUse?.options || [];
-          const firstOption = options[0];
-          const secondOption = options[1];
-          
-          console.log("PollStepModal - Step 2 - pollDataToUse:", pollDataToUse);
-          console.log("PollStepModal - Step 2 - options:", options);
-          console.log("PollStepModal - Step 2 - firstOption:", firstOption);
-          console.log("PollStepModal - Step 2 - secondOption:", secondOption);
-          console.log("PollStepModal - Step 2 - title:", pollDataToUse?.title);
-          console.log("PollStepModal - Step 2 - question:", pollDataToUse?.question);
-          
-          // Get dynamic option names and descriptions
-          const firstOptionName = firstOption?.name || firstOption?.text || "EVOLVE";
-          const secondOptionName = secondOption?.name || secondOption?.text || "RESIST";
-          const firstOptionDescription = firstOption?.description || "Transcend humanity. Unlock your latent code. Be something more.";
-          const secondOptionDescription = secondOption?.description || "Preserve Order. Burn the old world. Rebuild from ashes.";
-          
-          return (
-            <div className="flex items-center justify-center w-full h-full relative z-10">
-              <PollMiddlePopup
-                phase={pollDataToUse?.title || "Phase 02: Alignment"}
-                title={pollDataToUse?.question || pollDataToUse?.title || pollDataToUse?.description || "Shape The Next Chapter of the Story"}
-                subtitle={
-                  options.length > 0
-                    ? options.map((opt) => opt?.name || opt?.text || "").filter(Boolean).join(" vs ")
-                    : "RESIST vs EVOLVE"
-                }
-                firstOptionName={firstOptionName}
-                secondOptionName={secondOptionName}
-                firstOptionDescription={firstOptionDescription}
-                secondOptionDescription={secondOptionDescription}
-                onEvolveClick={() => {
-                  if (isSubmitting) return; // Prevent clicks while submitting
+        {step === 2 &&
+          (currentPollData || pollData) &&
+          (() => {
+            const pollDataToUse = currentPollData || pollData;
+            const options = pollDataToUse?.options || [];
+            const firstOption = options[0];
+            const secondOption = options[1];
 
-                  // Find first option (typically Evolve)
-                  if (firstOption && firstOption.id) {
-                    handleMiddleNext(firstOptionName, firstOption.id);
-                  } else {
-                    alert("Poll option not available. Please try again.");
-                  }
-                }}
-                onContainClick={() => {
-                  if (isSubmitting) return; // Prevent clicks while submitting
+            console.log("PollStepModal - Step 2 - pollDataToUse:", pollDataToUse);
+            console.log("PollStepModal - Step 2 - options:", options);
+            console.log("PollStepModal - Step 2 - firstOption:", firstOption);
+            console.log("PollStepModal - Step 2 - secondOption:", secondOption);
+            console.log("PollStepModal - Step 2 - title:", pollDataToUse?.title);
+            console.log("PollStepModal - Step 2 - question:", pollDataToUse?.question);
 
-                  // Find second option (typically Resist/Contain)
-                  if (secondOption && secondOption.id) {
-                    handleMiddleNext(secondOptionName, secondOption.id);
-                  } else {
-                    alert("Poll option not available. Please try again.");
+            // Get dynamic option names and descriptions
+            const firstOptionName = firstOption?.name || firstOption?.text || "EVOLVE";
+            const secondOptionName = secondOption?.name || secondOption?.text || "RESIST";
+            const firstOptionDescription =
+              firstOption?.description || "Transcend humanity. Unlock your latent code. Be something more.";
+            const secondOptionDescription =
+              secondOption?.description || "Preserve Order. Burn the old world. Rebuild from ashes.";
+
+            return (
+              <div className="flex items-center justify-center w-full h-full relative z-10">
+                <PollMiddlePopup
+                  phase={pollDataToUse?.title || "Phase 02: Alignment"}
+                  title={
+                    pollDataToUse?.question ||
+                    pollDataToUse?.title ||
+                    pollDataToUse?.description ||
+                    "Shape The Next Chapter of the Story"
                   }
-                }}
-                onClose={handleClose}
-                showWaitingMessage={!isSubmitting}
-              />
-            </div>
-          );
-        })()}
+                  subtitle={
+                    options.length > 0
+                      ? options
+                          .map((opt) => opt?.name || opt?.text || "")
+                          .filter(Boolean)
+                          .join(" vs ")
+                      : "RESIST vs EVOLVE"
+                  }
+                  firstOptionName={firstOptionName}
+                  secondOptionName={secondOptionName}
+                  firstOptionDescription={firstOptionDescription}
+                  secondOptionDescription={secondOptionDescription}
+                  onEvolveClick={() => {
+                    if (isSubmitting) return; // Prevent clicks while submitting
+
+                    // Find first option (typically Evolve)
+                    if (firstOption && firstOption.id) {
+                      handleMiddleNext(firstOptionName, firstOption.id);
+                    } else {
+                      alert("Poll option not available. Please try again.");
+                    }
+                  }}
+                  onContainClick={() => {
+                    if (isSubmitting) return; // Prevent clicks while submitting
+
+                    // Find second option (typically Resist/Contain)
+                    if (secondOption && secondOption.id) {
+                      handleMiddleNext(secondOptionName, secondOption.id);
+                    } else {
+                      alert("Poll option not available. Please try again.");
+                    }
+                  }}
+                  onClose={handleClose}
+                  showWaitingMessage={!isSubmitting}
+                />
+              </div>
+            );
+          })()}
 
         {/* Step 3: Right Popup - Commented out, redirects to result page instead */}
         {/* {step === 3 && (

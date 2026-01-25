@@ -174,7 +174,7 @@ export default function HomePage() {
           <NewsletterSection />
           <CharacterLogsSection />
           <div id="spore-log" className="pb-4 px-8 ">
-            <SporeBlogSection posts={homePageLogs} title="Spore Logs" className="" sectionClassName="" />
+            <SporeBlogSection title="Spore Logs" className="" sectionClassName="" fetchFromAPI={true} />
           </div>
         </div>
         <PollStepModal

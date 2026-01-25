@@ -60,7 +60,9 @@ export default function PollMiddlePopup({
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
               <Dna className="w-8 h-8 text-primary" />
             </div>
-            <h2 className="text-2xl font-display font-bold text-primary mb-4 tracking-wider uppercase">{firstOptionName}</h2>
+            <h2 className="text-2xl font-display font-bold text-primary mb-4 tracking-wider uppercase">
+              {firstOptionName}
+            </h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px] whitespace-pre-line">
               {firstOptionDescription}
             </p>
@@ -76,7 +78,9 @@ export default function PollMiddlePopup({
             <div className="w-16 h-16 rounded-full bg-cyan-500/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
               <Shield className="w-8 h-8 text-cyan-400" />
             </div>
-            <h2 className="text-2xl font-display font-bold text-cyan-400 mb-4 tracking-wider uppercase">{secondOptionName}</h2>
+            <h2 className="text-2xl font-display font-bold text-cyan-400 mb-4 tracking-wider uppercase">
+              {secondOptionName}
+            </h2>
             <p className="font-mono text-xs leading-relaxed text-white/50 max-w-[180px] whitespace-pre-line">
               {secondOptionDescription}
             </p>
