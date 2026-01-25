@@ -34,6 +34,10 @@ function ResultContent() {
           // Get the first LIVE poll or the first poll
           const poll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
           if (poll && poll.id) {
+            console.log("Setting pollData:", poll);
+            console.log("Poll ends_at:", poll.ends_at);
+            console.log("Poll starts_at:", poll.starts_at);
+            console.log("Poll duration_days:", poll.duration_days);
             setPollData(poll);
           }
         }
@@ -281,8 +285,23 @@ function ResultContent() {
     };
   };
 
+  // Get countdown props from poll data
+  const getCountdownProps = () => {
+    return {
+      title: "POLL CLOSES IN",
+    };
+  };
+
+  console.log("ResultContent - pollData before passing:", pollData);
+  
   return (
-    <ResultPage pollResultProps={getPollResultProps()} pollData={pollData} onShare={handleShare} copied={copied} />
+    <ResultPage
+      pollResultProps={getPollResultProps()}
+      countdownProps={getCountdownProps()}
+      pollData={pollData}
+      onShare={handleShare}
+      copied={copied}
+    />
   );
 }
 

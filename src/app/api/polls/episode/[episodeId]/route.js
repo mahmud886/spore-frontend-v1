@@ -48,26 +48,33 @@ export async function GET(request, { params }) {
           console.error(`Failed to fetch options for poll ${poll.id}:`, optionsError);
           // Return poll without options if fetch fails
           return {
+            ...poll, // Spread all poll fields first
             id: poll.id,
             episodeId: poll.episode_id,
             question: poll.question || poll.title || poll.description,
+            title: poll.title,
             createdAt: poll.created_at,
+            status: poll.status || "LIVE",
             options: [],
           };
         }
 
         return {
+          ...poll, // Spread all poll fields first
           id: poll.id,
           episodeId: poll.episode_id,
           question: poll.question || poll.title || poll.description,
+          title: poll.title,
           createdAt: poll.created_at,
           status: poll.status || "LIVE",
           options:
             options?.map((opt) => ({
               id: opt.id,
               text: opt.text || opt.option_text,
+              name: opt.name,
               description: opt.description || null,
               votes: opt.votes || opt.vote_count || 0,
+              vote_count: opt.vote_count || 0,
             })) || [],
         };
       }),

@@ -5,16 +5,36 @@ import { useEffect, useMemo, useState } from "react";
 import { staggerContainer } from "../../utils/animations";
 import CountdownCard from "./CountdownCard";
 
-export default function CountdownSection({ targetDate, highlightMinutes = true }) {
-  // Calculate target date - 3 days from now if not provided
+export default function CountdownSection({ targetDate, title, pollData, highlightMinutes = true }) {
+  // Calculate target date from poll data or provided targetDate
   const targetTime = useMemo(() => {
+    // First, try to get from pollData
+    if (pollData) {
+      // console.log("CountdownSection - pollData:", pollData);
+      // console.log("CountdownSection - ends_at:", pollData.ends_at);
+      // console.log("CountdownSection - starts_at:", pollData.starts_at);
+      // console.log("CountdownSection - duration_days:", pollData.duration_days);
+
+      if (pollData.ends_at) {
+        return new Date(pollData.ends_at).getTime();
+      } else if (pollData.starts_at && pollData.duration_days) {
+        const startDate = new Date(pollData.starts_at);
+        startDate.setDate(startDate.getDate() + pollData.duration_days);
+        return startDate.getTime();
+      }
+    } else {
+      // console.log("CountdownSection - pollData is null/undefined");
+    }
+    // Fallback to provided targetDate
     if (targetDate) {
       return new Date(targetDate).getTime();
     }
+
+    // Default to 3 days from now
     const now = new Date();
     now.setDate(now.getDate() + 3);
     return now.getTime();
-  }, [targetDate]);
+  }, [targetDate, pollData]);
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -61,15 +81,17 @@ export default function CountdownSection({ targetDate, highlightMinutes = true }
       transition={{ duration: 0.6 }}
       className="mb-12"
     >
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="text-2xl font-bold text-primary pb-4 text-center mb-6 font-subheading cyber-text-glitch"
-      >
-        Add Copy above the clock
-      </motion.h1>
+      {title && (
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-2xl font-bold text-primary pb-4 text-center mb-6 font-subheading cyber-text-glitch uppercase tracking-wider"
+        >
+          {title}
+        </motion.h1>
+      )}
       <motion.div
         variants={staggerContainer}
         initial="hidden"

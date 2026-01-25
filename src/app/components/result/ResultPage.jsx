@@ -38,7 +38,7 @@ export default function ResultPage({
         </div>
 
         <PollResultSection {...pollResultProps} />
-        <CountdownSection {...countdownProps} />
+        <CountdownSection title={countdownProps?.title || "POLL CLOSES IN"} pollData={pollData} />
         <MobilizeNetworkCard
           title="Share to unlock the next drop"
           description="Broadcast this signal. A hidden reward unlocks at the end."
