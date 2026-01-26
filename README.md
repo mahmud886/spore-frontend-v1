@@ -32,13 +32,42 @@ cd spore-frontend-v1
 npm install
 ```
 
-3. Run the development server:
+3. Create a `.env.local` file in the root directory and add your environment variables:
+
+```env
+# Google Analytics
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# Facebook Pixel
+NEXT_PUBLIC_FACEBOOK_PIXEL_ID=XXXXXXXXXXXXXXX
+
+# Twitter Pixel
+NEXT_PUBLIC_TWITTER_PIXEL_ID=XXXXXXXXXXXXXXX
+
+# LinkedIn Pixel
+NEXT_PUBLIC_LINKEDIN_PIXEL_ID=XXXXXXXXXXXXXXX
+
+# TikTok Pixel
+NEXT_PUBLIC_TIKTOK_PIXEL_ID=XXXXXXXXXXXXXXX
+
+# Pinterest Tag
+NEXT_PUBLIC_PINTEREST_TAG_ID=XXXXXXXXXXXXXXX
+
+# Microsoft UET
+NEXT_PUBLIC_MICROSOFT_UET_ID=XXXXXXXXXXXXXXX
+
+# Printful API
+PRINTFUL_API_KEY=your_printful_api_key
+PRINTFUL_STORE_ID=your_printful_store_id
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 ## Available Scripts
 
@@ -100,12 +129,27 @@ The project includes various custom utility classes for the sci-fi aesthetic:
 - `dot-grid` - Dot grid pattern
 - And more...
 
+## Analytics Integration
+
+The application includes built-in support for multiple analytics platforms:
+
+- **Google Analytics 4** - Standard web analytics
+- **Facebook Pixel** - Conversion tracking and audience building
+- **Twitter Pixel** - Campaign measurement and conversion tracking
+- **LinkedIn Insight Tag** - Page views and conversion tracking
+- **TikTok Pixel** - Conversion tracking and audience building
+- **Pinterest Tag** - Conversion tracking and audience insights
+- **Microsoft UET** - Bing Ads conversion tracking
+
+Configure the desired analytics platforms by setting the corresponding environment variables in your `.env.local` file.
+
 ## Features
 
 - **Multi-step Modal**: Interactive poll modal that auto-opens on the home page
 - **Responsive Design**: Mobile-first responsive layout
 - **Dark Theme**: Sci-fi inspired dark color scheme
 - **Component-based Architecture**: Modular, reusable React components
+- **Analytics Integration**: Multi-platform analytics tracking
 
 ## Learn More
 

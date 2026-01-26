@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import * as cheerio from "cheerio";
+import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const url = "https://edenstone.group/sporelog";
 
-    console.log("🔍 Fetching blog data from:", url);
+    // console.log("🔍 Fetching blog data from:", url);
 
     // Fetch the HTML content
     const response = await fetch(url, {
@@ -25,7 +25,7 @@ export async function GET() {
     }
 
     const html = await response.text();
-    console.log("✅ HTML fetched, length:", html.length);
+    // console.log("✅ HTML fetched, length:", html.length);
 
     // Load HTML into cheerio
     const $ = cheerio.load(html);
@@ -50,7 +50,7 @@ export async function GET() {
       );
     });
 
-    console.log(`📝 Found ${postLinks.length} potential blog post links...`);
+    // console.log(`📝 Found ${postLinks.length} potential blog post links...`);
 
     // Group links by their base URL (without hash) to avoid duplicates
     // Each post should have one main entry
@@ -98,7 +98,7 @@ export async function GET() {
       }
     });
 
-    console.log(`📄 Processing ${postContainers.size} unique blog posts...`);
+    // console.log(`📄 Processing ${postContainers.size} unique blog posts...`);
 
     // Extract data from each post container
     postContainers.forEach((postInfo, baseHref) => {
@@ -282,39 +282,39 @@ export async function GET() {
 
         blogPosts.push(blogPost);
 
-        console.log(`\n📄 Post ${blogPosts.length}:`);
-        console.log("  ID:", blogPost.id);
-        console.log("  Title:", blogPost.title);
-        console.log("  Link:", blogPost.link);
-        console.log("  Date:", blogPost.date);
-        console.log("  Author:", blogPost.author);
-        console.log("  Categories:", blogPost.categories);
-        console.log("  Tags:", blogPost.tags);
-        console.log("  Image:", blogPost.image);
-        console.log("  Excerpt:", blogPost.excerpt.substring(0, 100) + (blogPost.excerpt.length > 100 ? "..." : ""));
+        // console.log(`\n📄 Post ${blogPosts.length}:`);
+        // console.log("  ID:", blogPost.id);
+        // console.log("  Title:", blogPost.title);
+        // console.log("  Link:", blogPost.link);
+        // console.log("  Date:", blogPost.date);
+        // console.log("  Author:", blogPost.author);
+        // console.log("  Categories:", blogPost.categories);
+        // console.log("  Tags:", blogPost.tags);
+        // console.log("  Image:", blogPost.image);
+        // console.log("  Excerpt:", blogPost.excerpt.substring(0, 100) + (blogPost.excerpt.length > 100 ? "..." : ""));
       }
     });
 
-    console.log("\n📊 Scraping Summary:");
-    console.log("Total posts found:", blogPosts.length);
-    console.log("\n📋 Full Posts Data (JSON):");
-    console.log(JSON.stringify(blogPosts, null, 2));
+    // console.log("\n📊 Scraping Summary:");
+    // console.log("Total posts found:", blogPosts.length);
+    // console.log("\n📋 Full Posts Data (JSON):");
+    // console.log(JSON.stringify(blogPosts, null, 2));
 
     // Also log individual post details
-    console.log("\n📝 Individual Post Details:");
-    blogPosts.forEach((post, index) => {
-      console.log(`\n--- Post ${index + 1} ---`);
-      console.log("ID:", post.id);
-      console.log("Slug:", post.slug);
-      console.log("Title:", post.title);
-      console.log("Link:", post.link);
-      console.log("Date:", post.date);
-      console.log("Author:", post.author);
-      console.log("Categories:", post.categories);
-      console.log("Tags:", post.tags);
-      console.log("Image:", post.image);
-      console.log("Excerpt:", post.excerpt);
-    });
+    // console.log("\n📝 Individual Post Details:");
+    // blogPosts.forEach((post, index) => {
+    // console.log(`\n--- Post ${index + 1} ---`);
+    // console.log("ID:", post.id);
+    // console.log("Slug:", post.slug);
+    // console.log("Title:", post.title);
+    // console.log("Link:", post.link);
+    // console.log("Date:", post.date);
+    // console.log("Author:", post.author);
+    // console.log("Categories:", post.categories);
+    // console.log("Tags:", post.tags);
+    // console.log("Image:", post.image);
+    // console.log("Excerpt:", post.excerpt);
+    // });
 
     return NextResponse.json({
       success: true,
