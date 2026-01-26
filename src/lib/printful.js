@@ -182,15 +182,15 @@ async function getStoreProducts(limit = 20, offset = 0) {
     }
 
     const data = await response.json();
-    console.log("Store products response:", data);
+    // console.log("Store products response:", data);
 
     if ("result" in data) {
       const products = Array.isArray(data.result) ? data.result : [];
-      console.log(`Successfully fetched ${products.length} store products`);
+      // console.log(`Successfully fetched ${products.length} store products`);
 
       // Don't filter out ignored products - show all products
       // User can un-ignore them in Printful Dashboard if needed
-      console.log(`Found ${products.length} total products (including ignored)`);
+      // console.log(`Found ${products.length} total products (including ignored)`);
 
       return products;
     }

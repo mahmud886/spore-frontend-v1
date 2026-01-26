@@ -22,6 +22,7 @@ export default function ProductsSection({ products: productsProp }) {
         }
 
         const data = await response.json();
+        // console.log(data);
 
         if (data.success && Array.isArray(data.data)) {
           // Transform Printful products to match the component's expected format
