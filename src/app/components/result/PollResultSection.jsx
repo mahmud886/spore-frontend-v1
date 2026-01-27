@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion, useMotionValueEvent, useSpring } from "framer-motion";
-import { fadeUp, slideInLeft, slideInRight } from "../../utils/animations";
+import { useEffect, useState } from "react";
 
 function AnimatedPercentage({ value, delay = 0 }) {
   const [displayValue, setDisplayValue] = useState(0);
@@ -34,6 +33,32 @@ function AnimatedPercentage({ value, delay = 0 }) {
   );
 }
 
+function getDynamicCenterLabel(faction1Percentage, faction2Percentage) {
+  const diff = Math.abs(faction1Percentage - faction2Percentage);
+
+  // Scenario 1: Close tie (within 10% difference)
+  if (diff <= 10) {
+    return "THE CITY STANDS DIVIDED";
+  }
+
+  // Scenario 2: Faction 2 dominant (Resist wins significantly)
+  if (faction2Percentage > faction1Percentage && diff > 20) {
+    return "TIGHTEN CONTROL. HOLD THE LINE";
+  }
+
+  // Scenario 3: Faction 1 dominant (Evolve wins significantly)
+  if (faction1Percentage > faction2Percentage && diff > 20) {
+    return "A NEW DAWN ARISES. WE SHAPE THE FUTURE";
+  }
+
+  // Fallback for moderate differences (10-20% difference)
+  if (faction1Percentage > faction2Percentage) {
+    return "EVOLUTION GAINS MOMENTUM";
+  } else {
+    return "RESISTANCE HOLDS STRONG";
+  }
+}
+
 export default function PollResultSection({
   faction1 = {
     name: "EVOLVE",
@@ -45,8 +70,10 @@ export default function PollResultSection({
     subLabel: "THE NEW ALLIANCE",
     percentage: 50,
   },
-  centerLabel = "THE CITY STANDS DIVIDED",
+  centerLabel, // Will be dynamically generated if not provided
 }) {
+  // Generate dynamic center label based on percentages
+  const dynamicCenterLabel = centerLabel || getDynamicCenterLabel(faction1.percentage, faction2.percentage);
   return (
     <motion.section
       className="mb-12 cyber-holographic cyber-power-surge"
@@ -70,7 +97,7 @@ export default function PollResultSection({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {centerLabel}
+          {dynamicCenterLabel}
         </motion.p>
         <motion.h3
           className="text-accent-blue text-sm font-bold tracking-widest uppercase"
