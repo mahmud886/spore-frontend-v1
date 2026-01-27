@@ -103,7 +103,7 @@ export async function GET(request, { params }) {
       // Limit the font to 50KB to help keep total size under 300KB
       if (fontBuffer.length <= 50000) {
         // Convert buffer to base64
-        const base64Font = fontBuffer.toString('base64');
+        const base64Font = fontBuffer.toString("base64");
 
         fontDataUri = `data:font/ttf;base64,${base64Font}`;
       }
@@ -171,7 +171,7 @@ export async function GET(request, { params }) {
         .toBuffer();
 
       // Convert to base64
-      const base64Image = resizedImageBuffer.toString('base64');
+      const base64Image = resizedImageBuffer.toString("base64");
 
       backgroundImageDataUri = `data:image/png;base64,${base64Image}`;
     } catch (error) {
@@ -218,7 +218,7 @@ export async function GET(request, { params }) {
           }
         ]]></style>
         `
-            : ''
+            : ""
         }
 
         <!-- Overlay gradient for better text readability -->
