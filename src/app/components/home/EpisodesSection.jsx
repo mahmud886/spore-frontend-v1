@@ -807,7 +807,7 @@ export default function EpisodesSection() {
           items={episodes}
           renderItem={renderEpisodeCard}
           itemsPerView={{ mobile: 1, tablet: 2, desktop: 4 }}
-          gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
+          gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch"
           titleComponent={<SectionTitle>Episodes</SectionTitle>}
         />
       </section>

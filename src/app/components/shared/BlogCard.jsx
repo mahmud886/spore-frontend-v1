@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatedCard } from "./AnimatedWrapper";
 
 export default function BlogCard({ post }) {
@@ -10,13 +10,14 @@ export default function BlogCard({ post }) {
 
   return (
     <AnimatedCard hoverGlow={true} hoverFloat={true} className="h-full">
-      <article
-        className="bg-black/50 border border-primary/10 hover:border-primary/50 transition-all overflow-hidden h-full cyber-energy-wave"
-        style={{
-          borderTopRightRadius: "20px",
-          borderBottomLeftRadius: "20px",
-        }}
-      >
+      <Link href={link || "#"} target="_blank" className="block h-full">
+        <article
+          className="bg-black/50 border border-primary/10 hover:border-primary/50 transition-all overflow-hidden h-full cyber-energy-wave"
+          style={{
+            borderTopRightRadius: "20px",
+            borderBottomLeftRadius: "20px",
+          }}
+        >
         {image && image !== "#" ? (
           <Image
             alt={imageAlt || title}
@@ -36,13 +37,14 @@ export default function BlogCard({ post }) {
             <span>{id}</span>
             <span>{timestamp}</span>
           </div>
-          <h3 className="text-lg font-bold uppercase mb-3">{title}</h3>
-          <p className="text-xs text-white/50 leading-relaxed mb-6">{content}</p>
-          <a className="text-[10px] text-primary font-bold uppercase hover:underline" href={link || "#"}>
+          <h3 className="text-lg font-bold uppercase mb-3 h-14 line-clamp-2">{title}</h3>
+          <p className="text-xs text-white/50 leading-relaxed mb-6 h-28 line-clamp-5">{content}</p>
+          <button className="text-[10px] cursor-pointer text-primary font-bold uppercase hover:underline">
             Read Log
-          </a>
+          </button>
         </div>
       </article>
+      </Link>
     </AnimatedCard>
   );
 }

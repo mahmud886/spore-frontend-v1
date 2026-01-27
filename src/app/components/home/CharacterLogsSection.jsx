@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
+import { AnimatedCard } from "../shared/AnimatedWrapper";
 import Carousel from "../shared/Carousel";
 import { SectionTitle } from "../shared/SectionTitle";
-import { AnimatedCard } from "../shared/AnimatedWrapper";
 
 const characters = [
   {
@@ -35,16 +34,17 @@ export default function CharacterLogsSection() {
       key={index}
       hoverGlow={true}
       hoverFloat={true}
-      className="group relative bg-black/50 cyber-holographic cyber-energy-wave"
+
+    >
+      <div className="group relative bg-black/50"
       style={{
         borderTopRightRadius: "20px",
         borderBottomLeftRadius: "20px",
         padding: "3px",
         backgroundSize: "300% 300%",
         animation: "gradient-border 3s ease infinite",
-      }}
-    >
-      {/* Content wrapper */}
+      }}>
+        {/* Content wrapper */}
       <div
         className="relative overflow-hidden  border-3 border-primary/10 group-hover:border-primary transition-all duration-500"
         style={{
@@ -68,16 +68,17 @@ export default function CharacterLogsSection() {
           <h3 className="text-4xl font-display font-black text-white uppercase tracking-tighter">{character.name}</h3>
         </div>
       </div>
+      </div>
     </AnimatedCard>
   );
 
   return (
-    <section className="py-24 px-8 ">
+    <section className="py-24 px-8">
       <Carousel
         items={characters}
         renderItem={renderCharacterCard}
         itemsPerView={{ mobile: 1, tablet: 2, desktop: 4 }}
-        gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         titleComponent={<SectionTitle>Character Logs</SectionTitle>}
       />
     </section>
