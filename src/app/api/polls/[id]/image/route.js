@@ -90,28 +90,8 @@ export async function GET(request, { params }) {
     const displayQuestion =
       pollQuestion.length > maxQuestionLength ? pollQuestion.substring(0, maxQuestionLength) + "..." : pollQuestion;
 
-    // Read the font file and convert it to a data URI
-    let fontDataUri = "";
-    try {
-      const publicPath = join(process.cwd(), "public");
-      const fontPath = join(publicPath, "assets/fonts/mokoto/mokoto.ttf");
-
-      // Try to read the font file
-      const fontBuffer = await readFile(fontPath);
-
-      // For file size optimization, we'll only embed the font if it's small enough
-      // Limit the font to 50KB to help keep total size under 300KB
-      if (fontBuffer.length <= 50000) {
-        // Convert buffer to base64
-        const base64Font = fontBuffer.toString("base64");
-
-        fontDataUri = `data:font/ttf;base64,${base64Font}`;
-      }
-    } catch (error) {
-      console.error("Mokoto font not found or could not be read:", error.message);
-      // Font won't be embedded if not found
-      fontDataUri = "";
-    }
+    // Skip font embedding to reduce file size - use web-safe fonts instead
+    const fontDataUri = "";
 
     // Create SVG for options
     const optionBars = [];
@@ -120,7 +100,7 @@ export async function GET(request, { params }) {
     optionBars.push(`
       <g>
         <!-- Tool label on top of bar -->
-        <text x="${horizontalMargin + barWidth / 2}" y="${firstOptionY - 15}" font-size="26" font-weight="700" fill="#C2FF02" text-anchor="middle" dominant-baseline="middle" font-family="Mokoto, Arial, sans-serif">${option1Name}</text>
+        <text x="${horizontalMargin + barWidth / 2}" y="${firstOptionY - 15}" font-size="26" font-weight="700" fill="#C2FF02" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif">${option1Name}</text>
 
         <!-- Background bar (semi-transparent dark) -->
         <rect x="${horizontalMargin}" y="${firstOptionY}" width="${barWidth}" height="${barHeight}" rx="12" fill="rgba(26, 26, 46, 0.8)"/>
@@ -129,7 +109,7 @@ export async function GET(request, { params }) {
         <rect x="${horizontalMargin}" y="${firstOptionY}" width="${(barWidth * percentage1) / 100}" height="${barHeight}" rx="12" fill="#C2FF02"/>
 
         <!-- Percentage and votes (below the bar) -->
-        <text x="${horizontalMargin + barWidth / 2}" y="${firstOptionY + barHeight + 25}" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle" font-family="Mokoto, Arial, sans-serif">${percentage1}% · ${votes1} ${votes1 === 1 ? "vote" : "votes"}</text>
+        <text x="${horizontalMargin + barWidth / 2}" y="${firstOptionY + barHeight + 25}" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif">${percentage1}% · ${votes1} ${votes1 === 1 ? "vote" : "votes"}</text>
       </g>
     `);
 
@@ -137,7 +117,7 @@ export async function GET(request, { params }) {
     optionBars.push(`
       <g>
         <!-- Tool label on top of bar -->
-        <text x="${horizontalMargin + barWidth + columnSpacing + barWidth / 2}" y="${firstOptionY - 15}" font-size="26" font-weight="700" fill="#00BFFF" text-anchor="middle" dominant-baseline="middle" font-family="Mokoto, Arial, sans-serif">${option2Name}</text>
+        <text x="${horizontalMargin + barWidth + columnSpacing + barWidth / 2}" y="${firstOptionY - 15}" font-size="26" font-weight="700" fill="#00BFFF" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif">${option2Name}</text>
 
         <!-- Background bar (semi-transparent dark) -->
         <rect x="${horizontalMargin + barWidth + columnSpacing}" y="${firstOptionY}" width="${barWidth}" height="${barHeight}" rx="12" fill="rgba(26, 26, 46, 0.8)"/>
@@ -146,7 +126,7 @@ export async function GET(request, { params }) {
         <rect x="${horizontalMargin + barWidth + columnSpacing}" y="${firstOptionY}" width="${(barWidth * percentage2) / 100}" height="${barHeight}" rx="12" fill="#00BFFF"/>
 
         <!-- Percentage and votes (below the bar) -->
-        <text x="${horizontalMargin + barWidth + columnSpacing + barWidth / 2}" y="${firstOptionY + barHeight + 25}" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle" font-family="Mokoto, Arial, sans-serif">${percentage2}% · ${votes2} ${votes2 === 1 ? "vote" : "votes"}</text>
+        <text x="${horizontalMargin + barWidth + columnSpacing + barWidth / 2}" y="${firstOptionY + barHeight + 25}" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif">${percentage2}% · ${votes2} ${votes2 === 1 ? "vote" : "votes"}</text>
       </g>
     `);
 
@@ -208,16 +188,7 @@ export async function GET(request, { params }) {
         ${
           fontDataUri
             ? `
-        <!-- Font Definition -->
-        <style type="text/css"><![CDATA[
-          @font-face {
-            font-family: 'Mokoto';
-            src: url('${fontDataUri}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-          }
-        ]]></style>
-        `
+`
             : ""
         }
 
@@ -233,28 +204,28 @@ export async function GET(request, { params }) {
         <rect width="${width}" height="${height}" fill="url(#overlayGradient)"/>
 
         <!-- Question at top (center aligned) -->
-        <text x="${width / 2}" y="${questionY}" font-size="38" font-weight="700" fill="#C2FF02" text-anchor="middle" font-family="Mokoto, Arial, sans-serif">
+        <text x="${width / 2}" y="${questionY}" font-size="38" font-weight="700" fill="#C2FF02" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">
           ${displayQuestion}
         </text>
 
         <!-- Logo in middle (center aligned) -->
-        <text x="${width / 2}" y="${logoY}" font-size="72" text-anchor="middle" font-family="Mokoto, Arial, sans-serif" fill="#C2FF02">
+        <text x="${width / 2}" y="${logoY}" font-size="72" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" fill="#C2FF02">
           📊
         </text>
 
         <!-- Option bars (center aligned) -->
-        <g font-family="Mokoto, Arial, sans-serif">
+        <g font-family="Arial, Helvetica, sans-serif">
           ${optionBars.join("")}
         </g>
 
         <!-- Total Votes -->
-        <text x="${width / 2}" y="${height - verticalMargin - 110}" font-size="32" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Mokoto, Arial, sans-serif">Total Votes: ${totalVotes}</text>
+        <text x="${width / 2}" y="${height - verticalMargin - 110}" font-size="32" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">Total Votes: ${totalVotes}</text>
 
         <!-- Vote text -->
-        <text x="${width / 2}" y="${height - verticalMargin - 60}" font-size="34" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Mokoto, Arial, sans-serif">#RESISTOREVOLVE</text>
+        <text x="${width / 2}" y="${height - verticalMargin - 60}" font-size="34" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">#RESISTOREVOLVE</text>
 
         <!-- Poll Application -->
-        <text x="${width / 2}" y="${height - verticalMargin - 10}" font-size="30" font-weight="600" fill="#E5E7EB" text-anchor="middle" font-family="Mokoto, Arial, sans-serif">SPOREFALL.COM</text>
+        <text x="${width / 2}" y="${height - verticalMargin - 10}" font-size="30" font-weight="600" fill="#E5E7EB" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">SPOREFALL.COM</text>
       </svg>
     `;
 
