@@ -3,7 +3,9 @@
 import { ArrowRight, Clock, Lock } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import NotificationPopup from "../popups/NotificationPopup";
 import PollStepModal from "../popups/PollStepModal";
+import YouTubeModal from "../popups/YouTubeModal";
 import { AnimatedCard } from "../shared/AnimatedWrapper";
 import Carousel from "../shared/Carousel";
 import { SectionTitle } from "../shared/SectionTitle";
@@ -20,6 +22,10 @@ export default function EpisodesSection() {
   const [hasCheckedFirstVisit, setHasCheckedFirstVisit] = useState(false);
   const [episodesLoaded, setEpisodesLoaded] = useState(false);
   const [votedEpisodes, setVotedEpisodes] = useState([]);
+  const [isYouTubeModalOpen, setIsYouTubeModalOpen] = useState(false);
+  const [selectedEpisodeForVideo, setSelectedEpisodeForVideo] = useState(null);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
     const loadEpisodes = async () => {
@@ -354,7 +360,8 @@ export default function EpisodesSection() {
         // User already voted, don't open modal
         setSelectedEpisodeId(null);
         setPollLoading(false);
-        alert("You have already voted on this episode.");
+        setNotificationMessage("You have already voted on this episode.");
+        setIsNotificationOpen(true);
         return;
       }
 
@@ -403,11 +410,13 @@ export default function EpisodesSection() {
         } else {
           // Reset selection if no poll found
           setSelectedEpisodeId(null);
-          alert("No poll available for this episode.");
+          setNotificationMessage("No poll available for this episode.");
+          setIsNotificationOpen(true);
         }
       } catch (err) {
         setSelectedEpisodeId(null);
-        alert(`Error loading poll: ${err.message}`);
+        setNotificationMessage(`Error loading poll: ${err.message}`);
+        setIsNotificationOpen(true);
       } finally {
         setPollLoading(false);
       }
@@ -419,7 +428,8 @@ export default function EpisodesSection() {
   const handleWatchNow = (episodeId) => {
     // Validate episode ID
     if (!episodeId || episodeId === null || episodeId === undefined) {
-      alert("Episode ID is missing. Cannot open poll.");
+      setNotificationMessage("Episode ID is missing. Cannot open poll.");
+      setIsNotificationOpen(true);
       return;
     }
 
@@ -442,6 +452,109 @@ export default function EpisodesSection() {
     // Reset hasCheckedFirstVisit so modal can auto-open again on next page load
     setHasCheckedFirstVisit(false);
   };
+
+  const handleWatchNowClick = (episode) => {
+    // Check if episode has a videoUrl
+    if (episode.videoUrl) {
+      // Open YouTube modal
+      setSelectedEpisodeForVideo(episode);
+      setIsYouTubeModalOpen(true);
+    } else {
+      // Show notification popup if no video available
+      setNotificationMessage("There is no episode video available.");
+      setIsNotificationOpen(true);
+    }
+  };
+
+  const handleCloseYouTubeModal = () => {
+    setIsYouTubeModalOpen(false);
+    setSelectedEpisodeForVideo(null);
+  };
+
+  const handleCloseNotification = () => {
+    setIsNotificationOpen(false);
+    setNotificationMessage("");
+  };
+
+  // Update the poll fetch error handling to use notification popup
+  useEffect(() => {
+    const fetchPoll = async () => {
+      if (!selectedEpisodeId) {
+        return;
+      }
+
+      // Check if user has already voted on this episode
+      const selectedEpisodeIdStr = String(selectedEpisodeId);
+      const votedEpisodesStr = votedEpisodes.map((id) => String(id));
+
+      if (votedEpisodesStr.includes(selectedEpisodeIdStr)) {
+        // User already voted, don't open modal
+        setSelectedEpisodeId(null);
+        setPollLoading(false);
+        setNotificationMessage("You have already voted on this episode.");
+        setIsNotificationOpen(true);
+        return;
+      }
+
+      try {
+        setPollLoading(true);
+        // Use the new episode-specific API route
+        const url = `/api/polls/episode/${encodeURIComponent(selectedEpisodeId)}`;
+
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || "Failed to fetch poll");
+        }
+
+        const data = await response.json();
+
+        // Get the first poll for this episode (or filter by status if needed)
+        if (data.polls && data.polls.length > 0) {
+          // Filter for LIVE polls first, or take the first one
+          const activePoll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
+
+          // Map to the format expected by PollStepModal - use same structure as API response
+          const mappedPollData = {
+            ...activePoll, // Spread all fields from API response
+            id: activePoll.id,
+            episode_id: activePoll.episodeId,
+            episodeId: activePoll.episodeId,
+            title: activePoll.title || activePoll.question || "Poll",
+            question: activePoll.question || activePoll.title || "Make your choice",
+            description: activePoll.description || activePoll.question || "Make your choice",
+            status: activePoll.status || "LIVE",
+            // Keep options as-is from API (already in correct format)
+            options: activePoll.options || [],
+          };
+
+          // Open the modal only if user hasn't voted
+          setPollData(mappedPollData);
+          setIsPollModalOpen(true);
+        } else {
+          // Reset selection if no poll found
+          setSelectedEpisodeId(null);
+          setNotificationMessage("No poll available for this episode.");
+          setIsNotificationOpen(true);
+        }
+      } catch (err) {
+        setSelectedEpisodeId(null);
+        setNotificationMessage(`Error loading poll: ${err.message}`);
+        setIsNotificationOpen(true);
+      } finally {
+        setPollLoading(false);
+      }
+    };
+
+    fetchPoll();
+  }, [selectedEpisodeId, votedEpisodes]);
   const renderEpisodeCard = (episode) => (
     <AnimatedCard key={episode.id || `episode-${episode.episodeNumber}`} hoverGlow={true} hoverFloat={true}>
       <div
@@ -458,15 +571,22 @@ export default function EpisodesSection() {
         }}
       >
         {/* Image Section */}
-        <div className="relative overflow-hidden w-full aspect-[326/222]">
+        <div
+          className="relative overflow-hidden w-full aspect-[326/222] cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleWatchNowClick(episode);
+          }}
+        >
           <Image
             alt={episode.title}
             className={`object-cover w-full h-full group-hover:scale-110 transition-transform duration-500 ${
               episode.status === "locked" ? "grayscale" : episode.status === "upcoming" ? "grayscale" : ""
             }`}
             src={episode.thumbnail}
-            fill
-            unoptimized
+            width={648}
+            height={444}
           />
           {episode.status === "available" && (
             <span className="absolute top-2 left-2 bg-black text-white text-[8px] font-bold px-2 py-0.5 uppercase flex items-center gap-1.5 rounded">
@@ -556,21 +676,23 @@ export default function EpisodesSection() {
                         e.stopPropagation();
 
                         if (!episodeIdToUse) {
-                          alert("Episode ID is missing. Cannot open poll.");
+                          setNotificationMessage("Episode ID is missing. Cannot open poll.");
+                          setIsNotificationOpen(true);
                           return;
                         }
 
                         // If user already voted, show message instead of opening modal
                         if (hasVoted) {
-                          alert("You have already voted on this episode.");
+                          setNotificationMessage("You have already voted on this episode.");
+                          setIsNotificationOpen(true);
                           return;
                         }
 
                         // Open poll modal only if not voted
                         handleWatchNow(episodeIdToUse);
                       }}
-                      disabled={pollLoading}
-                      className={`border text-[9px] font-bold px-3 py-1.5 uppercase flex items-center gap-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      disabled={pollLoading || hasVoted}
+                      className={`cursor-pointer border text-[9px] font-bold px-3 py-1.5 uppercase flex items-center gap-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
                         hasVoted
                           ? "border-gray-500 text-gray-400 cursor-pointer"
                           : "border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:border-cyan-500 hover:text-black"
@@ -595,15 +717,10 @@ export default function EpisodesSection() {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    // Navigate to watch page or handle watch action
-                    // For now, we'll keep the vote functionality here too
-                    const episodeIdToUse = episode.id || episode.uniqueEpisodeId;
-                    if (episodeIdToUse) {
-                      handleWatchNow(episodeIdToUse);
-                    }
+                    handleWatchNowClick(episode);
                   }}
                   disabled={pollLoading}
-                  className="border border-primary text-white text-[9px] font-bold px-3 py-1.5 uppercase flex items-center gap-1 transition-all duration-300 group-hover:bg-white group-hover:border-white group-hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="border border-primary text-white text-[9px] font-bold px-3 py-1.5 uppercase flex items-center gap-1 transition-all duration-300 group-hover:bg-white group-hover:border-white group-hover:text-black disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   style={{
                     borderTopRightRadius: "4px",
                     borderBottomLeftRadius: "4px",
@@ -715,6 +832,20 @@ export default function EpisodesSection() {
             }
           }
         }}
+      />
+      {/* YouTube Modal - Opens when Watch Now button is clicked for episodes with videoUrl */}
+      <YouTubeModal
+        isOpen={isYouTubeModalOpen}
+        onClose={handleCloseYouTubeModal}
+        videoUrl={selectedEpisodeForVideo?.videoUrl}
+        title={selectedEpisodeForVideo?.title || "Watch Episode"}
+      />
+      {/* Notification Popup - Shows various messages including no poll available */}
+      <NotificationPopup
+        isOpen={isNotificationOpen}
+        onClose={handleCloseNotification}
+        message={notificationMessage}
+        title="Notice"
       />
     </>
   );
