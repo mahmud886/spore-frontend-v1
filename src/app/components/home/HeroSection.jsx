@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, scaleIn } from "../../utils/animations";
+import { scaleIn } from "../../utils/animations";
 
 export default function HeroSection() {
   const handleSeasonClick = () => {
@@ -153,7 +153,8 @@ export default function HeroSection() {
                 boxShadow: "0 0 30px rgba(194, 255, 2, 0.5)",
               }}
               whileTap={{ scale: 0.98 }}
-              className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] font-semibold px-8 md:px-16 lg:px-[80px] py-2 md:py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 max-w-xs md:max-w-md lg:max-w-none mx-auto cyber-glow-pulse cyber-neon-trail"
+              style={{ borderTopRightRadius: "8px", borderBottomLeftRadius: "8px" }}
+              className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] leading-[28px] font-semibold py-5 px-10 md:py-8 md:px-20 shadow-lg hover:shadow-xl transition-all duration-300  mx-auto cyber-glow-pulse cyber-neon-trail rounded-tr-8 rounded-bl-8"
             >
               Season 1
             </motion.button>
