@@ -60,6 +60,12 @@ export default function NewsletterSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Mark all fields as touched when submitting
+    setTouched({
+      name: true,
+      email: true
+    });
+
     if (!validateForm()) {
       return;
     }
