@@ -1,14 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { X, Menu } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useLayoutEffect, useState } from "react";
 import { Wrapper } from "./shared/Wrapper";
 
 export default function Navbar() {
+  const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hash, setHash] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useLayoutEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== "undefined") {
+      setHash(window.location.hash);
+
+      const handleHashChange = () => {
+        setHash(window.location.hash);
+      };
+
+      window.addEventListener("hashchange", handleHashChange);
+      return () => window.removeEventListener("hashchange", handleHashChange);
+    }
+  }, []);
+
+  // Helper function to get active class names
+  const getActiveClass = (condition) => {
+    if (!isMounted) return "text-white/60 hover:text-primary";
+    return condition ? "text-primary" : "text-white/60 hover:text-primary";
+  };
 
   const handleScrollToSection = (e, sectionId) => {
     e.preventDefault();
@@ -82,29 +105,57 @@ export default function Navbar() {
             SPORE <span className="text-primary">FALL</span>
           </Link>
           <div className="hidden md:flex space-x-8 text-xs font-bold font-subheading tracking-widest">
-            <a
-              href="/#home"
-              onClick={(e) => handleScrollToSection(e, "home")}
-              className="text-primary hover:opacity-80 transition-opacity"
+            <Link
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                if (pathname === "/") {
+                  handleScrollToSection(e, "home");
+                } else {
+                  router.push("/");
+                }
+              }}
+              className={`${getActiveClass(pathname === "/" && (!hash || hash === ""))} transition-colors`}
             >
               HOME
-            </a>
-            <a
-              href="/#spore-log"
-              onClick={(e) => handleScrollToSection(e, "spore-log")}
-              className="hover:text-primary transition-colors"
+            </Link>
+            <Link
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                if (pathname === "/") {
+                  handleScrollToSection(e, "spore-log");
+                } else {
+                  router.push("/#spore-log");
+                }
+              }}
+              className={`${getActiveClass(
+                pathname === "/" && typeof window !== "undefined" && window.location.hash === "#spore-log",
+              )} transition-colors`}
             >
               SPORE LOG
-            </a>
-            <a
-              href="/result#shop"
-              onClick={(e) => handleScrollToSection(e, "shop")}
-              className="hover:text-primary transition-colors"
+            </Link>
+            <Link
+              href="/result"
+              onClick={(e) => {
+                e.preventDefault();
+                if (pathname === "/result") {
+                  handleScrollToSection(e, "shop");
+                } else {
+                  router.push("/result#shop");
+                }
+              }}
+              className={`${getActiveClass(
+                pathname === "/result" && typeof window !== "undefined" && window.location.hash === "#shop",
+              )} transition-colors`}
             >
               SHOP
-            </a>
-            <Link href="/about" className="hover:text-primary transition-colors">
+            </Link>
+            <Link href="/about" className={`${getActiveClass(pathname === "/about")} transition-colors`}>
               ABOUT
+            </Link>
+            <Link href="/support-us" className={`${getActiveClass(pathname === "/support-us")} transition-colors`}>
+              SUPPORT US
             </Link>
           </div>
           <div className="md:hidden">
@@ -122,33 +173,66 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
             <div className="flex flex-col space-y-4">
-              <a
-                href="/#home"
-                onClick={(e) => handleScrollToSection(e, "home")}
-                className="text-primary hover:opacity-80 transition-opacity text-sm font-bold font-subheading tracking-widest uppercase py-2"
+              <Link
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (pathname === "/") {
+                    handleScrollToSection(e, "home");
+                  } else {
+                    router.push("/");
+                  }
+                }}
+                className={`${getActiveClass(
+                  pathname === "/" && (!hash || hash === ""),
+                )} transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2`}
               >
                 HOME
-              </a>
-              <a
-                href="/#spore-log"
-                onClick={(e) => handleScrollToSection(e, "spore-log")}
-                className="hover:text-primary transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2"
+              </Link>
+              <Link
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (pathname === "/") {
+                    handleScrollToSection(e, "spore-log");
+                  } else {
+                    router.push("/#spore-log");
+                  }
+                }}
+                className={`${getActiveClass(
+                  pathname === "/" && typeof window !== "undefined" && window.location.hash === "#spore-log",
+                )} transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2`}
               >
                 SPORE LOG
-              </a>
-              <a
-                href="/result#shop"
-                onClick={(e) => handleScrollToSection(e, "shop")}
-                className="hover:text-primary transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2"
+              </Link>
+              <Link
+                href="/result"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (pathname === "/result") {
+                    handleScrollToSection(e, "shop");
+                  } else {
+                    router.push("/result#shop");
+                  }
+                }}
+                className={`${getActiveClass(
+                  pathname === "/result" && typeof window !== "undefined" && window.location.hash === "#shop",
+                )} transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2`}
               >
                 SHOP
-              </a>
+              </Link>
               <Link
                 href="/about"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="hover:text-primary transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2"
+                className={`${getActiveClass(pathname === "/about")} transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2`}
               >
                 ABOUT
+              </Link>
+              <Link
+                href="/support-us"
+                className={`${getActiveClass(pathname === "/support-us")} transition-colors text-sm font-bold font-subheading tracking-widest uppercase py-2`}
+              >
+                SUPPORT US
               </Link>
             </div>
           </div>

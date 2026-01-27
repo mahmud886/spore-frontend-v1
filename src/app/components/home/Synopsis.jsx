@@ -69,7 +69,7 @@ export function Synopsis() {
             }}
             whileTap={{ scale: 0.98 }}
             style={{ borderTopRightRadius: "8px", borderBottomLeftRadius: "8px" }}
-              className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] leading-[28px] font-semibold py-5 px-10 md:py-8 md:px-20 shadow-lg hover:shadow-xl transition-all duration-300  mx-auto cyber-glow-pulse cyber-neon-trail rounded-tr-8 rounded-bl-8"
+            className="bg-[#C2FF02] font-subheading tracking-widest hover:bg-[#a8db02] text-black text-[24px] md:text-[32px] lg:text-[48px] leading-[28px] font-semibold py-5 px-10 md:py-8 md:px-20 shadow-lg hover:shadow-xl transition-all duration-300  mx-auto cyber-glow-pulse cyber-neon-trail rounded-tr-8 rounded-bl-8"
           >
             Watch Now
           </motion.button>

@@ -5,45 +5,41 @@ export async function GET(request) {
     const supabase = await createClient();
 
     // Get all secret drops submissions
-    const { data, error } = await supabase
-      .from('secret_drops')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const { data, error } = await supabase.from("secret_drops").select("*").order("created_at", { ascending: false });
 
     if (error) {
-      console.error('Supabase error:', error);
+      console.error("Supabase error:", error);
       return new Response(
         JSON.stringify({
-          error: "Failed to fetch secret drops"
+          error: "Failed to fetch secret drops",
         }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
     return new Response(
       JSON.stringify({
         success: true,
-        data: data
+        data: data,
       }),
       {
         status: 200,
-        headers: { "Content-Type": "application/json" }
-      }
+        headers: { "Content-Type": "application/json" },
+      },
     );
-
   } catch (error) {
-    console.error('Server error:', error);
+    console.error("Server error:", error);
     return new Response(
       JSON.stringify({
-        error: "Internal server error"
+        error: "Internal server error",
       }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" }
-      }
+        headers: { "Content-Type": "application/json" },
+      },
     );
   }
 }
@@ -56,12 +52,12 @@ export async function POST(request) {
     if (!name || !email) {
       return new Response(
         JSON.stringify({
-          error: "Name and email are required fields"
+          error: "Name and email are required fields",
         }),
         {
           status: 400,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -70,12 +66,12 @@ export async function POST(request) {
     if (!emailRegex.test(email)) {
       return new Response(
         JSON.stringify({
-          error: "Please provide a valid email address"
+          error: "Please provide a valid email address",
         }),
         {
           status: 400,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -83,59 +79,59 @@ export async function POST(request) {
 
     // Check if email already exists
     const { data: existingData, error: checkError } = await supabase
-      .from('secret_drops')
-      .select('id')
-      .eq('email', email.trim().toLowerCase())
+      .from("secret_drops")
+      .select("id")
+      .eq("email", email.trim().toLowerCase())
       .single();
 
-    if (checkError && checkError.code !== 'PGRST116') {
-      console.error('Supabase check error:', checkError);
+    if (checkError && checkError.code !== "PGRST116") {
+      console.error("Supabase check error:", checkError);
       return new Response(
         JSON.stringify({
-          error: "Failed to check email availability"
+          error: "Failed to check email availability",
         }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
     if (existingData) {
       return new Response(
         JSON.stringify({
-          error: "This email has already been submitted"
+          error: "This email has already been submitted",
         }),
         {
           status: 409,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
     // Insert the secret drop submission
     const { data, error } = await supabase
-      .from('secret_drops')
+      .from("secret_drops")
       .insert([
         {
           name: name.trim(),
           email: email.trim().toLowerCase(),
           message: message ? message.trim() : null,
-          created_at: new Date().toISOString()
-        }
+          created_at: new Date().toISOString(),
+        },
       ])
       .select();
 
     if (error) {
-      console.error('Supabase error:', error);
+      console.error("Supabase error:", error);
       return new Response(
         JSON.stringify({
-          error: "Failed to submit your information. Please try again."
+          error: "Failed to submit your information. Please try again.",
         }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" }
-        }
+          headers: { "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -143,24 +139,23 @@ export async function POST(request) {
       JSON.stringify({
         success: true,
         message: "Thank you for your submission!",
-        data: data[0]
+        data: data[0],
       }),
       {
         status: 200,
-        headers: { "Content-Type": "application/json" }
-      }
+        headers: { "Content-Type": "application/json" },
+      },
     );
-
   } catch (error) {
-    console.error('Server error:', error);
+    console.error("Server error:", error);
     return new Response(
       JSON.stringify({
-        error: "Internal server error"
+        error: "Internal server error",
       }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" }
-      }
+        headers: { "Content-Type": "application/json" },
+      },
     );
   }
 }

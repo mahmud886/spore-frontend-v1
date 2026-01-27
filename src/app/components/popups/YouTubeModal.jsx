@@ -24,7 +24,7 @@ export default function YouTubeModal({ isOpen, onClose, videoUrl, title = "Watch
     // Handle different YouTube URL formats
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
+    return match && match[2].length === 11 ? match[2] : null;
   };
 
   const videoId = getYouTubeVideoId(videoUrl);
@@ -47,9 +47,7 @@ export default function YouTubeModal({ isOpen, onClose, videoUrl, title = "Watch
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-primary bg-black/50">
-          <h3 className="text-xl font-bold text-white uppercase tracking-wider">
-            {title}
-          </h3>
+          <h3 className="text-xl font-bold text-white uppercase tracking-wider">{title}</h3>
           <button
             onClick={handleClose}
             className="p-2 hover:bg-white/10 rounded-full transition-colors duration-200"

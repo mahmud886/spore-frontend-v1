@@ -27,14 +27,14 @@ export default function MobilizeNetworkCard({ title, description, platforms = de
   useEffect(() => {
     const fetchSignals = async () => {
       try {
-        const response = await fetch('/api/signals');
+        const response = await fetch("/api/signals");
         const data = await response.json();
 
         if (response.ok && data.signal_count) {
           setSignalCount(data.signal_count);
         }
       } catch (error) {
-        console.error('Failed to fetch signals:', error);
+        console.error("Failed to fetch signals:", error);
         // Keep default value on error
       } finally {
         setLoading(false);
@@ -100,9 +100,8 @@ export default function MobilizeNetworkCard({ title, description, platforms = de
             Your Contribution Is Vital
           </h3>
           <p className="text-[18px] md:text-[26px] text-white/50 font-subheading tracking-widest leading-relaxed mb-6 font-bold">
-            <span className="text-primary font-bold">
-              {loading ? '10, 984' : signalCount.toLocaleString()}
-            </span> signals broadcasted
+            <span className="text-primary font-bold">{loading ? "10, 984" : signalCount.toLocaleString()}</span> signals
+            broadcasted
           </p>
         </motion.div>
       </div>

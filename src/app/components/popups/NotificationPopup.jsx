@@ -43,12 +43,8 @@ export default function NotificationPopup({ isOpen, onClose, message, title = "N
 
           {/* Content */}
           <div className="text-center">
-            <h3 className="text-xl font-bold text-white mb-4 uppercase tracking-wider">
-              {title}
-            </h3>
-            <p className="text-white/80 text-lg font-medium">
-              {message}
-            </p>
+            <h3 className="text-xl font-bold text-white mb-4 uppercase tracking-wider">{title}</h3>
+            <p className="text-white/80 text-lg font-medium">{message}</p>
           </div>
         </div>
       </div>

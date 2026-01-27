@@ -10,7 +10,7 @@ export default function NewsletterSection() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: ""
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -18,11 +18,11 @@ export default function NewsletterSection() {
   const [popupType, setPopupType] = useState("success"); // "success" or "error"
   const [errors, setErrors] = useState({
     name: "",
-    email: ""
+    email: "",
   });
   const [touched, setTouched] = useState({
     name: false,
-    email: false
+    email: false,
   });
 
   const validateField = (name, value) => {
@@ -63,7 +63,7 @@ export default function NewsletterSection() {
     // Mark all fields as touched when submitting
     setTouched({
       name: true,
-      email: true
+      email: true,
     });
 
     if (!validateForm()) {
@@ -82,7 +82,7 @@ export default function NewsletterSection() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          message: formData.message || null
+          message: formData.message || null,
         }),
       });
 
@@ -109,9 +109,9 @@ export default function NewsletterSection() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     // Clear popup when user starts typing
@@ -122,24 +122,24 @@ export default function NewsletterSection() {
     // Validate field on change if it has been touched
     if (touched[name]) {
       const error = validateField(name, value);
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: error
+        [name]: error,
       }));
     }
   };
 
   const handleInputBlur = (e) => {
     const { name, value } = e.target;
-    setTouched(prev => ({
+    setTouched((prev) => ({
       ...prev,
-      [name]: true
+      [name]: true,
     }));
 
     const error = validateField(name, value);
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      [name]: error
+      [name]: error,
     }));
   };
 
@@ -179,9 +179,7 @@ export default function NewsletterSection() {
                         : "border-[#C2FF02]/20 focus:border-[#C2FF02] focus:ring-primary"
                     }`}
                   />
-                  {errors.name && touched.name && (
-                    <p className="text-red-500 text-xs mt-1 ml-1">{errors.name}</p>
-                  )}
+                  {errors.name && touched.name && <p className="text-red-500 text-xs mt-1 ml-1">{errors.name}</p>}
                 </div>
                 <div className="flex-1">
                   <motion.input
@@ -198,9 +196,7 @@ export default function NewsletterSection() {
                         : "border-[#C2FF02]/20 focus:border-[#C2FF02] focus:ring-primary"
                     }`}
                   />
-                  {errors.email && touched.email && (
-                    <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>
-                  )}
+                  {errors.email && touched.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>}
                 </div>
                 {/* <motion.input
                   type="text"

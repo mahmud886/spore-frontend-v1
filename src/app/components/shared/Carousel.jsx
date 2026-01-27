@@ -36,8 +36,6 @@ export default function Carousel({
   const [dragPosition, setDragPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-
-
   useEffect(() => {
     const updateItemsPerSlide = () => {
       if (window.innerWidth >= 1024) {
@@ -60,7 +58,6 @@ export default function Carousel({
   // Total slides = total items (since we scroll one at a time)
   const totalSlides = items.length;
   const currentPage = Math.min(currentIndex + 1, totalSlides);
-
 
   // Auto-play functionality
   useEffect(() => {
@@ -133,7 +130,7 @@ export default function Carousel({
 
   // Drag functions
   const touchStart = (e) => {
-    const event = e.type.includes('touch') ? e.touches[0] : e;
+    const event = e.type.includes("touch") ? e.touches[0] : e;
     startXRef.current = event.clientX;
     dragStartTimeRef.current = Date.now();
     setIsDragging(true);
@@ -144,7 +141,7 @@ export default function Carousel({
   const touchMove = (e) => {
     if (!isDragging) return;
 
-    const event = e.type.includes('touch') ? e.touches[0] : e;
+    const event = e.type.includes("touch") ? e.touches[0] : e;
     const diffX = event.clientX - startXRef.current;
     setDragPosition(diffX);
   };
@@ -246,7 +243,7 @@ export default function Carousel({
           className={gridClassName}
           key={currentIndex}
           style={{
-            cursor: isDragging ? 'grabbing' : 'grab',
+            cursor: isDragging ? "grabbing" : "grab",
           }}
           onMouseDown={touchStart}
           onMouseMove={touchMove}
