@@ -171,7 +171,9 @@ export default function HomePage() {
           <div id="shop">
             <EpisodesSection />
           </div>
-          <NewsletterSection />
+          <div className="px-10 ">
+            <NewsletterSection />
+          </div>
           <CharacterLogsSection />
           <div id="spore-log" className="pb-4 px-8 ">
             <SporeBlogSection title="Spore Logs" className="" sectionClassName="" fetchFromAPI={true} />

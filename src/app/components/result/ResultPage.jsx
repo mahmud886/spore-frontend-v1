@@ -1,3 +1,4 @@
+import NewsletterSection from "../home/NewsletterSection";
 import SporeBlogSection from "../shared/SporeBlogSection";
 import { Wrapper } from "../shared/Wrapper";
 import CountdownSection from "./CountdownSection";
@@ -59,7 +60,8 @@ export default function ResultPage({
         />
         {/* <IdentityArtifactSection {...identityArtifactProps} /> */}
         {/* <UserProfileSection {...userProfileProps} /> */}
-        <div id="shop">
+        <NewsletterSection />
+        <div id="shop" className="pt-24">
           <ProductsSection {...productsProps} />
         </div>
         <div id="spore-log">
