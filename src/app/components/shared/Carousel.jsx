@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -23,6 +24,19 @@ export default function Carousel({
   const [isHovering, setIsHovering] = useState(false);
   const autoPlayTimerRef = useRef(null);
   const resumeTimerRef = useRef(null);
+  const prevTotalSlidesRef = useRef(0);
+
+  // Drag-related state and refs
+  const startXRef = useRef(0);
+  const dragStartTimeRef = useRef(0);
+  const touchElementRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Drag animation state
+  const [dragPosition, setDragPosition] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+
 
   useEffect(() => {
     const updateItemsPerSlide = () => {
@@ -45,14 +59,8 @@ export default function Carousel({
   // Calculate total slides - scroll item by item, not in groups
   // Total slides = total items (since we scroll one at a time)
   const totalSlides = items.length;
-  const currentPage = currentIndex + 1;
+  const currentPage = Math.min(currentIndex + 1, totalSlides);
 
-  // Reset currentIndex if it's out of bounds
-  useEffect(() => {
-    if (currentIndex >= totalSlides && totalSlides > 0) {
-      setCurrentIndex(0);
-    }
-  }, [currentIndex, totalSlides]);
 
   // Auto-play functionality
   useEffect(() => {
@@ -105,13 +113,68 @@ export default function Carousel({
 
   const goToNext = () => {
     pauseAutoPlay();
-    setCurrentIndex((prev) => (prev + 1) % items.length); // Loop infinitely
+
+    setCurrentIndex((prev) => {
+      const nextIndex = (prev + 1) % items.length;
+      return nextIndex;
+    }); // Loop infinitely
     scheduleResume();
   };
 
   const goToPrev = () => {
     pauseAutoPlay();
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length); // Loop infinitely
+
+    setCurrentIndex((prev) => {
+      const prevIndex = (prev - 1 + items.length) % items.length;
+      return prevIndex;
+    }); // Loop infinitely
+    scheduleResume();
+  };
+
+  // Drag functions
+  const touchStart = (e) => {
+    const event = e.type.includes('touch') ? e.touches[0] : e;
+    startXRef.current = event.clientX;
+    dragStartTimeRef.current = Date.now();
+    setIsDragging(true);
+
+    pauseAutoPlay();
+  };
+
+  const touchMove = (e) => {
+    if (!isDragging) return;
+
+    const event = e.type.includes('touch') ? e.touches[0] : e;
+    const diffX = event.clientX - startXRef.current;
+    setDragPosition(diffX);
+  };
+
+  const touchEnd = () => {
+    if (!isDragging) return;
+
+    setIsDragging(false);
+
+    const endTime = Date.now();
+    const duration = endTime - dragStartTimeRef.current;
+    const distance = dragPosition;
+    const velocity = Math.abs(distance) / duration;
+
+    // Determine if we should move to next/previous slide
+    const threshold = 50; // Minimum distance to trigger a slide change
+    const velocityThreshold = 0.5; // Minimum velocity to trigger a slide change
+
+    if (Math.abs(distance) > threshold || velocity > velocityThreshold) {
+      if (distance > 0) {
+        // Swipe right - go to previous
+        goToPrev();
+      } else {
+        // Swipe left - go to next
+        goToNext();
+      }
+    }
+
+    setDragPosition(0);
+
     scheduleResume();
   };
 
@@ -177,14 +240,35 @@ export default function Carousel({
         </div>
       )}
 
-      {/* Carousel Grid with smooth animation */}
-      <div className="relative overflow-hidden">
-        <div className={gridClassName} key={currentIndex}>
-          {visibleItems.map(({ item, originalIndex }, index) => (
-            <div key={`${originalIndex}-${currentIndex}`} className="animate-fade-in-slide">
-              {renderItem(item, originalIndex)}
-            </div>
-          ))}
+      {/* Carousel Grid with basic functionality */}
+      <div ref={containerRef} className="relative overflow-hidden">
+        <div
+          className={gridClassName}
+          key={currentIndex}
+          style={{
+            cursor: isDragging ? 'grabbing' : 'grab',
+          }}
+          onMouseDown={touchStart}
+          onMouseMove={touchMove}
+          onMouseUp={touchEnd}
+          onMouseLeave={touchEnd}
+          onTouchStart={touchStart}
+          onTouchMove={touchMove}
+          onTouchEnd={touchEnd}
+        >
+          <AnimatePresence mode="popLayout">
+            {visibleItems.map(({ item, originalIndex }, index) => (
+              <motion.div
+                key={`${originalIndex}-${currentIndex}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {renderItem(item, originalIndex)}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </div>
