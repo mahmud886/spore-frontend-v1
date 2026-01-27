@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { fadeUp, staggerContainer } from "../../utils/animations";
 import { AnimatedWrapper } from "../shared/AnimatedWrapper";
 import { SectionTitle } from "../shared/SectionTitle";
@@ -20,6 +21,33 @@ const defaultPlatforms = [
 ];
 
 export default function MobilizeNetworkCard({ title, description, platforms = defaultPlatforms, onShare, copied }) {
+  const [signalCount, setSignalCount] = useState(10984);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSignals = async () => {
+      try {
+        const response = await fetch('/api/signals');
+        const data = await response.json();
+
+        if (response.ok && data.signal_count) {
+          setSignalCount(data.signal_count);
+        }
+      } catch (error) {
+        console.error('Failed to fetch signals:', error);
+        // Keep default value on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSignals();
+
+    // Update signals every minute
+    const interval = setInterval(fetchSignals, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
   const handleShare = (platform) => {
     if (onShare) {
       onShare(platform);
@@ -72,7 +100,9 @@ export default function MobilizeNetworkCard({ title, description, platforms = de
             Your Contribution Is Vital
           </h3>
           <p className="text-[18px] md:text-[26px] text-white/50 font-subheading tracking-widest leading-relaxed mb-6 font-bold">
-            <span className="text-primary font-bold">10, 984 </span> signals broadcasted
+            <span className="text-primary font-bold">
+              {loading ? '10, 984' : signalCount.toLocaleString()}
+            </span> signals broadcasted
           </p>
         </motion.div>
       </div>
