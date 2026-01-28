@@ -1,3 +1,4 @@
+/*
 import { createClient } from "@/lib/supabase-server";
 import { NextResponse } from "next/server";
 import sharp from "sharp";
@@ -182,6 +183,7 @@ export async function GET(request, { params }) {
           headers: {
             "Content-Type": "image/png",
             "Cache-Control": "public, max-age=300",
+            "Content-Encoding": "gzip",
           },
         });
       } catch (error) {
@@ -228,5 +230,107 @@ export async function GET(request, { params }) {
         },
       },
     );
+  }
+}
+*/
+
+// Simplified static OG image using only the background image
+import sharp from "sharp";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const runtime = "nodejs";
+export const preferredRegion = "home";
+
+export async function GET(request, { params }) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const size = searchParams.get("size") || "facebook";
+    const format = searchParams.get("format") || "svg";
+
+    // Define sizes for different platforms
+    const sizes = {
+      facebook: { width: 1200, height: 630 },
+      twitter: { width: 1200, height: 675 },
+      instagram: { width: 1080, height: 1080 },
+      tiktok: { width: 1080, height: 1920 },
+      linkedin: { width: 1200, height: 627 },
+      pinterest: { width: 1000, height: 1500 },
+      whatsapp: { width: 800, height: 800 },
+      default: { width: 1200, height: 630 },
+    };
+
+    const dimensions = sizes[size] || sizes.default;
+    const width = dimensions.width;
+    const height = dimensions.height;
+
+    // Reference the background image from the public folder
+    const backgroundImageSrc = `/og-image-bg.png`;
+
+    const svg = `
+      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Background image -->
+        <image x="0" y="0" width="${width}" height="${height}" href="${backgroundImageSrc}" preserveAspectRatio="xMidYMid slice" />
+      </svg>
+    `;
+
+    // Convert to PNG if requested
+    if (format === "png") {
+      try {
+        const pngBuffer = await sharp(Buffer.from(svg))
+          .png({
+            quality: 80,
+            compressionLevel: 9,
+          })
+          .toBuffer();
+
+        return new Response(pngBuffer, {
+          headers: {
+            "Content-Type": "image/png",
+            "Cache-Control": "public, max-age=300",
+            "Content-Encoding": "gzip",
+          },
+        });
+      } catch (error) {
+        console.error("Error converting SVG to PNG:", error);
+        // Fall back to SVG if conversion fails
+        return new Response(svg, {
+          headers: {
+            "Content-Type": "image/svg+xml",
+            "Cache-Control": "public, max-age=60",
+            "Content-Encoding": "gzip",
+          },
+        });
+      }
+    }
+
+    // Default SVG response
+    return new Response(svg, {
+      headers: {
+        "Content-Type": "image/svg+xml",
+        "Cache-Control": "public, max-age=60",
+        "Content-Encoding": "gzip",
+      },
+    });
+  } catch (error) {
+    console.error("Error generating static OG image:", error);
+
+    // Fallback SVG with simple background
+    const fallbackSvg = `
+      <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1200" height="630" fill="#0f0f23"/>
+        <text x="600" y="315" font-size="32" font-family="Arial" fill="#C2FF02" text-anchor="middle" alignment-baseline="middle">
+          SPORE FALL
+        </text>
+      </svg>
+    `;
+
+    return new Response(fallbackSvg, {
+      headers: {
+        "Content-Type": "image/svg+xml",
+        "Cache-Control": "public, max-age=60",
+        "Content-Encoding": "gzip",
+      },
+    });
   }
 }
