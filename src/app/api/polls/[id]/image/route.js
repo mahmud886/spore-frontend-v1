@@ -236,68 +236,33 @@ export async function GET(request, { params }) {
 
 // Return a basic SVG with the background color and text
 
+import { readFile } from "fs/promises";
+import path from "path";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const runtime = "nodejs";
 export const preferredRegion = "home";
 
-export async function GET(request, { params }) {
+export async function GET() {
   try {
-    // Return a simple SVG with background and text
-    const { searchParams } = new URL(request.url);
-    const size = searchParams.get("size") || "facebook";
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "og-image-bg.png"
+    );
 
-    // Define sizes for different platforms
-    const sizes = {
-      facebook: { width: 1200, height: 630 },
-      twitter: { width: 1200, height: 675 },
-      instagram: { width: 1080, height: 1080 },
-      tiktok: { width: 1080, height: 1920 },
-      linkedin: { width: 1200, height: 627 },
-      pinterest: { width: 1000, height: 1500 },
-      whatsapp: { width: 800, height: 800 },
-      default: { width: 1200, height: 630 },
-    };
+    const imageBuffer = await readFile(filePath);
 
-    const dimensions = sizes[size] || sizes.default;
-    const width = dimensions.width;
-    const height = dimensions.height;
-
-    // Create a simple SVG with background color and text - fixing any potential formatting issues
-    const svg = `<?xml version="1.0" standalone="no"?>
-<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="${width}" height="${height}" fill="#0f0f23"/>
-  <text x="${width / 2}" y="${height / 2}" font-size="48" font-family="Arial, sans-serif" fill="#C2FF02" text-anchor="middle" dominant-baseline="middle">
-    SPORE FALL
-  </text>
-  <text x="${width / 2}" y="${(height / 2) + 60}" font-size="24" font-family="Arial, sans-serif" fill="#E5E7EB" text-anchor="middle" dominant-baseline="middle">
-    Share Your Choice
-  </text>
-</svg>`;
-
-    return new Response(svg, {
+    return new Response(imageBuffer, {
       headers: {
-        "Content-Type": "image/svg+xml",
+        "Content-Type": "image/png",
         "Cache-Control": "public, max-age=60",
       },
     });
   } catch (error) {
-    console.error("Error serving background image:", error);
+    console.error("OG image error:", error);
 
-    // Fallback SVG with simple background
-    const fallbackSvg = `<?xml version="1.0" standalone="no"?>
-<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#0f0f23"/>
-  <text x="600" y="315" font-size="32" font-family="Arial" fill="#C2FF02" text-anchor="middle" alignment-baseline="middle">
-    SPORE FALL
-  </text>
-</svg>`;
-
-    return new Response(fallbackSvg, {
-      headers: {
-        "Content-Type": "image/svg+xml",
-        "Cache-Control": "public, max-age=60",
-      },
-    });
+    return new Response("OG image not found", { status: 404 });
   }
 }
