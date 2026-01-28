@@ -147,31 +147,32 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const imagePath = path.join(
+    const filePath = path.join(
       process.cwd(),
       "public",
       "og-image-bg.png"
     );
 
-    const inputBuffer = await readFile(imagePath);
+    const input = await readFile(filePath);
 
-    const optimizedBuffer = await sharp(inputBuffer)
+    const output = await sharp(input)
       .resize(1200, 630)
-      .jpeg({
-        quality: 10,      // 🔥 sweet spot
-        progressive: true
-      })
+      .jpeg({ quality: 10 })
       .toBuffer();
 
-    return new Response(optimizedBuffer, {
+    return new Response(output, {
+      status: 200,
       headers: {
         "Content-Type": "image/jpeg",
-        "Content-Length": optimizedBuffer.length.toString(),
+        "Content-Length": String(output.length),
+
+        // 🔥 CRITICAL HEADERS
+        "Content-Encoding": "identity", // ⛔ disables br
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
-  } catch (error) {
-    console.error("OG image error:", error);
+  } catch (err) {
+    console.error("OG error:", err);
     return new Response("OG image error", { status: 500 });
   }
 }
