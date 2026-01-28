@@ -234,8 +234,7 @@ export async function GET(request, { params }) {
 }
 */
 
-// Return the background image directly
-import { NextResponse } from "next/server";
+// Return the background image directly by sending a simple response that refers to the public image
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -244,8 +243,40 @@ export const preferredRegion = "home";
 
 export async function GET(request, { params }) {
   try {
-    // Simply redirect to the static background image
-    return NextResponse.redirect(new URL('/og-image-bg.png', request.url));
+    // Return a simple SVG that references the background image
+    const { searchParams } = new URL(request.url);
+    const size = searchParams.get("size") || "facebook";
+
+    // Define sizes for different platforms
+    const sizes = {
+      facebook: { width: 1200, height: 630 },
+      twitter: { width: 1200, height: 675 },
+      instagram: { width: 1080, height: 1080 },
+      tiktok: { width: 1080, height: 1920 },
+      linkedin: { width: 1200, height: 627 },
+      pinterest: { width: 1000, height: 1500 },
+      whatsapp: { width: 800, height: 800 },
+      default: { width: 1200, height: 630 },
+    };
+
+    const dimensions = sizes[size] || sizes.default;
+    const width = dimensions.width;
+    const height = dimensions.height;
+
+    // Create a simple SVG that references the background image
+    const svg = `
+      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <image x="0" y="0" width="${width}" height="${height}" href="/og-image-bg.png" preserveAspectRatio="xMidYMid slice" />
+      </svg>
+    `;
+
+    return new Response(svg, {
+      headers: {
+        "Content-Type": "image/svg+xml",
+        "Cache-Control": "public, max-age=60",
+        "Content-Encoding": "gzip",
+      },
+    });
   } catch (error) {
     console.error("Error serving background image:", error);
 
