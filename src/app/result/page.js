@@ -15,10 +15,17 @@ export async function generateMetadata({ searchParams }) {
 }
 
 // Server component that wraps the client component
-export default function ResultPageServer({ searchParams }) {
+export default async function ResultPageServer({ searchParams }) {
+  // Properly await the searchParams Promise
+  const resolvedSearchParams = await searchParams;
+
+  const episodeId = resolvedSearchParams?.episode || null;
+  const pollId = resolvedSearchParams?.poll || resolvedSearchParams?.pollId || null;
+  const utmContent = resolvedSearchParams?.utm_content || null;
+
   return (
     <Suspense fallback={<ResultPage />}>
-      <ResultContent searchParams={searchParams} />
+      <ResultContent episodeId={episodeId} pollId={pollId} utmContent={utmContent} />
     </Suspense>
   );
 }

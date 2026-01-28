@@ -1,41 +1,48 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ResultPage from "../components/result/ResultPage";
 import { trackEvent } from "../components/shared/Analytics";
 
-function ResultContent({ searchParams }) {
-  const episodeId = searchParams?.episode || null;
-  const pollIdParam = searchParams?.poll || searchParams?.pollId || null;
+function ResultContent({ episodeId, pollId, utmContent }) {
+  console.log("ResultContent component rendered with props:", { episodeId, pollId, utmContent });
+
+  // Simple test useEffect
+  useEffect(() => {
+    console.log("SIMPLE TEST USEEFFECT IS WORKING");
+  }, []);
 
   // Extract poll ID from utm_content if present (format: poll_<poll_id>)
-  const utmContent = searchParams?.utm_content || null;
   const pollIdFromUtm = utmContent && utmContent.startsWith("poll_") ? utmContent.replace("poll_", "") : null;
 
   // Use pollId from param, utm_content, or null
-  const pollId = pollIdParam || pollIdFromUtm;
+  const finalPollId = pollId || pollIdFromUtm;
 
   const [pollData, setPollData] = useState(null);
-  const [loading, setLoading] = useState(!!episodeId || !!pollId);
+  const [loading, setLoading] = useState(!!episodeId || !!finalPollId);
   const [copied, setCopied] = useState(false);
 
   console.log("ResultContent - URL params:", {
     episodeId,
-    pollIdParam,
+    pollId,
     utmContent,
     pollIdFromUtm,
-    pollId,
+    finalPollId,
   });
 
   // Fetch poll data by poll ID (direct) or episode ID
   useEffect(() => {
+    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    console.log("!!! MAIN USEEFFECT IS DEFINITELY RUNNING !!!");
+    console.log("useEffect triggered with:", { episodeId, finalPollId });
+
     // If we have a poll ID, fetch directly
-    if (pollId) {
-      console.log("Fetching poll by ID:", pollId);
+    if (finalPollId) {
+      console.log("Fetching poll by ID:", finalPollId);
       const fetchPollById = async () => {
         try {
           setLoading(true);
-          const response = await fetch(`/api/polls/${encodeURIComponent(pollId)}`);
+          const response = await fetch(`/api/polls/${encodeURIComponent(finalPollId)}`);
 
           if (!response.ok) {
             setLoading(false);
@@ -78,19 +85,28 @@ function ResultContent({ searchParams }) {
         setLoading(true);
         const response = await fetch(`/api/polls/episode/${encodeURIComponent(episodeId)}`);
 
+        console.log("API Response status:", response.status);
+
         if (!response.ok) {
+          console.log("API Response not ok, status:", response.status);
           setLoading(false);
           return;
         }
 
         const data = await response.json();
 
+        console.log("API Response data:", data);
+
         if (data.polls && data.polls.length > 0) {
           // Get the first LIVE poll or the first poll
           const poll = data.polls.find((p) => p.status === "LIVE") || data.polls[0];
+          console.log("Selected poll:", poll);
           if (poll && poll.id) {
             setPollData(poll);
+            console.log("Set pollData to:", poll);
           }
+        } else {
+          console.log("No polls found in response");
         }
       } catch (error) {
         console.error("Error fetching poll data:", error);
@@ -100,7 +116,7 @@ function ResultContent({ searchParams }) {
     };
 
     fetchPollData();
-  }, [episodeId, pollId]);
+  }, [episodeId, finalPollId]);
 
   // Update meta tags dynamically for social sharing
   useEffect(() => {
@@ -343,23 +359,26 @@ function ResultContent({ searchParams }) {
     };
   };
 
+  useEffect(() => {
+    console.log("===== POLL DATA CHANGED TO =====", pollData);
+    console.log("Poll data keys:", Object.keys(pollData || {}));
+  }, [pollData]);
+
   console.log("ResultContent - pollData before passing:", pollData);
 
+
+
   return (
-    <ResultPage
-      pollResultProps={getPollResultProps()}
-      countdownProps={getCountdownProps()}
-      pollData={pollData}
-      onShare={handleShare}
-      copied={copied}
-    />
+    <div>
+      <ResultPage
+        pollResultProps={getPollResultProps()}
+        countdownProps={getCountdownProps()}
+        pollData={pollData}
+        onShare={handleShare}
+        copied={copied}
+      />
+    </div>
   );
 }
 
-export default function Result() {
-  return (
-    <Suspense fallback={<ResultPage />}>
-      <ResultContent />
-    </Suspense>
-  );
-}
+export default ResultContent;
