@@ -238,31 +238,39 @@ export async function GET(request, { params }) {
 
 import { readFile } from "fs/promises";
 import path from "path";
+import sharp from "sharp";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-export const runtime = "nodejs";
-export const preferredRegion = "home";
 
 export async function GET() {
   try {
-    const filePath = path.join(
+    const imagePath = path.join(
       process.cwd(),
       "public",
       "og-image-bg.png"
     );
 
-    const imageBuffer = await readFile(filePath);
+    const inputBuffer = await readFile(imagePath);
 
-    return new Response(imageBuffer, {
+    const optimizedBuffer = await sharp(inputBuffer)
+      .resize(1200, 630)
+      .jpeg({
+        quality: 10,      // 🔥 sweet spot
+        progressive: true
+      })
+      .toBuffer();
+
+    return new Response(optimizedBuffer, {
       headers: {
-        "Content-Type": "image/png",
-        "Cache-Control": "public, max-age=60",
+        "Content-Type": "image/jpeg",
+        "Content-Length": optimizedBuffer.length.toString(),
+        "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
   } catch (error) {
     console.error("OG image error:", error);
-
-    return new Response("OG image not found", { status: 404 });
+    return new Response("OG image error", { status: 500 });
   }
 }
