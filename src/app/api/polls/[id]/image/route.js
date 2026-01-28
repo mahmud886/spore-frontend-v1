@@ -1,8 +1,5 @@
 import { createClient } from "@/lib/supabase-server";
-import { readFile } from "fs/promises";
 import { NextResponse } from "next/server";
-import { join } from "path";
-import sharp from "sharp";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -130,77 +127,40 @@ export async function GET(request, { params }) {
       </g>
     `);
 
-    // Read and resize the background image to reduce file size
+    // Create blurred background with solid color overlay
     let backgroundImageDataUri = "";
-    try {
-      const publicPath = join(process.cwd(), "public");
-      const imagePath = join(publicPath, "og-image-bg.png");
-
-      // Read the image file
-      const imageBuffer = await readFile(imagePath);
-
-      // Resize and heavily compress the image using sharp
-      const resizedImageBuffer = await sharp(imageBuffer)
-        .resize(Math.floor(width / 3), Math.floor(height / 3), { fit: "cover", withoutEnlargement: true }) // Further reduce size
-        .png({
-          quality: 15, // Even lower quality to reduce file size
-          compressionLevel: 9, // Maximum compression
-          palette: true, // Use palette mode for smaller file size
-          effort: 10, // Maximum compression effort
-        })
-        .toBuffer();
-
-      // Convert to base64
-      const base64Image = resizedImageBuffer.toString("base64");
-
-      backgroundImageDataUri = `data:image/png;base64,${base64Image}`;
-    } catch (error) {
-      console.error("Background image not found or could not be processed:", error.message);
-      // Fallback to a solid background if image is not available
-      backgroundImageDataUri = "";
-    }
+    // Skip background image processing - use solid color with blur effect
 
     const svg = `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-        ${
-          backgroundImageDataUri
-            ? `
-        <!-- Background Image -->
+        <!-- Blurred background with solid color -->
         <defs>
-          <pattern id="bgPattern" x="0" y="0" width="${width}" height="${height}" patternUnits="userSpaceOnUse">
-            <image href="${backgroundImageDataUri}" x="0" y="0" width="${width}" height="${height}" preserveAspectRatio="xMidYMid slice"/>
-          </pattern>
-        </defs>
-        <rect width="${width}" height="${height}" fill="url(#bgPattern)"/>
-        `
-            : `
-        <!-- Fallback Background Gradient -->
-        <defs>
+          <!-- Blur filter for background -->
+          <filter id="blurFilter" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+          </filter>
+
+          <!-- Solid background gradient -->
           <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#0a0a0a;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1" />
+            <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#1a1a2e;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
           </linearGradient>
-        </defs>
-        <rect width="${width}" height="${height}" fill="url(#bgGradient)"/>
-        `
-        }
 
-        ${
-          fontDataUri
-            ? `
-`
-            : ""
-        }
-
-        <!-- Overlay gradient for better text readability -->
-        <defs>
+          <!-- Overlay for better text readability -->
           <linearGradient id="overlayGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#000000;stop-opacity:0.3" />
-            <stop offset="100%" style="stop-color:#000000;stop-opacity:0.5" />
+            <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4" />
+            <stop offset="100%" style="stop-color:#000000;stop-opacity:0.7" />
           </linearGradient>
         </defs>
 
-        <!-- Overlay for better contrast -->
+        <!-- Solid background -->
+        <rect width="${width}" height="${height}" fill="url(#bgGradient)"/>
+
+        <!-- Blurred overlay effect -->
+        <rect width="${width}" height="${height}" fill="url(#bgGradient)" filter="url(#blurFilter)" opacity="0.3"/>
+
+        <!-- Main overlay for better contrast -->
         <rect width="${width}" height="${height}" fill="url(#overlayGradient)"/>
 
         <!-- Question at top (center aligned) -->

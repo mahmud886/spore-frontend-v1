@@ -69,12 +69,14 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
           );
 
           const voteNoun = totalVotes === 1 ? "vote" : "votes";
+          const secondaryOption = options.find(opt => opt.name !== primaryOption.name) || { name: "Other", vote_count: 0 };
+
           return {
             title: `${pollData.title} - SporeFall Results`,
-            description: `Leading choice: "${primaryOption.name}" (${totalVotes} total ${voteNoun}). City factions compete. `,
+            description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
             openGraph: {
               title: `${pollData.title} - SporeFall Results`,
-              description: `Leading choice: "${primaryOption.name}" (${totalVotes} total ${voteNoun}). City factions compete. `,
+              description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
               images: [
                 {
                   url: `/api/polls/${encodeURIComponent(pollData.id)}/image?size=whatsapp`,
@@ -89,7 +91,7 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
             twitter: {
               card: "summary_large_image",
               title: `${pollData.title} - SporeFall Results`,
-              description: `Leading choice: "${primaryOption.name}" (${totalVotes} total ${voteNoun}). City factions compete. `,
+              description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
               images: [`/api/polls/${encodeURIComponent(pollData.id)}/image?size=whatsapp`],
             },
           };
@@ -106,11 +108,20 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
           .maybeSingle(); // use single row - no square bracket index
 
         if (!episodePollError && pollList?.id) {
+          const options = pollList.poll_options || [];
+          const totalVotes = options.reduce((sum, option) => sum + (option.vote_count || 0), 0);
+          const primaryOption = options.reduce(
+            (max, option) => ((option.vote_count || 0) > (max.vote_count || 0) ? option : max),
+            { name: "Choices", vote_count: 0 }
+          );
+          const secondaryOption = options.find(opt => opt.name !== primaryOption.name) || { name: "Other", vote_count: 0 };
+          const voteNoun = totalVotes === 1 ? "vote" : "votes";
+
           return {
             title: `Poll results - ${pollList.title?.toString()?.toUpperCase()}`,
             ogImage: `/api/polls/${pollList.id}/image`,
             ogImageType: "image/svg+xml",
-            description: "Test, City decides. View live results.",
+            description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
             ogImageWidth: "1200",
             ogImageHeight: "630",
             ogUrl: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}${pathname}`,
