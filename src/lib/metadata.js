@@ -73,7 +73,7 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
 
           // Build canonical URL with query parameters
           const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com";
-          const canonicalUrl = `${baseUrl}${pathname}?utm_content=poll_${pollData.id}`;
+          const canonicalUrl = `${baseUrl}${pathname.replace(/\/+/g, '/')}${pathname.includes('?') ? '&' : '?'}utm_content=poll_${pollData.id}`;
 
           return {
             title: `${pollData.title} - SporeFall Results`,
@@ -125,7 +125,7 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
           const voteNoun = totalVotes === 1 ? "vote" : "votes";
 
           const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com";
-          const canonicalUrl = `${baseUrl}${pathname}?episode=${episodeId}`;
+          const canonicalUrl = `${baseUrl}${pathname.replace(/\/+/g, '/')}${pathname.includes('?') ? '&' : '?'}episode=${episodeId}`;
 
           return {
             title: `Poll results - ${pollList.title?.toString()?.toUpperCase()}`,

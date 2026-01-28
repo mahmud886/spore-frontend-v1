@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase-server";
 import { NextResponse } from "next/server";
+import sharp from "sharp";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
