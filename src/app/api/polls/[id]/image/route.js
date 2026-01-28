@@ -12,6 +12,7 @@ export async function GET(request, { params }) {
     const { id } = resolvedParams;
     const { searchParams } = new URL(request.url);
     const size = searchParams.get("size") || "facebook";
+    const format = searchParams.get("format") || "svg";
 
     if (!id) {
       return NextResponse.json({ error: "Poll ID is required" }, { status: 400 });
@@ -189,6 +190,35 @@ export async function GET(request, { params }) {
       </svg>
     `;
 
+    // Convert to PNG if requested for better social media compatibility
+    if (format === "png") {
+      try {
+        const pngBuffer = await sharp(Buffer.from(svg))
+          .png({
+            quality: 80,
+            compressionLevel: 9,
+          })
+          .toBuffer();
+
+        return new Response(pngBuffer, {
+          headers: {
+            "Content-Type": "image/png",
+            "Cache-Control": "public, max-age=300",
+          },
+        });
+      } catch (error) {
+        console.error("Error converting SVG to PNG:", error);
+        // Fall back to SVG if conversion fails
+        return new Response(svg, {
+          headers: {
+            "Content-Type": "image/svg+xml",
+            "Cache-Control": "public, max-age=60",
+          },
+        });
+      }
+    }
+
+    // Default SVG response
     return new Response(svg, {
       headers: {
         "Content-Type": "image/svg+xml",

@@ -83,22 +83,23 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
               images: [
                 {
-                  url: `${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=facebook`,
+                  url: `${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=facebook&format=png`,
                   width: 1200,
                   height: 630,
-                  type: "image/svg+xml",
+                  type: "image/png",
                 },
               ],
               url: canonicalUrl,
               type: "website",
               locale: "en_US",
               siteName: "SPORE FALL",
+              determiner: "",
             },
             twitter: {
               card: "summary_large_image",
               title: `${pollData.title} - SporeFall Results`,
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
-              images: [`${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=twitter`],
+              images: [`${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=twitter&format=png`],
             },
           };
         }
@@ -134,22 +135,23 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
               images: [
                 {
-                  url: `${baseUrl}/api/polls/${pollList.id}/image?size=facebook`,
+                  url: `${baseUrl}/api/polls/${pollList.id}/image?size=facebook&format=png`,
                   width: 1200,
                   height: 630,
-                  type: "image/svg+xml",
+                  type: "image/png",
                 },
               ],
               url: canonicalUrl,
               type: "website",
               locale: "en_US",
               siteName: "SPORE FALL",
+              determiner: "",
             },
             twitter: {
               card: "summary_large_image",
               title: `Poll results - ${pollList.title?.toString()?.toUpperCase()}`,
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
-              images: [`${baseUrl}/api/polls/${pollList.id}/image?size=twitter`],
+              images: [`${baseUrl}/api/polls/${pollList.id}/image?size=twitter&format=png`],
             },
           };
         }
