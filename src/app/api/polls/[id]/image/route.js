@@ -134,60 +134,36 @@ export async function GET(request, { params }) {
     // Skip background image processing - use solid color with blur effect
 
     const svg = `
-      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-        <!-- Blurred background with solid color -->
-        <defs>
-          <!-- Blur filter for background -->
-          <filter id="blurFilter" x="-10%" y="-10%" width="120%" height="120%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
-          </filter>
-
-          <!-- Solid background gradient -->
-          <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
-            <stop offset="50%" style="stop-color:#1a1a2e;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
-          </linearGradient>
-
-          <!-- Overlay for better text readability -->
-          <linearGradient id="overlayGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#000000;stop-opacity:0.4" />
-            <stop offset="100%" style="stop-color:#000000;stop-opacity:0.7" />
-          </linearGradient>
-        </defs>
-
-        <!-- Solid background -->
-        <rect width="${width}" height="${height}" fill="url(#bgGradient)"/>
-
-        <!-- Blurred overlay effect -->
-        <rect width="${width}" height="${height}" fill="url(#bgGradient)" filter="url(#blurFilter)" opacity="0.3"/>
+      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Simple solid background -->
+        <rect width="${width}" height="${height}" fill="#0f0f23"/>
 
         <!-- Main overlay for better contrast -->
-        <rect width="${width}" height="${height}" fill="url(#overlayGradient)"/>
+        <rect width="${width}" height="${height}" fill="#000000" opacity="0.3"/>
 
         <!-- Question at top (center aligned) -->
-        <text x="${width / 2}" y="${questionY}" font-size="38" font-weight="700" fill="#C2FF02" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">
+        <text x="${width / 2}" y="${questionY}" font-size="38" font-weight="bold" fill="#C2FF02" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" dominant-baseline="middle">
           ${displayQuestion}
         </text>
 
         <!-- Logo in middle (center aligned) -->
-        <text x="${width / 2}" y="${logoY}" font-size="72" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" fill="#C2FF02">
+        <text x="${width / 2}" y="${logoY}" font-size="72" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" fill="#C2FF02" dominant-baseline="middle">
           📊
         </text>
 
         <!-- Option bars (center aligned) -->
-        <g font-family="Arial, Helvetica, sans-serif">
+        <g font-family="Arial,Helvetica,sans-serif">
           ${optionBars.join("")}
         </g>
 
         <!-- Total Votes -->
-        <text x="${width / 2}" y="${height - verticalMargin - 110}" font-size="32" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">Total Votes: ${totalVotes}</text>
+        <text x="${width / 2}" y="${height - verticalMargin - 110}" font-size="32" font-weight="bold" fill="#FFFFFF" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" dominant-baseline="middle">Total Votes: ${totalVotes}</text>
 
         <!-- Vote text -->
-        <text x="${width / 2}" y="${height - verticalMargin - 60}" font-size="34" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">#RESISTOREVOLVE</text>
+        <text x="${width / 2}" y="${height - verticalMargin - 60}" font-size="34" font-weight="bold" fill="#FFFFFF" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" dominant-baseline="middle">#RESISTOREVOLVE</text>
 
         <!-- Poll Application -->
-        <text x="${width / 2}" y="${height - verticalMargin - 10}" font-size="30" font-weight="600" fill="#E5E7EB" text-anchor="middle" font-family="Arial, Helvetica, sans-serif">SPOREFALL.COM</text>
+        <text x="${width / 2}" y="${height - verticalMargin - 10}" font-size="30" font-weight="normal" fill="#E5E7EB" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" dominant-baseline="middle">SPOREFALL.COM</text>
       </svg>
     `;
 
