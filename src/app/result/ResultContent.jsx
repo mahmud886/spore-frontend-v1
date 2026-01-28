@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import ResultPage from "../components/result/ResultPage";
 import { trackEvent } from "../components/shared/Analytics";
 
-function ResultContent() {
-  const searchParams = useSearchParams();
-  const episodeId = searchParams.get("episode");
-  const pollIdParam = searchParams.get("poll") || searchParams.get("pollId");
+function ResultContent({ searchParams }) {
+  const episodeId = searchParams?.episode || null;
+  const pollIdParam = searchParams?.poll || searchParams?.pollId || null;
 
   // Extract poll ID from utm_content if present (format: poll_<poll_id>)
-  const utmContent = searchParams.get("utm_content");
+  const utmContent = searchParams?.utm_content || null;
   const pollIdFromUtm = utmContent && utmContent.startsWith("poll_") ? utmContent.replace("poll_", "") : null;
 
   // Use pollId from param, utm_content, or null

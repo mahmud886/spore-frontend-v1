@@ -1,0 +1,129 @@
+import { createClient } from "@/lib/supabase-server";
+
+/**
+ * Generate dynamic metadata for different page types
+ * @param {string} pathname - Current URL pathname
+ * @param {URLSearchParams} searchParams - URL search parameters
+ * @param {Object} defaultMetadata - Default metadata values
+ * @returns {Object} Metadata object with Open Graph tags
+ */
+export async function generateDynamicMetadata(pathname, searchParamsPromise, defaultMetadata = {}) {
+  // Await the searchParams Promise
+  const searchParams = await searchParamsPromise;
+
+  // Base metadata with defaults
+  const baseMetadata = {
+    title: defaultMetadata.title || "SPORE FALL | Sci-Fi Narrative Series",
+    description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
+    ogImage: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/og-image-bg.png`,
+    ogImageWidth: "1200",
+    ogImageHeight: "630",
+    ogImageType: "image/png",
+    ogUrl: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}${pathname}`,
+    ogType: "website",
+    ...defaultMetadata,
+  };
+
+  // Handle specific route patterns
+  if (pathname === "/result") {
+    // Extract episode or poll ID from URL parameters
+    const episodeId = searchParams?.episode || null;
+    const pollId = searchParams?.poll || searchParams?.pollId || null;
+
+    // Extract from UTM content parameter (e.g., poll_f07ad07b-3d30-4d3e-a080-bfe4819fba90)
+    const utmContent = searchParams?.utm_content || null;
+    let pollIdFromUtm = null;
+    if (utmContent && utmContent.startsWith("poll_")) {
+      pollIdFromUtm = utmContent.replace("poll_", "");
+    }
+
+    // Determine the actual poll ID to use
+    const finalPollId = pollId || pollIdFromUtm;
+
+    try {
+      if (finalPollId) {
+        // Fetch specific poll data for dynamic metadata
+        const supabase = await createClient();
+        const { data: pollData, error } = await supabase
+          .from("polls")
+          .select(
+            `
+            id,
+            title,
+            description,
+            poll_options(
+              name,
+              vote_count
+            )
+          `,
+          )
+          .eq("id", finalPollId)
+          .single();
+
+        if (!error && pollData) {
+          const options = pollData.poll_options || [];
+          const totalVotes = options.reduce((sum, option) => sum + (option.vote_count || 0), 0);
+          const primaryOption = options.reduce(
+            (max, option) => ((option.vote_count || 0) > (max.vote_count || 0) ? option : max),
+            { name: "Choices", vote_count: 0 },
+          );
+
+          const voteNoun = totalVotes === 1 ? "vote" : "votes";
+          return {
+            title: `${pollData.title} - SporeFall Results`,
+            description: `Leading choice: "${primaryOption.name}" (${totalVotes} total ${voteNoun}). City factions compete. `,
+            openGraph: {
+              title: `${pollData.title} - SporeFall Results`,
+              description: `Leading choice: "${primaryOption.name}" (${totalVotes} total ${voteNoun}). City factions compete. `,
+              images: [
+                {
+                  url: `/api/polls/${encodeURIComponent(pollData.id)}/image?size=whatsapp`,
+                  width: 1200,
+                  height: 630,
+                  type: "image/svg+xml",
+                },
+              ],
+              url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}${pathname}`,
+              type: "website",
+            },
+            twitter: {
+              card: "summary_large_image",
+              title: `${pollData.title} - SporeFall Results`,
+              description: `Leading choice: "${primaryOption.name}" (${totalVotes} total ${voteNoun}). City factions compete. `,
+              images: [`/api/polls/${encodeURIComponent(pollData.id)}/image?size=whatsapp`],
+            },
+          };
+        }
+      } else if (episodeId) {
+        // Fetch first available poll for episode (fallback for compatibility)
+        const supabase = await createClient();
+        const { data: pollList, error: episodePollError } = await supabase
+          .from("polls")
+          .select("id, title, poll_options(vote_count, name)")
+          .eq("episode_id", episodeId)
+          .eq("status", "LIVE")
+          .limit(1)
+          .maybeSingle(); // use single row - no square bracket index
+
+        if (!episodePollError && pollList?.id) {
+          return {
+            title: `Poll results - ${pollList.title?.toString()?.toUpperCase()}`,
+            ogImage: `/api/polls/${pollList.id}/image`,
+            ogImageType: "image/svg+xml",
+            description: "Test, City decides. View live results.",
+            ogImageWidth: "1200",
+            ogImageHeight: "630",
+            ogUrl: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}${pathname}`,
+            ogType: "website",
+          };
+        }
+      }
+    } catch (error) {
+      console.error("Error generating dynamic metadata:", error);
+      // Fall through to default metadata
+    }
+  }
+
+  // Return base metadata for all other cases
+  return baseMetadata;
+}
