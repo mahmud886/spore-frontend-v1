@@ -18,7 +18,7 @@ export const metadata = {
     siteName: "SPORE FALL",
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=facebook&format=png`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=facebook`,
         width: 1200,
         height: 630,
         alt: "SPORE FALL",
@@ -31,7 +31,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "SPORE FALL | Sci-Fi Narrative Series",
     description: "The city of Lionara is quarantined. A spore is rewriting human fate.",
-    images: [`${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=twitter&format=png`],
+    images: [`${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=twitter`],
   },
 };
 

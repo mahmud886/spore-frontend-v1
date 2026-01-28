@@ -19,10 +19,10 @@ export async function generateMetadata({ searchParams }) {
       ...result.openGraph,
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=facebook&format=png`,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=facebook`,
           width: 1200,
           height: 630,
-          type: "image/png",
+          type: "image/svg+xml",
         },
       ],
     };

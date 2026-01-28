@@ -25,10 +25,10 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
       siteName: "SPORE FALL",
       images: [
         {
-          url: `${baseUrl}/api/default-og-image?size=facebook&format=png`,
+          url: `${baseUrl}/api/default-og-image?size=facebook`,
           width: 1200,
           height: 630,
-          type: "image/png",
+          type: "image/svg+xml",
         },
       ],
     },
@@ -36,7 +36,7 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
       card: "summary_large_image",
       title: defaultMetadata.title || "SPORE FALL | Sci-Fi Narrative Series",
       description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
-      images: [`${baseUrl}/api/default-og-image?size=twitter&format=png`],
+      images: [`${baseUrl}/api/default-og-image?size=twitter`],
     },
     ...defaultMetadata,
   };
@@ -100,10 +100,10 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
               images: [
                 {
-                  url: `${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=facebook&format=png`,
+                  url: `${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=facebook`,
                   width: 1200,
                   height: 630,
-                  type: "image/png",
+                  type: "image/svg+xml",
                 },
               ],
               url: canonicalUrl,
@@ -116,7 +116,7 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
               card: "summary_large_image",
               title: `${pollData.title} - SporeFall Results`,
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
-              images: [`${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=twitter&format=png`],
+              images: [`${baseUrl}/api/polls/${encodeURIComponent(pollData.id)}/image?size=twitter`],
             },
           };
         }
@@ -152,10 +152,10 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
               images: [
                 {
-                  url: `${baseUrl}/api/polls/${pollList.id}/image?size=facebook&format=png`,
+                  url: `${baseUrl}/api/polls/${pollList.id}/image?size=facebook`,
                   width: 1200,
                   height: 630,
-                  type: "image/png",
+                  type: "image/svg+xml",
                 },
               ],
               url: canonicalUrl,
@@ -168,7 +168,7 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
               card: "summary_large_image",
               title: `Poll results - ${pollList.title?.toString()?.toUpperCase()}`,
               description: `Poll Results: ${primaryOption.name} leads with ${primaryOption.vote_count} votes vs ${secondaryOption.name} with ${secondaryOption.vote_count} votes. Total: ${totalVotes} ${voteNoun}. City factions compete.`,
-              images: [`${baseUrl}/api/polls/${pollList.id}/image?size=twitter&format=png`],
+              images: [`${baseUrl}/api/polls/${pollList.id}/image?size=twitter`],
             },
           };
         }
