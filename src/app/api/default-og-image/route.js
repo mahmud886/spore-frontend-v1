@@ -3,6 +3,7 @@ import sharp from "sharp";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const runtime = "nodejs";
+export const preferredRegion = "home";
 
 export async function GET(request) {
   try {
