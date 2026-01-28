@@ -263,22 +263,17 @@ export async function GET(request, { params }) {
     const width = dimensions.width;
     const height = dimensions.height;
 
-    // Create a simple SVG with background color and text
-    const svg = `
-      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-        <!-- Background -->
-        <rect width="${width}" height="${height}" fill="#0f0f23" />
-
-        <!-- Text -->
-        <text x="${width / 2}" y="${height / 2}" font-size="48" font-family="Arial, sans-serif" fill="#C2FF02" text-anchor="middle" dominant-baseline="middle">
-          SPORE FALL
-        </text>
-
-        <text x="${width / 2}" y="${(height / 2) + 60}" font-size="24" font-family="Arial, sans-serif" fill="#E5E7EB" text-anchor="middle" dominant-baseline="middle">
-          Share Your Choice
-        </text>
-      </svg>
-    `;
+    // Create a simple SVG with background color and text - fixing any potential formatting issues
+    const svg = `<?xml version="1.0" standalone="no"?>
+<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="${width}" height="${height}" fill="#0f0f23"/>
+  <text x="${width / 2}" y="${height / 2}" font-size="48" font-family="Arial, sans-serif" fill="#C2FF02" text-anchor="middle" dominant-baseline="middle">
+    SPORE FALL
+  </text>
+  <text x="${width / 2}" y="${(height / 2) + 60}" font-size="24" font-family="Arial, sans-serif" fill="#E5E7EB" text-anchor="middle" dominant-baseline="middle">
+    Share Your Choice
+  </text>
+</svg>`;
 
     return new Response(svg, {
       headers: {
@@ -290,14 +285,13 @@ export async function GET(request, { params }) {
     console.error("Error serving background image:", error);
 
     // Fallback SVG with simple background
-    const fallbackSvg = `
-      <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
-        <rect width="1200" height="630" fill="#0f0f23"/>
-        <text x="600" y="315" font-size="32" font-family="Arial" fill="#C2FF02" text-anchor="middle" alignment-baseline="middle">
-          SPORE FALL
-        </text>
-      </svg>
-    `;
+    const fallbackSvg = `<?xml version="1.0" standalone="no"?>
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0f0f23"/>
+  <text x="600" y="315" font-size="32" font-family="Arial" fill="#C2FF02" text-anchor="middle" alignment-baseline="middle">
+    SPORE FALL
+  </text>
+</svg>`;
 
     return new Response(fallbackSvg, {
       headers: {
