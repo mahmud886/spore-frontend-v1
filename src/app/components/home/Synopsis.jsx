@@ -34,6 +34,7 @@ export function Synopsis() {
           loop
           muted
           playsInline
+          preload="metadata"
         />
         {/* <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" /> */}
       </motion.div>
@@ -50,7 +51,7 @@ export function Synopsis() {
           <p className="text-2xl md:text-3xl font-subheading text-gray-300 leading-relaxed text-center">
             In the fractured city of Lionara where a deadly Spore pathogen outbreak is brutally suppressed by an
             iron-fisted regime, a disillusioned soldier and a rogue medic must bridge their ideological divide when her
-            infected brother develops predictive abilities that could accelerate humanity's evolution or end it.
+            infected brother develops predictive abilities that could accelerate humanity&apos;s evolution or end it.
           </p>
         </motion.div>
         {/* CTA Button */}

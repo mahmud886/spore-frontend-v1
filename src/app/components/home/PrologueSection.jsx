@@ -28,7 +28,10 @@ export function PrologueSection() {
             alt="Prologue Background"
             className="w-full h-full object-cover"
             fill
-            unoptimized
+            priority={false}
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
           />
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-white/10" />

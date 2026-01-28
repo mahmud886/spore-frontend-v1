@@ -89,7 +89,6 @@ export default function HeroSection() {
     //   </div>
     // </section>
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Overlay */}
       {/* Background Video */}
       <div className="absolute inset-0">
         <video
@@ -99,6 +98,7 @@ export default function HeroSection() {
           loop
           muted
           playsInline
+          preload="metadata"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/20 to-black" />
       </div>

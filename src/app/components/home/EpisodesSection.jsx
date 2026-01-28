@@ -587,6 +587,10 @@ export default function EpisodesSection() {
             src={episode.thumbnail}
             width={648}
             height={444}
+            priority={false}
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
           />
           {episode.status === "available" && (
             <span className="absolute top-2 left-2 bg-black text-white text-[8px] font-bold px-2 py-0.5 uppercase flex items-center gap-1.5 rounded">

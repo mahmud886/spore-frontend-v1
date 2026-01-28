@@ -133,7 +133,7 @@ body {
   color: #ffffff;
   font-family: var(--font-body);
   /* Global site background - default */
-  background-image: url("/assets/images/background.png");
+  background-image: url("/assets/images/background.webp");
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -156,15 +156,15 @@ body::before {
 
 /* Background image utility classes for different pages */
 .bg-image-home {
-  background-image: url("/assets/images/background.png");
+  background-image: url("/assets/images/background.webp");
 }
 
 .bg-image-result {
-  background-image: url("/assets/images/result-background.png");
+  background-image: url("/assets/images/result-background.webp");
 }
 
 .bg-image-about {
-  background-image: url("/assets/images/about-background.png");
+  background-image: url("/assets/images/about-background.webp");
 }
 
 /* Apply background to body when class is on html element */
@@ -178,15 +178,15 @@ html.bg-about body {
 }
 
 html.bg-home body {
-  background-image: url("/assets/images/background.png");
+  background-image: url("/assets/images/background.webp");
 }
 
 html.bg-result body {
-  background-image: url("/assets/images/result-background.png");
+  background-image: url("/assets/images/result-background.webp");
 }
 
 html.bg-about body {
-  background-image: url("/assets/images/about-background.png");
+  background-image: url("/assets/images/about-background.webp");
 }
 
 .grid-overlay {
