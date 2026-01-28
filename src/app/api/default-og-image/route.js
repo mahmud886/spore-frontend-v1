@@ -37,11 +37,13 @@ export async function GET(request) {
     const questionY = verticalMargin + 60;
     const logoY = verticalMargin + contentHeight * 0.25 + 40; // Logo at 25% of content area
 
-    // Create simple background with solid color
+    // Reference background image from public folder
+    const backgroundImageSrc = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://sporefall.com'}/og-image-bg.png`;
+
     const svg = `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <!-- Simple solid background -->
-        <rect width="${width}" height="${height}" fill="#0f0f23"/>
+        <!-- Background image or fallback -->
+        <image x="0" y="0" width="${width}" height="${height}" href="${backgroundImageSrc}" preserveAspectRatio="xMidYMid slice" opacity="0.3" />
 
         <!-- Main overlay for better contrast -->
         <rect width="${width}" height="${height}" fill="#000000" opacity="0.3"/>
@@ -86,6 +88,7 @@ export async function GET(request) {
           headers: {
             "Content-Type": "image/png",
             "Cache-Control": "public, max-age=300",
+            "Content-Encoding": "gzip",
           },
         });
       } catch (error) {
@@ -95,6 +98,7 @@ export async function GET(request) {
           headers: {
             "Content-Type": "image/svg+xml",
             "Cache-Control": "public, max-age=60",
+            "Content-Encoding": "gzip",
           },
         });
       }
@@ -104,6 +108,7 @@ export async function GET(request) {
     return new Response(svg, {
       headers: {
         "Content-Type": "image/svg+xml",
+        "Content-Encoding": "gzip",
         "Cache-Control": "public, max-age=60",
       },
     });
@@ -120,6 +125,7 @@ export async function GET(request) {
       {
         headers: {
           "Content-Type": "image/svg+xml",
+          "Content-Encoding": "gzip",
           "Cache-Control": "public, max-age=60",
         },
       },

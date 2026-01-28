@@ -130,14 +130,14 @@ export async function GET(request, { params }) {
       </g>
     `);
 
-    // Create blurred background with solid color overlay
-    let backgroundImageDataUri = "";
-    // Skip background image processing - use solid color with blur effect
+    // For Next.js App Router, we'll reference the background image from the public folder
+    const backgroundImageSrc = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://sporefall.com'}/og-image-bg.png`;
 
+    // Check if the background image exists by attempting to construct the SVG with image reference
     const svg = `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <!-- Simple solid background -->
-        <rect width="${width}" height="${height}" fill="#0f0f23"/>
+        <!-- Background image or fallback -->
+        <image x="0" y="0" width="${width}" height="${height}" href="${backgroundImageSrc}" preserveAspectRatio="xMidYMid slice" opacity="0.3" />
 
         <!-- Main overlay for better contrast -->
         <rect width="${width}" height="${height}" fill="#000000" opacity="0.3"/>
@@ -191,6 +191,7 @@ export async function GET(request, { params }) {
           headers: {
             "Content-Type": "image/svg+xml",
             "Cache-Control": "public, max-age=60",
+            "Content-Encoding": "gzip",
           },
         });
       }
@@ -201,6 +202,7 @@ export async function GET(request, { params }) {
       headers: {
         "Content-Type": "image/svg+xml",
         "Cache-Control": "public, max-age=60",
+        "Content-Encoding": "gzip",
       },
     });
   } catch (error) {
@@ -222,6 +224,7 @@ export async function GET(request, { params }) {
         headers: {
           "Content-Type": "image/svg+xml",
           "Cache-Control": "public, max-age=60",
+          "Content-Encoding": "gzip",
         },
       },
     );
