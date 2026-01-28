@@ -135,7 +135,7 @@ export async function GET(request) {
 }
 */
 
-// Return the background image directly by sending a simple response that refers to the public image
+// Return a basic SVG with the background color and text
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -144,7 +144,7 @@ export const preferredRegion = "home";
 
 export async function GET(request) {
   try {
-    // Return a simple SVG that references the background image
+    // Return a simple SVG with background and text
     const { searchParams } = new URL(request.url);
     const size = searchParams.get("size") || "facebook";
 
@@ -164,10 +164,20 @@ export async function GET(request) {
     const width = dimensions.width;
     const height = dimensions.height;
 
-    // Create a simple SVG that references the background image
+    // Create a simple SVG with background color and text
     const svg = `
-      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <image x="0" y="0" width="${width}" height="${height}" href="/og-image-bg.png" preserveAspectRatio="xMidYMid slice" />
+      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="${width}" height="${height}" fill="#0f0f23" />
+
+        <!-- Text -->
+        <text x="${width / 2}" y="${height / 2}" font-size="48" font-family="Arial, sans-serif" fill="#C2FF02" text-anchor="middle" dominant-baseline="middle">
+          SPORE FALL
+        </text>
+
+        <text x="${width / 2}" y="${(height / 2) + 60}" font-size="24" font-family="Arial, sans-serif" fill="#E5E7EB" text-anchor="middle" dominant-baseline="middle">
+          Share Your Choice
+        </text>
       </svg>
     `;
 
@@ -175,7 +185,6 @@ export async function GET(request) {
       headers: {
         "Content-Type": "image/svg+xml",
         "Cache-Control": "public, max-age=60",
-        "Content-Encoding": "gzip",
       },
     });
   } catch (error) {
@@ -195,7 +204,6 @@ export async function GET(request) {
       headers: {
         "Content-Type": "image/svg+xml",
         "Cache-Control": "public, max-age=60",
-        "Content-Encoding": "gzip",
       },
     });
   }
