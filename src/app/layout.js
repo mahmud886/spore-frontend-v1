@@ -1,16 +1,14 @@
 import ExternalStyles from "./ExternalStyles";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import { Analytics } from "./components/shared/Analytics";
 import BackgroundSetter from "./components/shared/BackgroundSetter";
 import VerticalLines from "./components/shared/VerticalLines";
 import { Wrapper } from "./components/shared/Wrapper";
-import { Analytics } from "./components/shared/Analytics";
 import "./globals.css";
 
-export const metadata = {
-  title: "SPORE FALL | Sci-Fi Narrative Series",
-  description: "The city of Lionara is quarantined. A spore is rewriting human fate.",
-};
+// Metadata is handled dynamically by individual pages
+// Root layout doesn't define static metadata to allow page-level overrides
 
 export default function RootLayout({ children }) {
   return (
