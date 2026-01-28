@@ -246,18 +246,11 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "og-image-bg.png"
-    );
+    const filePath = path.join(process.cwd(), "public", "og-image-bg.png");
 
     const input = await readFile(filePath);
 
-    const output = await sharp(input)
-      .resize(1200, 630)
-      .jpeg({ quality: 10 })
-      .toBuffer();
+    const output = await sharp(input).resize(1200, 630).jpeg({ quality: 10 }).toBuffer();
 
     return new Response(output, {
       status: 200,

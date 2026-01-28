@@ -18,7 +18,8 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
     description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
     openGraph: {
       title: defaultMetadata.title || "SPORE FALL | Sci-Fi Narrative Series",
-      description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
+      description:
+        defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
       url: `${baseUrl}${pathname}`,
       type: "website",
       locale: "en_US",
@@ -35,7 +36,8 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
     twitter: {
       card: "summary_large_image",
       title: defaultMetadata.title || "SPORE FALL | Sci-Fi Narrative Series",
-      description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
+      description:
+        defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
       images: [`${baseUrl}/api/default-og-image?size=twitter`],
     },
     ...defaultMetadata,
@@ -86,11 +88,14 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
           );
 
           const voteNoun = totalVotes === 1 ? "vote" : "votes";
-          const secondaryOption = options.find(opt => opt.name !== primaryOption.name) || { name: "Other", vote_count: 0 };
+          const secondaryOption = options.find((opt) => opt.name !== primaryOption.name) || {
+            name: "Other",
+            vote_count: 0,
+          };
 
           // Build canonical URL with query parameters
           const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com";
-          const canonicalUrl = `${baseUrl}${pathname.replace(/\/+/g, '/')}${pathname.includes('?') ? '&' : '?'}utm_content=poll_${pollData.id}`;
+          const canonicalUrl = `${baseUrl}${pathname.replace(/\/+/g, "/")}${pathname.includes("?") ? "&" : "?"}utm_content=poll_${pollData.id}`;
 
           return {
             title: `${pollData.title} - SporeFall Results`,
@@ -136,13 +141,16 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
           const totalVotes = options.reduce((sum, option) => sum + (option.vote_count || 0), 0);
           const primaryOption = options.reduce(
             (max, option) => ((option.vote_count || 0) > (max.vote_count || 0) ? option : max),
-            { name: "Choices", vote_count: 0 }
+            { name: "Choices", vote_count: 0 },
           );
-          const secondaryOption = options.find(opt => opt.name !== primaryOption.name) || { name: "Other", vote_count: 0 };
+          const secondaryOption = options.find((opt) => opt.name !== primaryOption.name) || {
+            name: "Other",
+            vote_count: 0,
+          };
           const voteNoun = totalVotes === 1 ? "vote" : "votes";
 
           const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com";
-          const canonicalUrl = `${baseUrl}${pathname.replace(/\/+/g, '/')}${pathname.includes('?') ? '&' : '?'}episode=${episodeId}`;
+          const canonicalUrl = `${baseUrl}${pathname.replace(/\/+/g, "/")}${pathname.includes("?") ? "&" : "?"}episode=${episodeId}`;
 
           return {
             title: `Poll results - ${pollList.title?.toString()?.toUpperCase()}`,

@@ -366,8 +366,6 @@ function ResultContent({ episodeId, pollId, utmContent }) {
 
   console.log("ResultContent - pollData before passing:", pollData);
 
-
-
   return (
     <div>
       <ResultPage
