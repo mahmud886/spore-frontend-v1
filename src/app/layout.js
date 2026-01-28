@@ -7,8 +7,33 @@ import VerticalLines from "./components/shared/VerticalLines";
 import { Wrapper } from "./components/shared/Wrapper";
 import "./globals.css";
 
-// Metadata is handled dynamically by individual pages
-// Root layout doesn't define static metadata to allow page-level overrides
+// Export default metadata to ensure explicit og:image is available
+export const metadata = {
+  title: "SPORE FALL | Sci-Fi Narrative Series",
+  description: "The city of Lionara is quarantined. A spore is rewriting human fate.",
+  openGraph: {
+    title: "SPORE FALL | Sci-Fi Narrative Series",
+    description: "The city of Lionara is quarantined. A spore is rewriting human fate.",
+    url: process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com",
+    siteName: "SPORE FALL",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=facebook&format=png`,
+        width: 1200,
+        height: 630,
+        alt: "SPORE FALL",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SPORE FALL | Sci-Fi Narrative Series",
+    description: "The city of Lionara is quarantined. A spore is rewriting human fate.",
+    images: [`${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=twitter&format=png`],
+  },
+};
 
 export default function RootLayout({ children }) {
   return (

@@ -12,15 +12,32 @@ export async function generateDynamicMetadata(pathname, searchParamsPromise, def
   const searchParams = await searchParamsPromise;
 
   // Base metadata with defaults
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com";
   const baseMetadata = {
     title: defaultMetadata.title || "SPORE FALL | Sci-Fi Narrative Series",
     description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
-    ogImage: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/og-image-bg.png`,
-    ogImageWidth: "1200",
-    ogImageHeight: "630",
-    ogImageType: "image/png",
-    ogUrl: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}${pathname}`,
-    ogType: "website",
+    openGraph: {
+      title: defaultMetadata.title || "SPORE FALL | Sci-Fi Narrative Series",
+      description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
+      url: `${baseUrl}${pathname}`,
+      type: "website",
+      locale: "en_US",
+      siteName: "SPORE FALL",
+      images: [
+        {
+          url: `${baseUrl}/api/default-og-image?size=facebook&format=png`,
+          width: 1200,
+          height: 630,
+          type: "image/png",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: defaultMetadata.title || "SPORE FALL | Sci-Fi Narrative Series",
+      description: defaultMetadata.description || "The city of Lionara is quarantined. A spore is rewriting human fate.",
+      images: [`${baseUrl}/api/default-og-image?size=twitter&format=png`],
+    },
     ...defaultMetadata,
   };
 

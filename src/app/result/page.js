@@ -8,10 +8,27 @@ export async function generateMetadata({ searchParams }) {
   const dynamicMetadata = await generateDynamicMetadata("/result", searchParams);
 
   // Add metadataBase to the dynamic metadata
-  return {
+  const result = {
     ...dynamicMetadata,
     metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"),
   };
+
+  // Ensure explicit og:image is always present
+  if (!result.openGraph?.images?.length) {
+    result.openGraph = {
+      ...result.openGraph,
+      images: [
+        {
+          url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://sporefall.com"}/api/default-og-image?size=facebook&format=png`,
+          width: 1200,
+          height: 630,
+          type: "image/png",
+        },
+      ],
+    };
+  }
+
+  return result;
 }
 
 // Server component that wraps the client component
