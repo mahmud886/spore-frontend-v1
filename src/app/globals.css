@@ -119,9 +119,34 @@
   font-family: var(--font-subheading);
 }
 
-/* Smooth scrolling */
+/* Optimized smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Performance optimizations */
+* {
+  will-change: auto;
+  contain: layout style paint;
+}
+
+text {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize for mobile */
+@media (max-width: 768px) {
+  * {
+    contain: layout style;
+  }
+
+  .cyber-holographic,
+  .cyber-data-stream,
+  .cyber-glow-blink {
+    animation-duration: 6s;
+    animation-timing-function: ease-in-out;
+  }
 }
 
 .font-jetbrains-mono {

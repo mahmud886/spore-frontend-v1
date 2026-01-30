@@ -1,10 +1,34 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { scaleIn } from "../../utils/animations";
 
 export default function HeroSection() {
-  const handleSeasonClick = () => {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    // Set timeout for video fallback
+    const timer = setTimeout(() => {
+      if (!isVideoLoaded) {
+        setShowFallback(true);
+      }
+    }, 3000); // 3 second timeout
+
+    return () => clearTimeout(timer);
+  }, [isVideoLoaded]);
+
+  const handleVideoLoad = () => {
+    setIsVideoLoaded(true);
+  };
+
+  const handleVideoError = () => {
+    setShowFallback(true);
+  };
+
+  const handleSeasonClick = useCallback(() => {
     const element = document.getElementById("shop");
     if (element) {
       const offset = 80; // Account for sticky navbar height
@@ -16,7 +40,7 @@ export default function HeroSection() {
         behavior: "smooth",
       });
     }
-  };
+  }, []);
 
   return (
     // <section className="min-h-screen flex flex-col md:flex-row items-center px-8  py-20 relative overflow-hidden">
@@ -91,16 +115,27 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0">
-        <video
-          src="/assets/videos/infection_WIDE_2.mp4"
-          className="w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/20 to-black" />
+        {!showFallback ? (
+          <video
+            ref={videoRef}
+            src="/assets/videos/infection_WIDE_2.mp4"
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            onLoadStart={handleVideoLoad}
+            onError={handleVideoError}
+            poster="/assets/images/background.webp"
+          />
+        ) : (
+          <div
+            className="w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: "url(/assets/images/background.webp)" }}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/30 to-black" />
       </div>
 
       {/* Content */}
@@ -122,17 +157,11 @@ export default function HeroSection() {
         >
           {/* Title */}
           <motion.h1
-            variants={{
-              hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
-              visible: {
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-                transition: {
-                  duration: 0.8,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                },
-              },
+            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{
+              duration: 0.8,
+              ease: [0.25, 0.46, 0.45, 0.94],
             }}
             className="mb-12 md:mb-[160px] text-[42px] md:text-[80px] lg:text-[80px] font-heading font-bold tracking-wider text-white uppercase cyber-glow-blink"
           >
@@ -145,7 +174,7 @@ export default function HeroSection() {
           </p>
 
           {/* CTA Button */}
-          <motion.div variants={scaleIn} className="pt-4">
+          <motion.div initial="initial" animate="animate" variants={scaleIn} className="pt-4">
             <motion.button
               onClick={handleSeasonClick}
               whileHover={{
